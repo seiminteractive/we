@@ -1,0 +1,70 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Ancho del contenido principal (Quiénes somos, Para quién, etc.) */
+  --layout-content-max: 1280px;
+
+  /* Fondo unificado de bloques de contenido (sin costuras entre secciones) */
+  --section-bg: #f9f9f9;
+
+  /* Padding horizontal común de secciones */
+  --section-pad-x: clamp(1.25rem, 4vw, 3.5rem);
+  /* Más aire arriba y abajo entre secciones */
+  --section-pad-y: clamp(3.75rem, 8.5vw, 5.75rem);
+  --section-pad-y-after: clamp(3.5rem, 7.5vw, 5.25rem);
+  --section-pad-y-temas-bottom: clamp(5rem, 10vw, 6.75rem);
+  --section-pad-footer-y: clamp(3.25rem, 6.5vw, 5rem);
+  --section-pad-footer-y-bottom: clamp(2rem, 3.8vw, 2.75rem);
+
+  /* Paleta de marca */
+  --brand-01: #151516;
+  --brand-02: #ffffff;
+  --brand-03: #21dc99;
+  --brand-04: #d9d9d9;
+  --brand-05: #373737;
+  --brand-06: #efdbb4;
+  --brand-07: #da5933;
+
+  /* Tipografía — títulos: Syne (Titling Syne) · textos: Work Sans */
+  --font-heading: "Syne", system-ui, sans-serif;
+  --font-body: "Work Sans", system-ui, sans-serif;
+
+  /* Work Sans — pesos de marca */
+  --font-w-light: 300;
+  --font-w-regular: 400;
+  --font-w-medium: 500;
+  --font-w-semibold: 600;
+  --font-w-bold: 700;
+  --font-w-extrabold: 800;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  min-height: 100%;
+}
+
+#app {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: var(--font-w-regular);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
