@@ -8,7 +8,7 @@
         <div class="about__slot about__slot--brand">
           <div class="about__brand" data-reveal>
             <span class="about__brand-pill" aria-hidden="true" />
-            <span class="about__brand-text">QUIÉNES SOMOS</span>
+            <span class="about__brand-text">QUÉ HACEMOS</span>
           </div>
         </div>
 

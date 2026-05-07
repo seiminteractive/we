@@ -6,9 +6,14 @@
     aria-labelledby="qh-heading"
     aria-label="Nuestros pilares"
   >
+    <div class="qh__bg" aria-hidden="true">
+      <img :src="pilarBg" alt="" class="qh__bg-img" />
+      <div class="qh__bg-overlay" />
+    </div>
+    <div class="qh__side-veil" aria-hidden="true" />
     <div class="qh__shell">
-      <header class="qh__header">
-        <div class="qh__intro" data-reveal>
+      <div class="qh__layout">
+        <div class="qh__intro-col" data-reveal>
           <div class="qh__brand">
             <span class="qh__brand-mark" aria-hidden="true" />
             <span class="qh__brand-text">NUESTROS PILARES</span>
@@ -16,64 +21,35 @@
           <h2 id="qh-heading" class="qh__title">
             Formación, comunicación y estrategia para transformar organizaciones
           </h2>
-        </div>
-        <a href="#" class="qh__cta" data-reveal>
-          <span class="qh__cta-label">Hablemos</span>
-          <span class="qh__cta-icon" aria-hidden="true">
-            <i class="pi pi-arrow-right"></i>
-          </span>
-        </a>
-      </header>
-
-      <div class="qh__list" role="list">
-        <article
-          v-for="row in rows"
-          :key="row.id"
-          class="qh-row"
-          data-reveal
-          :class="{ 'qh-row--open': openId === row.id }"
-          role="listitem"
-        >
-          <button
-            type="button"
-            class="qh-row__trigger"
-            :aria-expanded="openId === row.id"
-            :aria-controls="`qh-panel-${row.id}`"
-            :id="`qh-trigger-${row.id}`"
-            @click="toggle(row.id)"
-          >
-            <div class="qh-row__left">
-              <span class="qh-row__badge">{{ row.badge }}</span>
-              <h3 class="qh-row__title">{{ row.title }}</h3>
-            </div>
-            <span class="qh-row__action" aria-hidden="true">
+          <a href="#contacto" class="qh__cta">
+            <span class="qh__cta-label">Hablemos</span>
+            <span class="qh__cta-icon" aria-hidden="true">
               <i class="pi pi-arrow-right"></i>
             </span>
-          </button>
+          </a>
+        </div>
 
-          <div
-            :id="`qh-panel-${row.id}`"
-            class="qh-row__panel"
-            role="region"
-            :aria-labelledby="`qh-trigger-${row.id}`"
-          >
-            <div class="qh-row__panel-inner">
-              <p class="qh-row__detail">{{ row.detail }}</p>
-            </div>
+        <div class="qh__list-col" data-reveal>
+          <div class="qh__list" role="list">
+            <article v-for="row in rows" :key="row.id" class="qh-item" data-reveal role="listitem">
+              <div class="qh-item__head">
+                <span class="qh-item__badge">{{ row.badge }}</span>
+                <h3 class="qh-item__title">{{ row.title }}</h3>
+              </div>
+              <p class="qh-item__detail">{{ row.detail }}</p>
+            </article>
           </div>
-        </article>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import pilarBg from '../assets/imagenServicio4.png'
 import { useScrollReveal } from '../composables/useScrollReveal'
 
 const { sectionRef } = useScrollReveal()
-
-const openId = ref(null)
 
 const rows = [
   {
@@ -98,51 +74,137 @@ const rows = [
       'Diseño de agendas, proyectos e iniciativas para modernizar organizaciones y generar impacto real.',
   },
 ]
-
-function toggle(id) {
-  openId.value = openId.value === id ? null : id
-}
 </script>
 
 <style scoped>
 .qh {
-  --qh-bg: var(--section-bg);
-  --qh-ink: #000000;
-  --qh-muted: #666666;
-  --qh-line: #e5e5e5;
-  --qh-year-bg: #ebebeb;
-  --qh-action-bg: #f0f0f0;
+  --qh-ink: #ffffff;
+  --qh-muted: rgba(255, 255, 255, 0.88);
+  --qh-line: rgba(255, 255, 255, 0.22);
+  --qh-year-bg: rgba(255, 255, 255, 0.14);
 
   position: relative;
-  background: var(--qh-bg);
+  isolation: isolate;
+  background: #151816;
   color: var(--qh-ink);
   box-sizing: border-box;
   overflow-x: clip;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.qh__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.qh__bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.qh__bg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      105deg,
+      rgba(15, 22, 18, 0.58) 0%,
+      rgba(15, 22, 18, 0.38) 48%,
+      rgba(15, 22, 18, 0.52) 100%
+    ),
+    linear-gradient(to top, rgba(12, 18, 15, 0.72) 0%, transparent 52%);
+}
+
+/* Oscurece desde el borde derecho hacia el centro (debajo del contenido, z-index < shell) */
+.qh__side-veil {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 24%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0.82) 0%,
+    rgba(0, 0, 0, 0.5) 38%,
+    rgba(0, 0, 0, 0.18) 68%,
+    transparent 100%
+  );
 }
 
 .qh__shell {
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
   max-width: var(--layout-content-max);
   margin: 0 auto;
-  padding: var(--section-pad-y) var(--section-pad-x) var(--section-pad-y-after);
+  padding: clamp(1.35rem, 4vw, 2.5rem) var(--section-pad-x);
   box-sizing: border-box;
   min-width: 0;
 }
 
-.qh__header {
+.qh__layout {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: clamp(1.25rem, 3vw, 2rem);
-  margin-bottom: clamp(2.25rem, 4.5vw, 3.25rem);
+  flex-direction: column;
+  gap: clamp(1.75rem, 4vw, 2.35rem);
+  width: 100%;
 }
 
-.qh__intro {
-  flex: 1 1 min(100%, 40rem);
+.qh__intro-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   min-width: 0;
+}
+
+.qh__list-col {
+  position: relative;
+  z-index: 0;
+  min-width: 0;
+}
+
+@media (min-width: 961px) {
+  .qh__shell {
+    justify-content: center;
+    padding-top: clamp(1rem, 3vh, 1.75rem);
+    padding-bottom: clamp(1rem, 3vh, 1.75rem);
+  }
+
+  .qh__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.75rem, 4.5vw, 3.5rem);
+    align-items: center;
+  }
+
+  .qh__list-col {
+    padding-left: clamp(1rem, 2.5vw, 1.75rem);
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .qh__title {
+    max-width: min(19rem, 100%);
+    font-size: clamp(1.65rem, 3.2vw, 2.65rem);
+  }
 }
 
 .qh__brand {
@@ -152,7 +214,6 @@ function toggle(id) {
   margin-bottom: clamp(0.75rem, 1.8vw, 1rem);
 }
 
-/* Icono tipo referencia: rectángulo redondeado con punto centrado */
 .qh__brand-mark {
   position: relative;
   display: block;
@@ -187,7 +248,7 @@ function toggle(id) {
 
 .qh__title {
   margin: 0;
-  max-width: min(20rem, 100%);
+  max-width: min(22rem, 100%);
   font-family: var(--font-heading);
   font-size: clamp(1.85rem, 4.2vw, 3rem);
   font-weight: 700;
@@ -200,11 +261,15 @@ function toggle(id) {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
+  margin-top: clamp(1.15rem, 2.4vw, 1.75rem);
   text-decoration: none;
   color: var(--qh-ink);
   border-radius: 8px;
-  border: 1px solid var(--qh-line);
-  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 0.35rem 0.35rem 0.35rem 1.1rem;
   font-family: var(--font-body);
   font-size: 0.8125rem;
@@ -216,8 +281,8 @@ function toggle(id) {
 }
 
 .qh__cta:hover {
-  border-color: #cfcfcf;
-  background: #fafafa;
+  border-color: rgba(255, 255, 255, 0.52);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .qh__cta-label {
@@ -231,8 +296,8 @@ function toggle(id) {
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 6px;
-  background: var(--qh-ink);
-  color: #fff;
+  background: #ffffff;
+  color: var(--brand-01);
 }
 
 .qh__cta-icon .pi {
@@ -240,171 +305,111 @@ function toggle(id) {
 }
 
 .qh__list {
-  border-top: 1px solid var(--qh-line);
-}
-
-.qh-row {
-  margin: 0;
-  border-bottom: 1px solid var(--qh-line);
-}
-
-.qh-row__trigger {
-  width: 100%;
   display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: clamp(0.85rem, 2vw, 1.5rem);
-  padding: clamp(1.5rem, 2.8vw, 2.15rem) 0;
+  flex-direction: column;
+  gap: clamp(1.35rem, 2.8vw, 1.85rem);
+}
+
+.qh-item {
   margin: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  text-align: left;
-  font: inherit;
-  color: inherit;
-  box-sizing: border-box;
-  transition: background-color 0.35s ease;
+  padding: 0;
+  padding-bottom: clamp(1.25rem, 2.5vw, 1.65rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-.qh-row__trigger:hover {
-  background-color: rgba(255, 255, 255, 0.45);
+.qh-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
-.qh-row__trigger:focus-visible {
-  outline: 2px solid var(--brand-07);
-  outline-offset: 2px;
-}
-
-.qh-row__left {
+.qh-item__head {
   display: flex;
-  align-items: center;
-  gap: clamp(0.85rem, 2vw, 1.35rem);
-  flex: 1 1 auto;
-  min-width: 0;
+  align-items: baseline;
+  gap: clamp(0.75rem, 2vw, 1.15rem);
+  margin-bottom: clamp(0.55rem, 1.2vw, 0.75rem);
 }
 
-.qh-row__badge {
+.qh-item__badge {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 3.25rem;
-  padding: 0.4rem 0.55rem;
+  min-width: 3rem;
+  padding: 0.35rem 0.5rem;
   border-radius: 8px;
   background: var(--qh-year-bg);
   font-family: var(--font-body);
   font-size: 0.75rem;
   font-weight: var(--font-w-medium);
   letter-spacing: 0.02em;
-  color: var(--qh-muted);
+  color: rgba(255, 255, 255, 0.82);
   font-variant-numeric: tabular-nums;
 }
 
-.qh-row__title {
+.qh-item__title {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: clamp(1rem, 1.65vw, 1.25rem);
+  font-size: clamp(1.05rem, 1.75vw, 1.3rem);
   font-weight: var(--font-w-semibold);
   letter-spacing: -0.02em;
-  line-height: 1.25;
+  line-height: 1.22;
   color: var(--qh-ink);
 }
 
-.qh-row__action {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.35rem;
-  height: 2.35rem;
-  border-radius: 8px;
-  border: 1px solid var(--qh-line);
-  background: var(--qh-action-bg);
-  color: var(--qh-ink);
-  pointer-events: none;
-  transition:
-    background-color 0.35s cubic-bezier(0.33, 1, 0.68, 1),
-    border-color 0.35s ease,
-    transform 0.35s cubic-bezier(0.33, 1, 0.68, 1);
-}
-
-.qh-row__trigger:hover .qh-row__action {
-  background: #e8e8e8;
-  border-color: #dcdcdc;
-}
-
-.qh-row--open .qh-row__action {
-  background: var(--qh-ink);
-  border-color: var(--qh-ink);
-  color: #fff;
-}
-
-.qh-row__action .pi {
-  font-size: 0.75rem;
-  transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
-}
-
-.qh-row--open .qh-row__action .pi {
-  transform: rotate(90deg);
-}
-
-.qh-row__panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.55s cubic-bezier(0.33, 1, 0.68, 1);
-}
-
-.qh-row--open .qh-row__panel {
-  grid-template-rows: 1fr;
-}
-
-.qh-row__panel-inner {
-  min-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(-8px);
-  transition:
-    opacity 0.45s cubic-bezier(0.33, 1, 0.68, 1) 0.04s,
-    transform 0.55s cubic-bezier(0.33, 1, 0.68, 1) 0.02s;
-}
-
-.qh-row--open .qh-row__panel-inner {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.qh-row__detail {
+.qh-item__detail {
   margin: 0;
-  padding: 0 0 clamp(1.35rem, 2.5vw, 1.85rem);
-  max-width: 52rem;
+  padding-left: calc(3rem + clamp(0.75rem, 2vw, 1.15rem));
+  max-width: 36rem;
   font-family: var(--font-body);
-  font-size: clamp(0.875rem, 1.15vw, 0.96875rem);
+  font-size: clamp(0.875rem, 1.2vw, 0.96875rem);
   font-weight: var(--font-w-regular);
-  line-height: 1.6;
+  line-height: 1.62;
   color: var(--qh-muted);
 }
 
-@media (max-width: 780px) {
-  .qh-row__trigger {
+@media (max-width: 960px) {
+  .qh {
+    min-height: 0;
+    display: block;
+  }
+
+  .qh__side-veil {
+    left: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 18%,
+      rgba(0, 0, 0, 0.38) 52%,
+      rgba(0, 0, 0, 0.72) 100%
+    );
+  }
+
+  .qh__shell {
+    flex: none;
+    padding: var(--section-pad-y) var(--section-pad-x) var(--section-pad-y-after);
+  }
+
+  .qh__layout {
+    gap: clamp(1.5rem, 3.5vw, 2rem);
+  }
+
+  .qh__list-col {
+    padding-left: 0;
+  }
+
+  .qh__title {
+    max-width: min(22rem, 100%);
+    font-size: clamp(1.85rem, 4.2vw, 3rem);
+  }
+
+  .qh-item__detail {
+    padding-left: 0;
+    max-width: none;
+  }
+
+  .qh-item__head {
     flex-wrap: wrap;
   }
-
-  .qh-row__left {
-    flex: 1 1 calc(100% - 3.5rem);
-  }
-
-  .qh-row__action {
-    margin-left: auto;
-  }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .qh-row__panel,
-  .qh-row__panel-inner,
-  .qh-row__action .pi,
-  .qh-row__trigger {
-    transition-duration: 0.01ms;
-  }
-}
 </style>

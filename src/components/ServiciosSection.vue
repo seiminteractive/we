@@ -99,15 +99,15 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
+import imgFormacionSostenibilidad from '../assets/formacionEnSostenibilidad.jpeg'
+import imgUsoIA from '../assets/usoDeIA.jpeg'
+import imgTalleresGobEmpSind from '../assets/talleresGobiernosEmpresas.jpeg'
+import imgComunicacionInstitucional from '../assets/comunicacionInstitucional.jpeg'
+import imgCampaniasPosicionamiento from '../assets/campaniasYPosicionamiento.jpeg'
+import imgEstrategiasPublicas from '../assets/estrategiasPublicasDeTransformacion.jpeg'
+import imgTallerFinanciamiento from '../assets/tallerFinanciamiento.jpeg'
 
 const { sectionRef } = useScrollReveal()
-import imagenServicio1 from '../assets/imagenServicio1.png'
-import imagenServicio2 from '../assets/imagenServicio2.png'
-import imagenServicio3 from '../assets/imagenServicio3.png'
-import imagenServicio4 from '../assets/imagenServicio4.png'
-import imagenServicio5 from '../assets/imagenServicio5.png'
-import imagenServicio6 from '../assets/imagenServicio6.png'
-import imagenServicio7 from '../assets/imagenServicio7.png'
 
 const SLIDE_DURATION_MS = 6000
 
@@ -118,7 +118,7 @@ const slides = [
     description:
       'Programas aplicados para integrar criterios ambientales y sociales en equipos y proyectos.',
     date: '12/03/2025',
-    image: imagenServicio1,
+    image: imgFormacionSostenibilidad,
   },
   {
     id: 'ia',
@@ -126,7 +126,7 @@ const slides = [
     description:
       'Capacitación práctica para adoptar IA con foco en productividad y gobernanza responsable.',
     date: '28/03/2025',
-    image: imagenServicio2,
+    image: imgUsoIA,
   },
   {
     id: 'talleres',
@@ -134,7 +134,7 @@ const slides = [
     description:
       'Espacios de trabajo conjunto para alinear lenguajes y prioridades entre actores clave.',
     date: '5/04/2025',
-    image: imagenServicio3,
+    image: imgTalleresGobEmpSind,
   },
   {
     id: 'comunicacion',
@@ -142,7 +142,7 @@ const slides = [
     description:
       'Estrategias que fortalecen reputación, claridad de mensaje y confianza de las audiencias.',
     date: '18/04/2025',
-    image: imagenServicio4,
+    image: imgComunicacionInstitucional,
   },
   {
     id: 'campanas',
@@ -150,7 +150,7 @@ const slides = [
     description:
       'Campañas que conectan propósito, narrativa y canales con objetivos medibles.',
     date: '2/05/2025',
-    image: imagenServicio5,
+    image: imgCampaniasPosicionamiento,
   },
   {
     id: 'estrategias',
@@ -158,7 +158,7 @@ const slides = [
     description:
       'Rutas, decisiones y métricas para modernizar procesos y sostener el impacto.',
     date: '20/05/2025',
-    image: imagenServicio6,
+    image: imgEstrategiasPublicas,
   },
   {
     id: 'financiamiento',
@@ -166,7 +166,7 @@ const slides = [
     description:
       'Estructuración de propuestas, alianzas y fondos orientados a resultados verificables.',
     date: '7/06/2025',
-    image: imagenServicio7,
+    image: imgTallerFinanciamiento,
   },
 ]
 

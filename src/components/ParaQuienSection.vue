@@ -7,44 +7,51 @@
     <div class="para__edge" aria-hidden="true" />
 
     <div class="para__shell">
-      <div class="para__col para__col--meta" data-reveal>
+      <header class="para__header" data-reveal>
         <div class="para__brand">
           <span class="para__brand-pill" aria-hidden="true" />
           <span class="para__brand-text">PARA QUIÉN</span>
         </div>
-        <h2 id="para-intro-heading" class="para__intro">Trabajamos con</h2>
-      </div>
+        <div class="para__headlines">
+          <h2 id="para-intro-heading" class="para__intro">Trabajamos con</h2>
+          <p class="para__deck">
+            Diseñamos propuestas adaptadas a cada tipo de organización, entendiendo sus dinámicas,
+            desafíos y oportunidades.
+          </p>
+        </div>
+      </header>
 
       <ul class="para__audiences" role="list">
-        <li class="para__audience" data-reveal>
-          <span class="para__audience-ix" aria-hidden="true">01</span>
-          <span class="para__audience-label">Empresas</span>
-        </li>
-        <li class="para__audience" data-reveal>
-          <span class="para__audience-ix" aria-hidden="true">02</span>
-          <span class="para__audience-label">Gobiernos</span>
-        </li>
-        <li class="para__audience" data-reveal>
-          <span class="para__audience-ix" aria-hidden="true">03</span>
-          <span class="para__audience-label">Organizaciones</span>
+        <li v-for="item in audiences" :key="item.ix" class="para__audience" data-reveal>
+          <article class="para__audience-card" tabindex="0">
+            <div class="para__audience-media" aria-hidden="true">
+              <img :src="item.image" alt="" class="para__audience-img" loading="lazy" />
+            </div>
+            <div class="para__audience-overlay" aria-hidden="true" />
+            <div class="para__audience-inner">
+              <span class="para__audience-ix" aria-hidden="true">{{ item.ix }}</span>
+              <span class="para__audience-label">{{ item.label }}</span>
+            </div>
+          </article>
         </li>
       </ul>
-
-      <div class="para__col para__col--lead" data-reveal>
-        <span class="para__lead-rule" aria-hidden="true" />
-        <p class="para__lead">
-          Diseñamos propuestas adaptadas a cada tipo de organización, entendiendo sus dinámicas,
-          desafíos y oportunidades.
-        </p>
-      </div>
     </div>
   </section>
 </template>
 
 <script setup>
+import imgEmpresas from '../assets/empresas.jpeg'
+import imgGobiernos from '../assets/gobiernos.jpeg'
+import imgOrganizaciones from '../assets/organizaciones.jpeg'
 import { useScrollReveal } from '../composables/useScrollReveal'
 
 const { sectionRef } = useScrollReveal()
+
+const audiences = [
+  { ix: '01', label: 'Empresas', image: imgEmpresas },
+  { ix: '02', label: 'Gobiernos', image: imgGobiernos },
+  { ix: '03', label: 'Organizaciones', image: imgOrganizaciones },
+]
 </script>
 
 <style scoped>
@@ -127,17 +134,16 @@ const { sectionRef } = useScrollReveal()
   box-sizing: border-box;
   min-width: 0;
   display: grid;
-  grid-template-columns: minmax(0, 10.5rem) minmax(0, 1.7fr) minmax(0, min(22rem, 30vw));
-  gap: clamp(1.75rem, 3.5vw, 3rem);
-  align-items: center;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 4vw, 2.85rem);
+  align-items: start;
 }
 
-.para__col--meta {
+.para__header {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.65rem, 1.5vw, 0.95rem);
-  padding-right: clamp(0.5rem, 2vw, 1rem);
-  border-right: 1px solid color-mix(in srgb, var(--brand-01) 9%, transparent);
+  gap: clamp(1.15rem, 2.5vw, 1.65rem);
+  max-width: min(46rem, 100%);
   min-width: 0;
 }
 
@@ -166,15 +172,33 @@ const { sectionRef } = useScrollReveal()
   white-space: nowrap;
 }
 
+.para__headlines {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.65rem, 1.4vw, 0.95rem);
+}
+
 .para__intro {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: clamp(0.92rem, 1.2vw, 1.08rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.22;
+  font-size: clamp(1.35rem, 2.65vw, 2.05rem);
+  font-weight: var(--font-w-semibold);
+  letter-spacing: -0.028em;
+  line-height: 1.12;
   color: var(--brand-01);
   text-wrap: balance;
+}
+
+.para__deck {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(0.98rem, 1.35vw, 1.125rem);
+  font-weight: var(--font-w-regular);
+  line-height: 1.58;
+  letter-spacing: -0.012em;
+  color: color-mix(in srgb, var(--brand-01) 72%, transparent);
+  max-width: min(38rem, 100%);
+  text-wrap: pretty;
 }
 
 .para__audiences {
@@ -183,155 +207,154 @@ const { sectionRef } = useScrollReveal()
   padding: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: clamp(2rem, 5vw, 3.5rem);
-  row-gap: 0;
-  align-items: start;
+  gap: clamp(0.75rem, 1.65vw, 1.15rem);
+  align-items: stretch;
   min-width: 0;
 }
 
-/* Sin cards: hueco amplio entre columnas para que no se superpongan los títulos */
 .para__audience {
-  position: relative;
   margin: 0;
   min-width: 0;
-  padding: 0.15rem 0 0.35rem;
-  border-right: 1px solid color-mix(in srgb, var(--brand-01) 8%, transparent);
+  display: flex;
 }
 
-.para__audience:last-child {
-  border-right: none;
-}
-
-.para__audience::after {
-  content: '';
+.para__audience-card {
+  flex: 1;
   display: block;
-  height: 2px;
-  margin-top: 0.65rem;
-  max-width: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--brand-07) 0%, var(--brand-01) 100%);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(12px, 1.8vw, 18px);
+  min-height: clamp(240px, 32vw, 380px);
+  border: 1px solid color-mix(in srgb, var(--brand-01) 12%, transparent);
+  box-shadow:
+    0 18px 42px rgba(21, 21, 22, 0.1),
+    0 6px 16px rgba(21, 21, 22, 0.05);
+  outline: none;
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease;
 }
 
-.para__audience:hover::after,
-.para__audience:focus-within::after {
-  transform: scaleX(1);
+.para__audience-media {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.para__audience-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.001);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.para__audience-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    185deg,
+    rgba(21, 21, 22, 0.12) 0%,
+    transparent 38%,
+    rgba(21, 21, 22, 0.38) 68%,
+    rgba(21, 21, 22, 0.88) 100%
+  );
+}
+
+.para__audience-inner {
+  position: relative;
+  z-index: 2;
+  min-height: clamp(240px, 32vw, 380px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: clamp(1rem, 2.2vw, 1.45rem) clamp(1rem, 2.2vw, 1.35rem);
+  gap: 0.4rem;
+  box-sizing: border-box;
+}
+
+.para__audience-card:hover,
+.para__audience-card:focus-visible {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--brand-07) 35%, var(--brand-01) 65%);
+  box-shadow:
+    0 26px 52px rgba(21, 21, 22, 0.14),
+    0 10px 24px rgba(21, 21, 22, 0.07),
+    0 0 0 1px color-mix(in srgb, var(--brand-07) 14%, transparent);
+}
+
+.para__audience-card:hover .para__audience-img,
+.para__audience-card:focus-visible .para__audience-img {
+  transform: scale(1.07);
 }
 
 .para__audience-ix {
   display: block;
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
   font-weight: 200;
   line-height: 0.95;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
-  color: var(--brand-04);
-  margin-bottom: 0.35rem;
-  transition: color 0.25s ease;
+  color: rgba(255, 255, 255, 0.72);
+  transition: color 0.28s ease;
 }
 
-.para__audience:hover .para__audience-ix,
-.para__audience:focus-within .para__audience-ix {
-  color: color-mix(in srgb, var(--brand-05) 65%, var(--brand-04));
+.para__audience-card:hover .para__audience-ix,
+.para__audience-card:focus-visible .para__audience-ix {
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .para__audience-label {
   display: block;
   font-family: var(--font-heading);
-  font-size: clamp(1rem, 1.55vw, 1.35rem);
+  font-size: clamp(1.05rem, 1.65vw, 1.42rem);
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.18;
-  color: var(--brand-01);
+  line-height: 1.15;
+  color: #fff;
   overflow-wrap: break-word;
-  transition: color 0.25s ease;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+  transition: color 0.28s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.para__audience:hover .para__audience-label,
-.para__audience:focus-within .para__audience-label {
-  color: var(--brand-05);
-}
-
-.para__col--lead {
-  display: flex;
-  align-items: flex-start;
-  gap: clamp(1rem, 2vw, 1.35rem);
-  min-width: 0;
-  padding-left: clamp(0.25rem, 1vw, 0.5rem);
-}
-
-.para__lead-rule {
-  flex-shrink: 0;
-  width: 3px;
-  margin-top: 0.35em;
-  min-height: 3.25rem;
-  border-radius: 999px;
-  background: linear-gradient(
-    180deg,
-    var(--brand-07) 0%,
-    color-mix(in srgb, var(--brand-07) 35%, transparent) 55%,
-    color-mix(in srgb, var(--brand-01) 12%, transparent) 100%
-  );
-  box-shadow: 0 0 14px color-mix(in srgb, var(--brand-07) 22%, transparent);
-}
-
-.para__lead {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: clamp(0.9rem, 1.25vw, 1.05rem);
-  font-weight: var(--font-w-regular);
-  line-height: 1.55;
-  letter-spacing: -0.01em;
-  color: color-mix(in srgb, var(--brand-01) 82%, transparent);
+.para__audience-card:hover .para__audience-label,
+.para__audience-card:focus-visible .para__audience-label {
+  color: #fff;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 960px) {
   .para__shell {
-    grid-template-columns: 1fr;
-    gap: clamp(1.35rem, 3vw, 1.75rem);
-    align-items: stretch;
+    gap: clamp(1.65rem, 3.5vw, 2rem);
   }
 
-  .para__col--meta {
-    border-right: none;
-    padding-right: 0;
-    padding-bottom: clamp(0.75rem, 2vw, 1rem);
-    border-bottom: 1px solid color-mix(in srgb, var(--brand-01) 8%, transparent);
+  .para__header {
+    gap: clamp(1rem, 2.2vw, 1.35rem);
+    max-width: none;
+  }
+
+  .para__deck {
+    max-width: none;
   }
 
   .para__audiences {
     grid-template-columns: 1fr;
-    gap: 0;
+    gap: clamp(0.85rem, 2vw, 1rem);
   }
 
-  .para__audience {
-    border-right: none;
-    padding: clamp(0.85rem, 2vh, 1rem) 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--brand-01) 7%, transparent);
+  .para__audience-card {
+    min-height: clamp(200px, 42vw, 260px);
   }
 
-  .para__audience:last-child {
-    border-bottom: none;
-    padding-bottom: 0.15rem;
-  }
-
-  .para__col--lead {
-    padding-left: 0;
-    padding-top: clamp(0.35rem, 1vw, 0.5rem);
-    border-top: 1px solid color-mix(in srgb, var(--brand-01) 6%, transparent);
-  }
-
-  .para__lead-rule {
-    min-height: 2.5rem;
-  }
-}
-
-@media (min-width: 961px) and (max-width: 1100px) {
-  .para__shell {
-    grid-template-columns: minmax(0, 10rem) minmax(0, 1.35fr) minmax(0, 18rem);
+  .para__audience-inner {
+    min-height: clamp(200px, 42vw, 260px);
   }
 }
 
@@ -348,26 +371,13 @@ const { sectionRef } = useScrollReveal()
     background: radial-gradient(circle, rgba(218, 89, 51, 0.12) 0%, transparent 70%);
   }
 
-  .para__col--meta {
-    border-right-color: rgba(21, 21, 22, 0.08);
+  .para__audience-card:hover .para__audience-ix,
+  .para__audience-card:focus-visible .para__audience-ix {
+    color: rgba(255, 255, 255, 0.95);
   }
 
-  .para__audience {
-    border-right-color: rgba(21, 21, 22, 0.08);
-  }
-
-  .para__audience:hover .para__audience-ix,
-  .para__audience:focus-within .para__audience-ix {
-    color: #8a8a8a;
-  }
-
-  .para__lead {
-    color: rgba(21, 21, 22, 0.82);
-  }
-
-  .para__lead-rule {
-    background: linear-gradient(180deg, var(--brand-07) 0%, rgba(218, 89, 51, 0.28) 55%, rgba(21, 21, 22, 0.1) 100%);
-    box-shadow: 0 0 14px rgba(218, 89, 51, 0.14);
+  .para__deck {
+    color: rgba(21, 21, 22, 0.72);
   }
 }
 </style>

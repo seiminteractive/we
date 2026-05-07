@@ -14,18 +14,40 @@
       </header>
 
       <div class="temas__grid" role="list">
-        <article class="temas-card temas-card--text temas-card--a" role="listitem" data-reveal>
-          <h3 class="temas-card__title">Sostenibilidad</h3>
-          <p class="temas-card__desc">
-            Formación y estrategia para integrar sostenibilidad de manera realista y accionable.
-          </p>
+        <article class="temas-card temas-card--media temas-card--a" role="listitem" data-reveal>
+          <img
+            :src="imgSostenibilidad"
+            alt=""
+            class="temas-card__media-img"
+            width="640"
+            height="640"
+            loading="lazy"
+          />
+          <div class="temas-card__media-gradient" aria-hidden="true" />
+          <div class="temas-card__media-caption">
+            <h3 class="temas-card__title temas-card__title--on-media">Sostenibilidad</h3>
+            <p class="temas-card__desc temas-card__desc--on-media">
+              Formación y estrategia para integrar sostenibilidad de manera realista y accionable.
+            </p>
+          </div>
         </article>
 
-        <article class="temas-card temas-card--text temas-card--b" role="listitem" data-reveal>
-          <h3 class="temas-card__title">Inteligencia artificial</h3>
-          <p class="temas-card__desc">
-            Capacitaciones y programas para comprender, adoptar y aplicar IA en organizaciones.
-          </p>
+        <article class="temas-card temas-card--media temas-card--b" role="listitem" data-reveal>
+          <img
+            :src="imgInteligenciaArtificial"
+            alt=""
+            class="temas-card__media-img"
+            width="640"
+            height="640"
+            loading="lazy"
+          />
+          <div class="temas-card__media-gradient" aria-hidden="true" />
+          <div class="temas-card__media-caption">
+            <h3 class="temas-card__title temas-card__title--on-media">Inteligencia artificial</h3>
+            <p class="temas-card__desc temas-card__desc--on-media">
+              Capacitaciones y programas para comprender, adoptar y aplicar IA en organizaciones.
+            </p>
+          </div>
         </article>
 
         <article
@@ -105,18 +127,20 @@
 <script setup>
 import { onUnmounted, ref } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
+import imgSostenibilidad from '../assets/sostenibilidad.jpeg'
+import imgInteligenciaArtificial from '../assets/inteligenciaArtificial.jpeg'
+import imgComunicacionNarrativa from '../assets/comunicacionNarrativa.jpeg'
+import imgInnovacionInstitucional from '../assets/innovacionInstitucional.jpeg'
+import temaEnLosQueTrabajamosDos from '../assets/temaEnLosQueTrabajamosDos.png'
 
 const { sectionRef } = useScrollReveal()
-import imagenQueHacemos from '../assets/imagenQueHacemos.png'
-import temaEnLosQueTrabajamosUno from '../assets/temaEnLosQueTrabajamosUno.png'
-import temaEnLosQueTrabajamosDos from '../assets/temaEnLosQueTrabajamosDos.png'
 
 const compareRef = ref(null)
 const comparePct = ref(48)
 
-const compareBefore = temaEnLosQueTrabajamosUno
+const compareBefore = imgInnovacionInstitucional
 const compareAfter = temaEnLosQueTrabajamosDos
-const wideImage = imagenQueHacemos
+const wideImage = imgComunicacionNarrativa
 
 let activePointer = false
 
@@ -251,15 +275,6 @@ onUnmounted(() => {
   overflow: hidden;
 }
 
-.temas-card--text {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
-  padding: clamp(1.75rem, 3.2vw, 2.5rem);
-  min-height: 0;
-}
-
 .temas-card--a {
   grid-column: 1;
   grid-row: 1;
@@ -268,6 +283,12 @@ onUnmounted(() => {
 .temas-card--b {
   grid-column: 2;
   grid-row: 1;
+}
+
+.temas-card--media.temas-card--a,
+.temas-card--media.temas-card--b {
+  padding: 0;
+  min-height: clamp(240px, 28vw, 320px);
 }
 
 .temas-card--tall {
@@ -319,9 +340,11 @@ onUnmounted(() => {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.65) 0%,
-    rgba(0, 0, 0, 0.08) 45%,
-    transparent 100%
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.72) 18%,
+    rgba(0, 0, 0, 0.42) 38%,
+    rgba(0, 0, 0, 0.12) 62%,
+    transparent 88%
   );
   pointer-events: none;
 }
@@ -338,12 +361,14 @@ onUnmounted(() => {
 
 .temas-card__title--on-media {
   color: #fff;
- margin-bottom: 0.4rem;
+  margin-bottom: 0.4rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 }
 
 .temas-card__desc--on-media {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.94);
   max-width: 26rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .temas-card--media {
