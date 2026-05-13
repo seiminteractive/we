@@ -82,7 +82,7 @@ const year = new Date().getFullYear()
 
 <style scoped>
 .foot {
-  --foot-bg: #f4f4f5;
+  --foot-bg: transparent;
   --foot-ink: #151516;
   --foot-muted: #5c5c5c;
   --foot-line: #e5e5e5;

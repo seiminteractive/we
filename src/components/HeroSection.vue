@@ -1,7 +1,7 @@
 <template>
   <section class="hero" ref="heroRef">
     <div class="hero__bg" aria-hidden="true">
-      <img :src="fondoHero" alt="" class="hero__bg-img" />
+      <video autoplay loop muted playsinline :src="fondoHero" alt="" class="hero__bg-img" />
       <div class="hero__bg-overlay" />
     </div>
 
@@ -80,7 +80,7 @@
 
 <script setup>
 import { nextTick, onMounted, onUnmounted, ref } from 'vue'
-import fondoHero from '../assets/fondoHero.png'
+import fondoHero from '../assets/fondoHeroVideo.mp4'
 import logoBlanco from '../assets/logoBlanco.png'
 import { gsap } from '../lib/gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -249,7 +249,8 @@ onUnmounted(() => {
   overflow-x: clip;
   overflow-y: visible;
   color: #fff;
-  background: transparent;
+  /* Sólido: sin degradado Neat; mismo tono que los overlays del video */
+  background: #0f1612;
   padding: clamp(1.2rem, 2.4vw, 1.85rem) clamp(1.25rem, 6.5vw, 5.5rem)
     clamp(2.25rem, 5vw, 3.5rem);
   display: flex;
@@ -276,11 +277,11 @@ onUnmounted(() => {
 }
 
 .hero__bg {
-  position: fixed;
+  /* Solo cubre el hero; `fixed` dejaba el video bajo todo el scroll */
+  position: absolute;
   inset: 0;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
+  min-height: 100%;
   z-index: 0;
   pointer-events: none;
 }
@@ -298,6 +299,7 @@ onUnmounted(() => {
 .hero__bg-overlay {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: linear-gradient(
       105deg,
       rgba(15, 22, 18, 0.42) 0%,

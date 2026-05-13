@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@firecms/neat": "^0.8.0",
     "gsap": "^3.12.7",
     "lenis": "^1.2.3",
     "primeicons": "^7.0.0",
