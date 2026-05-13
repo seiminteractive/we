@@ -2,8 +2,8 @@
   <section class="hero" ref="heroRef">
     <div class="hero__bg" aria-hidden="true">
       <video autoplay loop muted playsinline :src="fondoHero" alt="" class="hero__bg-img" />
-      <div class="hero__bg-overlay" />
     </div>
+    <div class="hero__bg-overlay" aria-hidden="true" />
 
     <header class="hero__nav">
       <a href="/" class="hero__logo">

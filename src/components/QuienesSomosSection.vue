@@ -83,9 +83,9 @@ const { sectionRef } = useScrollReveal()
 <style scoped>
 .about {
   --bg: var(--section-bg);
-  --ink: #151516;
-  --num: #e0e0e0;
-  --caption: #8a8a8a;
+  --ink: #ffffff;
+  --num: rgba(255, 255, 255, 0.88);
+  --caption: rgba(255, 255, 255, 0.82);
 
   position: relative;
   height: 100vh;
@@ -210,7 +210,7 @@ const { sectionRef } = useScrollReveal()
   width: 1.375rem;
   height: 0.5rem;
   border-radius: 999px;
-  background: var(--ink);
+  background: #fff;
   flex-shrink: 0;
 }
 
@@ -247,7 +247,7 @@ const { sectionRef } = useScrollReveal()
   font-size: 0.8125rem;
   font-weight: var(--font-w-medium);
   line-height: 1.5;
-  color: #151516;
+  color: #fff;
   max-width: 100%;
 }
 
@@ -311,21 +311,22 @@ const { sectionRef } = useScrollReveal()
   width: fit-content;
   max-width: 100%;
   text-decoration: none;
-  color: var(--ink);
+  color: #fff;
   border-radius: 999px;
-  border: 1px solid #d8d8d8;
-  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.08);
   padding: 0.15rem 0.15rem 0.15rem 1.35rem;
   font-family: var(--font-body);
   font-size: 0.625rem;
   font-weight: var(--font-w-medium);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .about__cta:hover {
-  border-color: var(--brand-03);
+  border-color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .about__cta-label {
@@ -339,7 +340,7 @@ const { sectionRef } = useScrollReveal()
   width: 2.35rem;
   height: 2.35rem;
   border-radius: 50%;
-  background: var(--ink);
+  background: rgba(255, 255, 255, 0.22);
   color: #fff;
 }
 
@@ -370,8 +371,8 @@ const { sectionRef } = useScrollReveal()
 
 .about__caption-ico {
   font-size: 0.8rem;
-  color: var(--caption);
-  opacity: 0.75;
+  color: #fff;
+  opacity: 0.85;
   flex-shrink: 0;
   margin-top: 0.06rem;
 }
@@ -382,12 +383,12 @@ const { sectionRef } = useScrollReveal()
   font-size: 0.6875rem;
   font-weight: var(--font-w-light);
   line-height: 1.45;
-  color: var(--caption);
+  color: #fff;
 }
 
 .about__caption-text strong {
   font-weight: var(--font-w-semibold);
-  color: var(--ink);
+  color: #fff;
 }
 
 .about__photo--right {

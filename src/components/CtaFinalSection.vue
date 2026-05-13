@@ -51,9 +51,9 @@ const ctaImage = imagenCta
 <style scoped>
 .fcta {
   --fcta-bg: var(--section-bg);
-  --fcta-ink: #151516;
-  --fcta-muted: #666666;
-  --fcta-line: #e5e5e5;
+  --fcta-ink: #ffffff;
+  --fcta-muted: rgba(255, 255, 255, 0.88);
+  --fcta-line: rgba(255, 255, 255, 0.55);
 
   position: relative;
   background: var(--fcta-bg);
@@ -106,7 +106,7 @@ const ctaImage = imagenCta
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border-radius: clamp(18px, 2.2vw, 26px);
-  border: 1px solid var(--fcta-line);
+  border: none;
   background: #ebebeb;
   box-shadow: 0 16px 40px rgba(21, 21, 22, 0.07);
 }
@@ -155,7 +155,7 @@ const ctaImage = imagenCta
   font-weight: var(--font-w-semibold);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--fcta-ink);
+  color: #fff;
 }
 
 .fcta__title {
@@ -166,7 +166,7 @@ const ctaImage = imagenCta
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.12;
-  color: var(--fcta-ink);
+  color: #fff;
 }
 
 .fcta__text {
@@ -183,10 +183,10 @@ const ctaImage = imagenCta
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  color: var(--fcta-ink);
+  color: #fff;
   border-radius: 8px;
   border: 1px solid var(--fcta-line);
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
   padding: 0.35rem 0.35rem 0.35rem 1.1rem;
   font-family: var(--font-body);
   font-size: 0.8125rem;
@@ -198,8 +198,8 @@ const ctaImage = imagenCta
 }
 
 .fcta__cta:hover {
-  border-color: #cfcfcf;
-  background: #fafafa;
+  border-color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .fcta__cta-label {
@@ -213,7 +213,7 @@ const ctaImage = imagenCta
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 6px;
-  background: var(--fcta-ink);
+  background: rgba(255, 255, 255, 0.22);
   color: #fff;
 }
 

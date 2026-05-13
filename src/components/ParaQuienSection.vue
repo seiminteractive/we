@@ -3,54 +3,143 @@
     id="para-quien"
     ref="sectionRef"
     class="para"
-    :class="{ 'has-expanded': Boolean(activeIx) }"
-    aria-labelledby="para-intro-heading"
+    :class="{ 'has-active': activeIx !== null }"
+    aria-labelledby="para-heading"
   >
+    <div class="para__grain" aria-hidden="true" />
+    <div class="para__fx" aria-hidden="true">
+      <span class="para__fx-orb para__fx-orb--a" />
+      <span class="para__fx-orb para__fx-orb--b" />
+    </div>
+
     <div class="para__shell">
-      <header class="para__intro" data-reveal>
-        <h2 id="para-intro-heading" class="para__intro-title">
-          Trabajamos con organizaciones que buscan liderar el futuro.
-        </h2>
-        <a href="#que-hacemos" class="para__intro-cta">Explorar servicios</a>
+      <header class="para__head">
+        <div class="para__brand" data-reveal>
+          <span class="para__brand-mark" aria-hidden="true" />
+          <span class="para__brand-text">A quiénes acompañamos</span>
+          <span class="para__brand-rule" aria-hidden="true" />
+          <span class="para__brand-sub">3 perfiles · misión compartida</span>
+        </div>
+
+        <div class="para__head-row">
+          <Transition :css="false" mode="out-in" @enter="onHeadEnter" @leave="onHeadLeave">
+            <h2
+              v-if="activeIx === null"
+              key="title"
+              id="para-heading"
+              class="para__title"
+              data-reveal
+            >
+              Organizaciones
+              <em class="para__title-em">que buscan liderar el futuro.</em>
+            </h2>
+            <button
+              v-else
+              key="back"
+              type="button"
+              class="para__back"
+              @click="handleClose"
+              aria-label="Volver a los perfiles"
+            >
+              <span class="para__back-arrow" aria-hidden="true">←</span>
+              <span class="para__back-label">Volver a los perfiles</span>
+            </button>
+          </Transition>
+
+          <a href="#que-hacemos" class="para__cta" data-reveal>
+            <span class="para__cta-label">Explorar servicios</span>
+            <span class="para__cta-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
       </header>
 
-      <ul ref="columnsRef" class="para__columns" role="list">
-        <li v-for="item in audiences" :key="item.ix" class="para__col-wrap" data-reveal>
-          <article
-            class="para__col"
-            tabindex="0"
-            :aria-label="item.label"
-            :class="{
-              'is-active': activeIx === item.ix,
-              'is-inactive': activeIx && activeIx !== item.ix,
-            }"
-            @click="handleColumnClick(item.ix)"
-            @keydown.enter.prevent="handleColumnClick(item.ix)"
-            @keydown.space.prevent="handleColumnClick(item.ix)"
+      <ol class="para__columns" role="list">
+        <li
+          v-for="(item, i) in audiences"
+          :key="item.ix"
+          :ref="(el) => setColRef(el, i)"
+          class="para__col"
+          :class="{
+            'is-active': activeIx === item.ix,
+            'is-faded': activeIx !== null && activeIx !== item.ix,
+          }"
+          tabindex="0"
+          :aria-label="item.label"
+          @click="handleColumnClick(item.ix)"
+          @keydown.enter.prevent="handleColumnClick(item.ix)"
+          @keydown.space.prevent="handleColumnClick(item.ix)"
+        >
+          <div class="para__col-media" :ref="(el) => setMediaRef(el, i)">
+            <img
+              :src="item.image"
+              alt=""
+              class="para__col-img"
+              :ref="(el) => setImgRef(el, i)"
+              loading="lazy"
+              draggable="false"
+            />
+            <div class="para__col-veil" aria-hidden="true" />
+            <div class="para__col-corners" aria-hidden="true">
+              <span class="para__col-corner para__col-corner--tl" />
+              <span class="para__col-corner para__col-corner--tr" />
+              <span class="para__col-corner para__col-corner--bl" />
+              <span class="para__col-corner para__col-corner--br" />
+            </div>
+          </div>
+
+          <div class="para__col-chrome" aria-hidden="true">
+            <span class="para__col-code">{{ item.code }}</span>
+            <span class="para__col-mark">+</span>
+          </div>
+
+          <div class="para__col-foot">
+            <span class="para__col-ix">{{ item.ix }}</span>
+            <h3 class="para__col-label">{{ item.label }}</h3>
+            <span class="para__col-line" aria-hidden="true" />
+            <span class="para__col-tagline">{{ item.tagline }}</span>
+          </div>
+
+          <div
+            class="para__col-panel"
+            :class="{ 'is-visible': activeIx === item.ix }"
+            :ref="(el) => setPanelRef(el, i)"
+            aria-hidden="true"
           >
-            <div class="para__media" aria-hidden="true">
-              <img :src="item.image" alt="" class="para__img" loading="lazy" />
-            </div>
-            <div class="para__veil" aria-hidden="true" />
-
-            <div class="para__bottom">
-              <span class="para__ix">{{ item.ix }}</span>
-              <h3 class="para__title">{{ item.label }}</h3>
-            </div>
-
-            <div class="para__details" :class="{ 'is-visible': activeIx === item.ix }">
-              <p class="para__details-kicker">{{ item.kicker }}</p>
-              <p class="para__details-text">{{ item.detail }}</p>
-            </div>
-          </article>
+            <span class="para__col-kicker">{{ item.tagline }}</span>
+            <h4 class="para__col-headline">
+              <span
+                v-for="(w, wi) in item.headline.split(' ')"
+                :key="wi"
+                class="para__col-word"
+              >
+                <span class="para__col-word-inner">{{ w }}</span>
+              </span>
+            </h4>
+            <p class="para__col-desc">{{ item.detail }}</p>
+            <ul class="para__col-highlights" role="list">
+              <li
+                v-for="(h, hi) in item.highlights"
+                :key="h"
+                class="para__col-highlight"
+              >
+                <span class="para__col-highlight-num">A · {{ pad(hi + 1) }}</span>
+                <span class="para__col-highlight-line" aria-hidden="true" />
+                <span class="para__col-highlight-text">{{ h }}</span>
+              </li>
+            </ul>
+            <a href="#contacto" class="para__col-cta">
+              <span>Trabajar con nosotros</span>
+              <span class="para__col-cta-arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
         </li>
-      </ul>
+      </ol>
     </div>
   </section>
 </template>
 
 <script setup>
-import { nextTick, onBeforeUnmount, ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue'
 import imgEmpresas from '../assets/empresas.jpeg'
 import imgGobiernos from '../assets/gobiernos.jpeg'
 import imgOrganizaciones from '../assets/organizaciones.jpeg'
@@ -58,471 +147,1126 @@ import { useScrollReveal } from '../composables/useScrollReveal'
 import { gsap } from '../lib/gsap'
 
 const { sectionRef } = useScrollReveal()
-const columnsRef = ref(null)
+const colRefs = ref([])
+const mediaRefs = ref([])
+const imgRefs = ref([])
+const panelRefs = ref([])
 const activeIx = ref(null)
-let widthTween
-
-function isMobileViewport() {
-  return window.matchMedia('(max-width: 960px)').matches
-}
-
-function animateColumns(nextActiveIx) {
-  const columnsEl = columnsRef.value
-  if (!columnsEl) return
-
-  const wraps = Array.from(columnsEl.querySelectorAll('.para__col-wrap'))
-  if (!wraps.length) return
-
-  const expandedWidth = 100
-  const collapsedWidth = 0
-  const defaultWidth = 100 / wraps.length
-
-  widthTween?.kill()
-
-  const tl = gsap.timeline({
-    defaults: { duration: 0.62, ease: 'power2.out' },
-  })
-
-  wraps.forEach((wrap, index) => {
-    const ix = audiences[index]?.ix
-    const width = nextActiveIx ? (ix === nextActiveIx ? expandedWidth : collapsedWidth) : defaultWidth
-
-    tl.to(
-      wrap,
-      {
-        width: `${width}%`,
-      },
-      0
-    )
-
-    tl.to(
-      wrap,
-      {
-        opacity: nextActiveIx && ix !== nextActiveIx ? 0 : 1,
-        duration: 0.42,
-      },
-      0
-    )
-  })
-
-  widthTween = tl
-}
-
-function handleColumnClick(ix) {
-  if (isMobileViewport()) return
-  const nextActiveIx = activeIx.value === ix ? null : ix
-  activeIx.value = nextActiveIx
-  nextTick(() => animateColumns(nextActiveIx))
-}
 
 const audiences = [
   {
     ix: '01',
+    code: 'P · 01',
     label: 'Empresas',
-    image: imgEmpresas,
-    kicker: 'Escala y posicionamiento',
+    tagline: 'Escala y posicionamiento',
+    headline: 'Escalar con foco, no con ruido.',
     detail:
-      'Acompanamos a equipos de liderazgo en estrategia, comunicacion e innovacion aplicada para crecer con foco y diferenciacion.',
+      'Acompañamos a equipos de liderazgo en estrategia, comunicación e innovación aplicada para crecer con foco y diferenciación real.',
+    highlights: [
+      'Estrategia de posicionamiento',
+      'Liderazgo y cultura',
+      'Innovación aplicada',
+    ],
+    image: imgEmpresas,
   },
   {
     ix: '02',
+    code: 'P · 02',
     label: 'Gobiernos',
-    image: imgGobiernos,
-    kicker: 'Transformacion publica',
+    tagline: 'Transformación pública',
+    headline: 'Política pública que se ejecuta.',
     detail:
-      'Disenamos soluciones para gestionar complejidad, fortalecer capacidades institucionales y mejorar la implementacion de politicas.',
+      'Diseñamos soluciones para gestionar complejidad, fortalecer capacidades institucionales y mejorar la implementación de políticas públicas.',
+    highlights: [
+      'Gestión de complejidad',
+      'Capacidades institucionales',
+      'Implementación de políticas',
+    ],
+    image: imgGobiernos,
   },
   {
     ix: '03',
+    code: 'P · 03',
     label: 'Organizaciones',
-    image: imgOrganizaciones,
-    kicker: 'Impacto y sostenibilidad',
+    tagline: 'Impacto y sostenibilidad',
+    headline: 'Impacto que perdura en el tiempo.',
     detail:
-      'Impulsamos procesos de evolucion organizacional, articulacion y narrativa para ampliar alcance y generar resultados medibles.',
+      'Impulsamos procesos de evolución organizacional, articulación y narrativa para ampliar alcance y generar resultados medibles.',
+    highlights: [
+      'Evolución organizacional',
+      'Articulación y alianzas',
+      'Narrativa de impacto',
+    ],
+    image: imgOrganizaciones,
   },
 ]
 
+let reduce = false
+let mainTl = null
+let kenBurnsTweens = []
+let ambientTweens = []
+let orbTweens = []
+
+const isMobile = () => window.matchMedia('(max-width: 960px)').matches
+
+function pad(n) {
+  return String(n).padStart(2, '0')
+}
+
+function setColRef(el, i) {
+  if (el) colRefs.value[i] = el
+}
+function setMediaRef(el, i) {
+  if (el) mediaRefs.value[i] = el
+}
+function setImgRef(el, i) {
+  if (el) imgRefs.value[i] = el
+}
+function setPanelRef(el, i) {
+  if (el) panelRefs.value[i] = el
+}
+
+function startKenBurns() {
+  if (reduce) return
+  imgRefs.value.forEach((el, i) => {
+    if (!el) return
+    kenBurnsTweens.push(
+      gsap.fromTo(
+        el,
+        { scale: 1, xPercent: 0, yPercent: 0 },
+        {
+          scale: 1.08,
+          xPercent: i % 2 === 0 ? -2 : 2,
+          yPercent: i === 1 ? -1.5 : 1.5,
+          duration: 16 + i * 1.5,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          delay: i * 0.6,
+        }
+      )
+    )
+  })
+}
+
+function startAmbient() {
+  if (reduce) return
+  colRefs.value.forEach((el, i) => {
+    if (!el) return
+    const line = el.querySelector('.para__col-line')
+    if (line) {
+      ambientTweens.push(
+        gsap.fromTo(
+          line,
+          { scaleX: 0.35 },
+          {
+            scaleX: 1,
+            duration: 4 + i * 0.6,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+            transformOrigin: 'left center',
+            delay: i * 0.4,
+          }
+        )
+      )
+    }
+  })
+}
+
+function startOrbs() {
+  if (reduce) return
+  orbTweens.push(
+    gsap.to('.para__fx-orb--a', {
+      x: '+=80',
+      y: '-=60',
+      duration: 22,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    })
+  )
+  orbTweens.push(
+    gsap.to('.para__fx-orb--b', {
+      x: '-=70',
+      y: '+=80',
+      duration: 28,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    })
+  )
+}
+
+function expandColumn(targetIx) {
+  if (isMobile()) return
+  const wraps = colRefs.value
+  if (!wraps.length) return
+
+  const targetIdx = audiences.findIndex((a) => a.ix === targetIx)
+  const targetEl = wraps[targetIdx]
+  if (!targetEl) return
+
+  mainTl?.kill()
+  mainTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+
+  const corners = targetEl.querySelectorAll('.para__col-corner')
+  const panel = panelRefs.value[targetIdx]
+
+  if (panel) {
+    const kicker = panel.querySelector('.para__col-kicker')
+    const words = panel.querySelectorAll('.para__col-word-inner')
+    const desc = panel.querySelector('.para__col-desc')
+    const highlights = panel.querySelectorAll('.para__col-highlight')
+    const cta = panel.querySelector('.para__col-cta')
+
+    gsap.set(panel, { opacity: 1, pointerEvents: 'auto' })
+    gsap.set(words, { yPercent: 118 })
+    gsap.set([kicker, desc, cta].filter(Boolean), { opacity: 0, y: 22 })
+    gsap.set(highlights, { opacity: 0, x: -18 })
+
+    if (corners.length) {
+      mainTl.fromTo(
+        corners,
+        { opacity: 0, scale: 0.6 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.55,
+          stagger: 0.08,
+          ease: 'back.out(1.6)',
+        },
+        0.6
+      )
+    }
+
+    mainTl.to(kicker, { opacity: 1, y: 0, duration: 0.55 }, 0.7)
+    mainTl.to(
+      words,
+      { yPercent: 0, duration: 1.05, stagger: 0.06, ease: 'expo.out' },
+      0.75
+    )
+    mainTl.to(desc, { opacity: 1, y: 0, duration: 0.7 }, 0.95)
+    mainTl.to(
+      highlights,
+      { opacity: 1, x: 0, duration: 0.7, stagger: 0.08 },
+      1.1
+    )
+    mainTl.to(cta, { opacity: 1, y: 0, duration: 0.6 }, 1.3)
+  }
+}
+
+function collapseColumns() {
+  if (isMobile()) return
+  const wraps = colRefs.value
+  if (!wraps.length) return
+
+  mainTl?.kill()
+  mainTl = gsap.timeline({ defaults: { ease: 'power3.in' } })
+
+  wraps.forEach((el, i) => {
+    if (!el) return
+    const corners = el.querySelectorAll('.para__col-corner')
+    const panel = panelRefs.value[i]
+
+    if (corners.length) {
+      mainTl.to(
+        corners,
+        { opacity: 0, scale: 0.7, duration: 0.3 },
+        0
+      )
+    }
+
+    if (panel) {
+      const kicker = panel.querySelector('.para__col-kicker')
+      const words = panel.querySelectorAll('.para__col-word-inner')
+      const desc = panel.querySelector('.para__col-desc')
+      const highlights = panel.querySelectorAll('.para__col-highlight')
+      const cta = panel.querySelector('.para__col-cta')
+
+      mainTl.to(
+        [kicker, desc, cta].filter(Boolean),
+        { opacity: 0, y: 14, duration: 0.32 },
+        0
+      )
+      mainTl.to(
+        highlights,
+        { opacity: 0, x: -10, duration: 0.32, stagger: 0.03 },
+        0
+      )
+      mainTl.to(
+        words,
+        { yPercent: 118, duration: 0.35, stagger: 0.03 },
+        0
+      )
+      mainTl.set(panel, { opacity: 0, pointerEvents: 'none' }, 0.4)
+    }
+  })
+}
+
+function handleColumnClick(ix) {
+  if (isMobile()) return
+  if (activeIx.value === ix) {
+    handleClose()
+    return
+  }
+  activeIx.value = ix
+  nextTick(() => expandColumn(ix))
+}
+
+function handleClose() {
+  if (activeIx.value === null) return
+  activeIx.value = null
+  nextTick(() => collapseColumns())
+}
+
+function onHeadEnter(el, done) {
+  if (reduce) {
+    done()
+    return
+  }
+  gsap.fromTo(
+    el,
+    { opacity: 0, y: 14, filter: 'blur(8px)' },
+    {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      duration: 0.6,
+      ease: 'power3.out',
+      onComplete: done,
+    }
+  )
+}
+
+function onHeadLeave(el, done) {
+  if (reduce) {
+    done()
+    return
+  }
+  gsap.to(el, {
+    opacity: 0,
+    y: -10,
+    filter: 'blur(6px)',
+    duration: 0.3,
+    ease: 'power3.in',
+    onComplete: done,
+  })
+}
+
+function onEscape(e) {
+  if (e.key === 'Escape' && activeIx.value !== null) {
+    handleClose()
+  }
+}
+
+onMounted(async () => {
+  await nextTick()
+  reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  panelRefs.value.forEach((p) => {
+    if (p) gsap.set(p, { opacity: 0, pointerEvents: 'none' })
+  })
+
+  colRefs.value.forEach((el) => {
+    if (!el) return
+    const corners = el.querySelectorAll('.para__col-corner')
+    gsap.set(corners, { opacity: 0, scale: 0.7 })
+  })
+
+  if (!reduce) {
+    startKenBurns()
+    startAmbient()
+    startOrbs()
+  }
+
+  window.addEventListener('keydown', onEscape)
+})
+
 onBeforeUnmount(() => {
-  widthTween?.kill()
-  widthTween = null
+  mainTl?.kill()
+  mainTl = null
+  kenBurnsTweens.forEach((t) => t.kill())
+  kenBurnsTweens = []
+  ambientTweens.forEach((t) => t.kill())
+  ambientTweens = []
+  orbTweens.forEach((t) => t.kill())
+  orbTweens = []
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', onEscape)
 })
 </script>
 
 <style scoped>
 .para {
+  --para-ink: #ffffff;
+  --para-muted: rgba(255, 255, 255, 0.7);
+  --para-rule: rgba(255, 255, 255, 0.32);
+  --para-line: rgba(255, 255, 255, 0.16);
+  --para-line-soft: rgba(255, 255, 255, 0.08);
+  --para-accent: #21dc99;
+  --para-warm: #efdbb4;
+
   position: relative;
   background: transparent;
-  color: #1a1a1a;
-  overflow: clip;
+  color: var(--para-ink);
+  overflow: visible;
+  isolation: isolate;
   min-height: 100vh;
   min-height: 100dvh;
   height: 100vh;
   height: 100dvh;
 }
 
+/* ---------- FX ---------- */
+.para__fx {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+  inset: -25% -18% -28% -18%;
+}
+
+.para__fx-orb {
+  position: absolute;
+  width: 42rem;
+  height: 42rem;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.22;
+  will-change: transform;
+}
+
+.para__fx-orb--a {
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--para-accent) 70%, transparent),
+    transparent 70%
+  );
+  top: -18%;
+  right: -10%;
+}
+
+.para__fx-orb--b {
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--para-warm) 70%, transparent),
+    transparent 70%
+  );
+  bottom: -18%;
+  left: -10%;
+}
+
+.para__grain {
+  position: absolute;
+  inset: -3.5rem 0;
+  pointer-events: none;
+  overflow: visible;
+  opacity: 0.32;
+  background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+  background-repeat: repeat;
+  background-size: 80px 80px;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+
 .para__shell {
   position: relative;
+  z-index: 2;
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
 }
 
-.para__columns {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  height: 100%;
-  border-top: 1px solid rgba(26, 26, 26, 0.12);
-  border-bottom: 1px solid rgba(26, 26, 26, 0.12);
-}
-
-.para__col-wrap {
-  margin: 0;
-  min-width: 0;
-  width: 33.333%;
-  flex: 0 0 auto;
-  height: 100%;
-  overflow: hidden;
-}
-
-.para__col {
+/* ---------- Header ---------- */
+.para__head {
   position: relative;
-  height: 100%;
-  padding: clamp(1rem, 2vw, 1.3rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: transparent;
-  border-right: 1px solid rgba(26, 26, 26, 0.12);
-  isolation: isolate;
-  outline: none;
-  transition: background-color 0.6s ease;
-  cursor: pointer;
-}
-
-.para__intro {
-  position: absolute;
   z-index: 4;
-  top: clamp(4rem, 11vh, 7rem);
-  right: 2rem;
-  width: min(46vw, 34rem);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: clamp(0.85rem, 1.2vw, 1.15rem);
-  pointer-events: none;
+  padding: clamp(1.8rem, 3.6vw, 2.8rem) clamp(1.5rem, 4vw, 3.5rem) 0;
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.4rem);
 }
 
-.para__intro-title {
-  margin: 0;
-  max-width: min(31rem, 100%);
-  font-family: var(--font-heading);
-  font-size: clamp(1.75rem, 3vw, 2.7rem);
-  line-height: 1.02;
-  letter-spacing: -0.016em;
-  text-transform: uppercase;
-  color: #1c1c1f;
-  text-wrap: balance;
-  transition: color 0.35s ease;
-}
-
-.para.has-expanded .para__intro-cta {
-  color: rgba(24, 24, 24, 0.88);
-  border-color: rgba(24, 24, 24, 0.35);
-  background: transparent;
-}
-
-.para.has-expanded .para__intro-cta:hover {
-  border-color: rgba(24, 24, 24, 0.55);
-  background: rgba(255, 255, 255, 0.45);
-}
-
-.para__intro-cta {
-  pointer-events: auto;
+.para__brand {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-height: clamp(2.1rem, 2.5vw, 2.5rem);
-  padding: 0.22rem clamp(0.9rem, 1.25vw, 1.2rem);
-  border: 1.5px solid rgba(24, 24, 24, 0.35);
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.para__brand-mark {
+  width: 0.45rem;
+  height: 0.45rem;
   border-radius: 999px;
-  text-decoration: none;
+  background: #fff;
+}
+
+.para__brand-text {
   font-family: var(--font-body);
-  font-size: clamp(0.66rem, 0.74vw, 0.75rem);
-  line-height: 1;
-  font-weight: var(--font-w-medium);
-  letter-spacing: 0.035em;
+  font-size: 0.7rem;
+  font-weight: var(--font-w-semibold);
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(24, 24, 24, 0.88);
-  transition: border-color 0.28s ease, background-color 0.28s ease;
+  color: #fff;
 }
 
-.para__intro-cta:hover {
-  border-color: rgba(24, 24, 24, 0.55);
-  background: rgba(255, 255, 255, 0.45);
+.para__brand-rule {
+  width: 2.4rem;
+  height: 1px;
+  background: var(--para-rule);
 }
 
-.para__col-wrap:first-child .para__col {
-  border-left: 1px solid rgba(26, 26, 26, 0.12);
-}
-
-.para__media {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: none;
-  transform: translate3d(0, 0, 0);
-  transform-origin: center center;
-  transition:
-    left 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-    top 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-    width 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-    height 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-    border-radius 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.para__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  opacity: 0;
-  transform: scale(1.06);
-  filter: saturate(0.88) contrast(0.95);
-  transition:
-    opacity 0.68s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.68s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.para__veil {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(15, 15, 15, 0.1) 0%,
-    rgba(15, 15, 15, 0.04) 35%,
-    rgba(15, 15, 15, 0.58) 100%
-  );
-  opacity: 0;
-  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.para__bottom {
-  position: relative;
-  z-index: 2;
-}
-
-.para__bottom {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.para__ix {
+.para__brand-sub {
   font-family: var(--font-body);
-  font-size: clamp(1.55rem, 2.1vw, 1.85rem);
-  line-height: 0.98;
-  font-weight: 200;
-  letter-spacing: -0.03em;
-  color: rgba(26, 26, 26, 0.6);
-  font-variant-numeric: tabular-nums;
-  transition: color 0.35s ease;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.para__head-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: clamp(1rem, 3vw, 2rem);
 }
 
 .para__title {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: clamp(2.05rem, 2.95vw, 2.55rem);
-  line-height: 0.98;
-  letter-spacing: -0.018em;
-  color: #1c1c1c;
-  transition: color 0.35s ease;
+  font-size: clamp(2.1rem, 5.4vw, 3.95rem);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+  font-weight: var(--font-w-extrabold);
+  color: #fff;
+  text-wrap: balance;
+  max-width: 36rem;
 }
 
-.para__col:hover .para__img,
-.para__col:focus-visible .para__img {
-  opacity: 1;
-  transform: scale(1);
-  filter: saturate(1) contrast(1);
+.para__title-em {
+  display: block;
+  font-style: italic;
+  font-weight: var(--font-w-regular);
+  color: rgba(255, 255, 255, 0.58);
 }
 
-.para__col:hover .para__veil,
-.para__col:focus-visible .para__veil {
-  opacity: 1;
-}
-
-.para__col.is-active .para__img,
-.para__col.is-active .para__veil {
-  opacity: 1;
-  transform: scale(1);
-  filter: saturate(1) contrast(1);
-}
-
-.para__col.is-active {
+.para__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
   background: transparent;
+  border: 0;
+  padding: 0.4rem 0;
+  cursor: pointer;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  font-weight: var(--font-w-semibold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
-.para__col.is-active .para__media {
-  left: clamp(1.5rem, 4.5vw, 4.5rem);
-  top: 50%;
-  transform: translate3d(0, -47%, 0);
-  width: min(45vw, 47rem);
-  height: min(68vh, 39rem);
-  border-radius: clamp(14px, 1.8vw, 24px);
-  box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.38),
+.para__back:hover {
+  color: var(--para-accent);
+}
+
+.para__back-arrow {
+  font-size: 1.05rem;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.para__back:hover .para__back-arrow {
+  transform: translateX(-4px);
+}
+
+.para__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.65rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: var(--font-w-semibold);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  transition: border-color 0.35s ease, background 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  align-self: end;
+  white-space: nowrap;
+}
+
+.para__cta:hover {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.para__cta-arrow {
+  font-size: 0.92rem;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.para__cta:hover .para__cta-arrow {
+  transform: translateX(4px);
+}
+
+/* ---------- Columns ---------- */
+.para__columns {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  margin: clamp(1.4rem, 3vw, 2.2rem) clamp(1.5rem, 4vw, 3rem)
+    clamp(1.4rem, 3vw, 2.2rem);
+  border: 1px solid var(--para-line);
+  border-radius: clamp(20px, 2vw, 28px);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.para__col {
+  position: relative;
+  flex: 0 0 auto;
+  width: 33.333%;
+  min-width: 0;
+  height: 100%;
+  cursor: pointer;
+  outline: none;
+  isolation: isolate;
+  overflow: hidden;
+  border-right: 1px solid var(--para-line);
+  background-color: transparent;
+  opacity: 1;
+  transition: width 1.1s cubic-bezier(0.86, 0, 0.07, 1),
+    opacity 0.55s cubic-bezier(0.4, 0, 0.4, 1),
+    background-color 0.5s ease;
+  will-change: width, opacity;
+}
+
+.para.has-active .para__col {
+  width: 0%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.para.has-active .para__col.is-active {
+  width: 100%;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.para__col:last-child {
+  border-right: none;
+}
+
+.para__col:focus-visible {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Media (image background that morphs to poster) */
+.para__col-media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: 0;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition: top 1.05s cubic-bezier(0.86, 0, 0.07, 1) 0.08s,
+    left 1.05s cubic-bezier(0.86, 0, 0.07, 1) 0.08s,
+    right 1.05s cubic-bezier(0.86, 0, 0.07, 1) 0.08s,
+    bottom 1.05s cubic-bezier(0.86, 0, 0.07, 1) 0.08s,
+    border-radius 1.05s cubic-bezier(0.86, 0, 0.07, 1) 0.08s,
+    box-shadow 0.8s ease 0.45s;
+  will-change: top, left, right, bottom, border-radius;
+}
+
+.para__col.is-active .para__col-media {
+  top: clamp(2rem, 5vw, 4rem);
+  left: clamp(2rem, 5vw, 4rem);
+  right: 50%;
+  bottom: clamp(4rem, 6vw, 5rem);
+  border-radius: 20px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38),
     0 10px 30px rgba(0, 0, 0, 0.22);
 }
 
-.para__col.is-active .para__media::after {
-  content: '';
+.para__col-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.42;
+  filter: saturate(0.85) contrast(0.95);
+  transition: opacity 0.6s ease, filter 0.6s ease;
+  will-change: transform, opacity, filter;
+}
+
+.para__col:hover .para__col-img,
+.para__col:focus-visible .para__col-img {
+  opacity: 0.72;
+  filter: saturate(1) contrast(1);
+}
+
+.para__col.is-active .para__col-img {
+  opacity: 1;
+  filter: saturate(1) contrast(1);
+}
+
+.para__col-veil {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(13, 16, 20, 0.12) 0%,
-    rgba(13, 16, 20, 0.06) 42%,
-    rgba(13, 16, 20, 0.32) 100%
+    rgba(8, 10, 14, 0.4) 0%,
+    rgba(8, 10, 14, 0.1) 35%,
+    rgba(8, 10, 14, 0.66) 100%
   );
+  z-index: 1;
   pointer-events: none;
 }
 
-.para__col.is-active .para__img {
-  opacity: 0.92;
-  transform: scale(1.015);
-  filter: saturate(0.92) contrast(0.9);
+.para__col.is-active .para__col-veil {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 10, 14, 0.18) 0%,
+    rgba(8, 10, 14, 0.06) 40%,
+    rgba(8, 10, 14, 0.3) 100%
+  );
 }
 
-.para__col.is-active .para__veil {
-  opacity: 0.04;
-}
-
-.para__col:hover .para__ix,
-.para__col:hover .para__title,
-.para__col:focus-visible .para__ix,
-.para__col:focus-visible .para__title {
-  color: #1c1c1c;
-}
-
-.para__col.is-active .para__ix,
-.para__col.is-active .para__title {
-  color: #1c1c1c;
-}
-
-.para__details {
+/* Corners */
+.para__col-corners {
   position: absolute;
-  z-index: 2;
-  right: clamp(1.2rem, 2.2vw, 2.6rem);
-  bottom: clamp(1.4rem, 2.6vw, 2.8rem);
-  width: min(30rem, 44vw);
-  opacity: 0;
-  transform: translateY(10px);
+  inset: clamp(0.85rem, 1.4vw, 1.2rem);
   pointer-events: none;
-  transition:
-    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 2;
 }
 
-.para__details.is-visible {
+.para__col-corner {
+  position: absolute;
+  width: clamp(1.1rem, 1.6vw, 1.5rem);
+  height: clamp(1.1rem, 1.6vw, 1.5rem);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.para__col-corner--tl {
+  top: 0;
+  left: 0;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+
+.para__col-corner--tr {
+  top: 0;
+  right: 0;
+  border-top: 1px solid;
+  border-right: 1px solid;
+}
+
+.para__col-corner--bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+}
+
+.para__col-corner--br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+/* Chrome (top of column) */
+.para__col-chrome {
+  position: absolute;
+  top: clamp(1rem, 2vw, 1.4rem);
+  left: clamp(1.1rem, 2.4vw, 1.6rem);
+  right: clamp(1.1rem, 2.4vw, 1.6rem);
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.para__col-code {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: var(--font-w-semibold);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.84);
+  padding: 0.32rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.para__col:hover .para__col-code,
+.para__col.is-active .para__col-code {
   opacity: 1;
   transform: translateY(0);
 }
 
-.para__col.is-active .para__details.is-visible {
-  padding: clamp(0.9rem, 1.6vw, 1.35rem);
-  border-radius: 16px;
+.para__col-mark {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.85);
+  width: 2.1rem;
+  height: 2.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(9, 11, 14, 0.34);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: scale(0.6) rotate(-45deg);
+  transition: opacity 0.5s ease,
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.4s ease, border-color 0.4s ease;
 }
 
-.para__details-kicker {
-  margin: 0 0 0.35rem;
+.para__col:hover .para__col-mark {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.para__col.is-active .para__col-mark {
+  opacity: 1;
+  transform: scale(1) rotate(45deg);
+  color: var(--para-accent);
+  border-color: color-mix(in srgb, var(--para-accent) 55%, transparent);
+}
+
+/* Foot (idle column content) */
+.para__col-foot {
+  position: absolute;
+  left: clamp(1.2rem, 2.4vw, 1.8rem);
+  right: clamp(1.2rem, 2.4vw, 1.8rem);
+  bottom: clamp(1.4rem, 2.8vw, 2rem);
+  z-index: 3;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.para__col-ix {
   font-family: var(--font-body);
-  font-size: clamp(0.78rem, 0.88vw, 0.95rem);
-  letter-spacing: 0.04em;
+  font-size: clamp(0.7rem, 0.85vw, 0.78rem);
+  font-weight: var(--font-w-semibold);
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(24, 24, 24, 0.9);
+  color: rgba(255, 255, 255, 0.55);
+  transition: color 0.4s ease;
 }
 
-.para__details-text {
+.para__col:hover .para__col-ix {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.para__col-label {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  font-weight: var(--font-w-extrabold);
+  color: #fff;
+}
+
+.para__col-line {
+  display: block;
+  width: 2.4rem;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.75) 0%,
+    transparent 100%
+  );
+  margin: 0.2rem 0 0.1rem;
+  transform-origin: left center;
+  will-change: transform;
+  transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.para__col:hover .para__col-line,
+.para__col.is-active .para__col-line {
+  width: 4.2rem;
+}
+
+.para__col-tagline {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: var(--font-w-semibold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.4, 1),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.para__col.is-active .para__col-tagline {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+/* Active panel */
+.para__col-panel {
+  position: absolute;
+  top: 50%;
+  right: clamp(2rem, 5vw, 5rem);
+  width: min(36rem, 44%);
+  transform: translateY(-50%);
+  z-index: 4;
+  display: grid;
+  gap: clamp(0.85rem, 1.6vw, 1.2rem);
+  pointer-events: none;
+}
+
+.para__col-kicker {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 0.66rem;
+  font-weight: var(--font-w-semibold);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+  padding: 0.4rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  justify-self: start;
+  will-change: opacity, transform;
+}
+
+.para__col-headline {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.7rem, 3.2vw, 2.55rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: var(--font-w-extrabold);
+  color: #fff;
+  text-wrap: balance;
+}
+
+.para__col-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-right: 0.2em;
+  line-height: 1.08;
+  padding-bottom: 0.05em;
+}
+
+.para__col-word-inner {
+  display: inline-block;
+  will-change: transform;
+}
+
+.para__col-desc {
   margin: 0;
   font-family: var(--font-body);
-  font-size: clamp(0.95rem, 1.15vw, 1.2rem);
-  line-height: 1.5;
-  color: rgba(24, 24, 24, 0.9);
-  max-width: 40ch;
+  font-size: clamp(0.92rem, 1.1vw, 1.05rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 34rem;
+  will-change: opacity, transform;
 }
 
+.para__col-highlights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.para__col-highlight {
+  display: grid;
+  grid-template-columns: 3.4rem 2rem 1fr;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--para-line-soft);
+  will-change: opacity, transform;
+}
+
+.para__col-highlight:last-child {
+  border-bottom: 1px solid var(--para-line-soft);
+}
+
+.para__col-highlight-num {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.para__col-highlight-line {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    transparent 100%
+  );
+}
+
+.para__col-highlight-text {
+  font-family: var(--font-body);
+  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
+  color: #fff;
+  line-height: 1.4;
+}
+
+.para__col-cta {
+  pointer-events: auto;
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.78rem 1.3rem;
+  margin-top: 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--para-accent) 55%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--para-accent) 10%, transparent);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: var(--font-w-semibold);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  transition: border-color 0.35s ease, background 0.35s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.para__col-cta:hover {
+  border-color: var(--para-accent);
+  background: color-mix(in srgb, var(--para-accent) 18%, transparent);
+}
+
+.para__col-cta-arrow {
+  font-size: 0.92rem;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.para__col-cta:hover .para__col-cta-arrow {
+  transform: translateX(4px);
+}
+
+.para__col.is-faded {
+  pointer-events: none;
+}
+
+/* ---------- Responsive ---------- */
 @media (max-width: 960px) {
   .para {
-    min-height: auto;
     height: auto;
+    min-height: auto;
   }
 
   .para__shell {
-    padding: var(--section-pad-y) var(--section-pad-x);
+    height: auto;
+  }
+
+  .para__head {
+    padding: var(--section-pad-y) var(--section-pad-x) 0;
+  }
+
+  .para__head-row {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .para__cta {
+    justify-self: start;
   }
 
   .para__columns {
     flex-direction: column;
     height: auto;
-  }
-
-  .para__col-wrap {
-    width: 100% !important;
-    opacity: 1 !important;
+    margin: clamp(1.5rem, 4vw, 2rem) 0 0;
+    border-bottom: none;
   }
 
   .para__col {
-    min-height: clamp(18rem, 54vw, 25rem);
-    border-left: 1px solid rgba(26, 26, 26, 0.12);
+    width: 100% !important;
+    flex: 0 0 auto;
+    border-right: none;
+    border-bottom: 1px solid var(--para-line);
     height: auto;
+    min-height: clamp(20rem, 60vw, 28rem);
+    cursor: default;
   }
 
-  .para__intro {
+  .para__col-foot {
+    bottom: clamp(1.3rem, 4vw, 1.8rem);
+  }
+
+  .para__col-panel {
     position: relative;
     top: auto;
-    left: auto;
-    width: 100%;
-    margin-bottom: clamp(1rem, 3.5vw, 1.75rem);
-    pointer-events: auto;
-  }
-
-  .para__intro-title {
-    max-width: none;
-    font-size: clamp(1.7rem, 6.8vw, 2.45rem);
-  }
-
-  .para__details {
-    position: relative;
     right: auto;
-    bottom: auto;
     width: 100%;
-    margin-top: 1rem;
-    opacity: 1;
     transform: none;
+    padding: clamp(1.4rem, 4vw, 2rem) clamp(var(--section-pad-x), 5vw, 2.5rem);
+    pointer-events: auto;
+    opacity: 1 !important;
+    background: rgba(0, 0, 0, 0.18);
+    border-top: 1px solid var(--para-line);
   }
+}
 
-  .para__details-kicker,
-  .para__details-text {
-    color: rgba(24, 24, 24, 0.88);
+@media (prefers-reduced-motion: reduce) {
+  .para__col-img,
+  .para__fx-orb,
+  .para__col-line,
+  .para__col-corner,
+  .para__col-code,
+  .para__col-mark,
+  .para__col-word-inner,
+  .para__col-kicker,
+  .para__col-desc,
+  .para__col-highlight,
+  .para__col-cta {
+    transform: none !important;
+    opacity: 1 !important;
+    animation: none !important;
   }
 }
 </style>

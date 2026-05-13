@@ -49,9 +49,9 @@ body,
   min-height: 100%;
 }
 
-/* Fallback coherente con Neat (backgroundColor del gradiente) si el canvas tarda */
+/* Fallback coherente con el fondo cinemático mientras inicializa el canvas */
 html {
-  background-color: #003fff;
+  background-color: #050807;
 }
 
 #app {

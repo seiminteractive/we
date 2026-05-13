@@ -1,7 +1,5 @@
 <template>
   <section id="servicios" ref="sectionRef" class="svc" aria-labelledby="svc-heading">
-    <div class="svc__grain" aria-hidden="true" />
-
     <div class="svc__shell">
       <div class="svc__left">
         <div class="svc__left-top" data-reveal>
@@ -226,26 +224,14 @@ onUnmounted(() => {
 
 <style scoped>
 .svc {
-  --svc-bg: var(--section-bg);
-  --svc-ink: #000000;
+  --svc-ink: #ffffff;
 
   position: relative;
-  background: var(--svc-bg);
+  background: transparent;
   color: var(--svc-ink);
   box-sizing: border-box;
-  overflow-x: clip;
+  overflow: visible;
   min-height: min(100vh, 100dvh);
-}
-
-.svc__grain {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.35;
-  background-image: url('https://grainy-gradients.vercel.app/noise.svg');
-  background-repeat: repeat;
-  background-size: 80px 80px;
-  mix-blend-mode: multiply;
 }
 
 .svc__shell {
@@ -280,7 +266,8 @@ onUnmounted(() => {
   align-self: flex-start;
   padding: 0.35rem 0.85rem 0.35rem 0.55rem;
   border-radius: 999px;
-  background: var(--svc-ink);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   color: #fff;
   margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
 }
@@ -306,7 +293,7 @@ onUnmounted(() => {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.08;
-  color: var(--svc-ink);
+  color: #fff;
 }
 
 .svc__body {
@@ -316,31 +303,31 @@ onUnmounted(() => {
   font-size: clamp(0.9375rem, 1.35vw, 1.0625rem);
   font-weight: var(--font-w-regular);
   line-height: 1.55;
-  color: var(--svc-ink);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .svc__cta {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  color: var(--svc-ink);
+  color: #fff;
   border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.08);
   padding: 0.2rem 0.2rem 0.2rem 1.35rem;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
   font-family: var(--font-body);
   font-size: 0.8125rem;
   font-weight: var(--font-w-medium);
   letter-spacing: 0.02em;
   transition:
     border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    background-color 0.2s ease;
 }
 
 .svc__cta:hover {
-  border-color: rgba(0, 0, 0, 0.2);
-  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.08);
+  border-color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .svc__cta-label {
@@ -354,7 +341,7 @@ onUnmounted(() => {
   width: 2.4rem;
   height: 2.4rem;
   border-radius: 50%;
-  background: var(--svc-ink);
+  background: rgba(255, 255, 255, 0.22);
   color: #fff;
 }
 
