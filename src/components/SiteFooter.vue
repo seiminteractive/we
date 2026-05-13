@@ -83,16 +83,16 @@ const year = new Date().getFullYear()
 <style scoped>
 .foot {
   --foot-bg: transparent;
-  --foot-ink: #ffffff;
-  --foot-muted: rgba(255, 255, 255, 0.86);
-  --foot-line: rgba(255, 255, 255, 0.35);
+  --foot-ink: #000000;
+  --foot-muted: #000000;
+  --foot-line: #000000;
 
   position: relative;
   background: var(--foot-bg);
   color: var(--foot-muted);
   box-sizing: border-box;
   overflow-x: clip;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid #000000;
 }
 
 .foot__grain {
@@ -145,6 +145,7 @@ const year = new Date().getFullYear()
   height: clamp(1.35rem, 3vw, 1.6rem);
   width: auto;
   opacity: 0.98;
+  filter: brightness(0) saturate(100%);
 }
 
 .foot__tagline {
@@ -164,7 +165,7 @@ const year = new Date().getFullYear()
   font-weight: var(--font-w-semibold);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #fff;
+  color: #000000;
 }
 
 .foot__list {
@@ -187,7 +188,7 @@ const year = new Date().getFullYear()
 }
 
 .foot__link:hover {
-  color: #fff;
+  color: #000000;
 }
 
 .foot__col--contact .foot__mail {
@@ -196,7 +197,7 @@ const year = new Date().getFullYear()
   font-family: var(--font-body);
   font-size: 0.875rem;
   font-weight: var(--font-w-semibold);
-  color: #fff;
+  color: #000000;
   text-decoration: none;
   letter-spacing: 0.01em;
   border-bottom: 1px solid transparent;
@@ -204,7 +205,7 @@ const year = new Date().getFullYear()
 }
 
 .foot__col--contact .foot__mail:hover {
-  border-bottom-color: rgba(255, 255, 255, 0.55);
+  border-bottom-color: #000000;
 }
 
 .foot__hint {
@@ -213,7 +214,7 @@ const year = new Date().getFullYear()
   font-size: 0.75rem;
   font-weight: var(--font-w-regular);
   line-height: 1.45;
-  color: rgba(255, 255, 255, 0.78);
+  color: #000000;
   max-width: 16rem;
 }
 
@@ -232,7 +233,7 @@ const year = new Date().getFullYear()
   border-radius: 8px;
   border: 1px solid var(--foot-line);
   background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  color: #000000;
   text-decoration: none;
   transition:
     border-color 0.2s ease,
@@ -240,7 +241,7 @@ const year = new Date().getFullYear()
 }
 
 .foot__social-btn:hover {
-  border-color: rgba(255, 255, 255, 0.55);
+  border-color: #000000;
   background: rgba(255, 255, 255, 0.16);
 }
 
@@ -268,7 +269,7 @@ const year = new Date().getFullYear()
   font-size: 0.75rem;
   font-weight: var(--font-w-regular);
   line-height: 1.45;
-  color: rgba(255, 255, 255, 0.68);
+  color: #000000;
 }
 
 .foot__legal-links {
@@ -279,7 +280,7 @@ const year = new Date().getFullYear()
 }
 
 .foot__dot {
-  color: rgba(255, 255, 255, 0.45);
+  color: #000000;
   user-select: none;
 }
 
@@ -287,13 +288,13 @@ const year = new Date().getFullYear()
   font-family: var(--font-body);
   font-size: 0.75rem;
   font-weight: var(--font-w-medium);
-  color: rgba(255, 255, 255, 0.68);
+  color: #000000;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .foot__legal-link:hover {
-  color: #fff;
+  color: #000000;
 }
 
 @media (max-width: 960px) {

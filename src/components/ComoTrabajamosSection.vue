@@ -474,10 +474,10 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .cw {
-  --cw-ink: #ffffff;
-  --cw-muted: rgba(255, 255, 255, 0.66);
-  --cw-line: rgba(255, 255, 255, 0.18);
-  --cw-line-soft: rgba(255, 255, 255, 0.08);
+  --cw-ink: #1c1a18;
+  --cw-muted: rgba(28, 26, 24, 0.60);
+  --cw-line: rgba(28, 26, 24, 0.12);
+  --cw-line-soft: rgba(28, 26, 24, 0.07);
   --cw-accent: #21dc99;
   --cw-warm: #efdbb4;
   --cw-glow: rgba(33, 220, 153, 0.55);
@@ -569,10 +569,10 @@ onBeforeUnmount(() => {
 }
 
 .cw__brand-text {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
   font-weight: var(--font-w-semibold);
-  letter-spacing: 0.24em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
@@ -583,8 +583,9 @@ onBeforeUnmount(() => {
 }
 
 .cw__brand-sub {
-  font-family: var(--font-body);
-  font-size: 0.68rem;
+  font-family: var(--font-heading);
+  font-size: 0.64rem;
+  font-weight: var(--font-w-regular);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--cw-ink) 55%, transparent);
@@ -593,16 +594,16 @@ onBeforeUnmount(() => {
 .cw__title {
   margin: 0 0 clamp(1.4rem, 2.4vw, 2rem);
   font-family: var(--font-heading);
-  font-size: clamp(2.7rem, 8.4vw, 6.2rem);
-  line-height: 1.04;
-  letter-spacing: 0;
-  font-weight: var(--font-w-extrabold);
+  font-size: clamp(1.85rem, 4.2vw, 3rem);
+  line-height: 1.12;
+  font-weight: 700;
   text-wrap: balance;
+  font-synthesis: none;
 }
 
 .cw__title-em {
   display: block;
-  font-style: italic;
+  font-style: normal;
   font-weight: var(--font-w-regular);
   color: color-mix(in srgb, var(--cw-ink) 48%, transparent);
 }
@@ -657,7 +658,7 @@ onBeforeUnmount(() => {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background: #fff;
+  background: var(--cw-accent);
   border: 1px solid rgba(33, 220, 153, 0.55);
   box-shadow: 0 0 6px rgba(33, 220, 153, 0.4);
   transform: translate(-50%, -50%);
@@ -673,10 +674,10 @@ onBeforeUnmount(() => {
   font-family: var(--font-heading);
   font-size: clamp(1.7rem, 2.6vw, 2.25rem);
   font-weight: var(--font-w-bold);
-  letter-spacing: 0;
   line-height: 1.05;
   display: inline-block;
   will-change: transform, opacity, filter;
+  font-synthesis: none;
 }
 
 .cw__rail-of,
@@ -719,14 +720,13 @@ onBeforeUnmount(() => {
   font-size: clamp(11rem, 28vw, 26rem);
   font-weight: var(--font-w-extrabold);
   line-height: 0.92;
-  letter-spacing: 0;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.10);
+  color: rgba(28, 26, 24, 0.06);
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
   z-index: 0;
   will-change: transform;
+  font-synthesis: none;
 }
 
 /* ----- Glyph column ----- */
@@ -742,14 +742,14 @@ onBeforeUnmount(() => {
   max-width: 12rem;
   height: auto;
   aspect-ratio: 1 / 1;
-  stroke: #f5fffa;
+  stroke: rgba(18, 20, 18, 0.82);
   stroke-width: 1.4;
   fill: none;
   overflow: visible;
   will-change: transform, filter;
   filter:
-    drop-shadow(0 0 3px var(--cw-glow))
-    drop-shadow(0 0 11px var(--cw-glow-soft));
+    drop-shadow(0 0 6px var(--cw-glow))
+    drop-shadow(0 0 18px var(--cw-glow-soft));
   animation: cwEmblemBreathe 6s ease-in-out infinite;
 }
 
@@ -761,54 +761,54 @@ onBeforeUnmount(() => {
 /* Variación cromática sutil para no caer en monotonía: cada paso respira en un matiz distinto */
 .cw__step--propuesta .cw__step-emblem {
   filter:
-    drop-shadow(0 0 3px rgba(239, 219, 180, 0.5))
-    drop-shadow(0 0 12px rgba(239, 219, 180, 0.2));
+    drop-shadow(0 0 6px rgba(239, 219, 180, 0.80))
+    drop-shadow(0 0 18px rgba(239, 219, 180, 0.45));
   animation-name: cwEmblemBreatheWarm;
 }
 
 .cw__step--acompanamos .cw__step-emblem {
   filter:
-    drop-shadow(0 0 3px rgba(120, 220, 255, 0.5))
-    drop-shadow(0 0 12px rgba(120, 220, 255, 0.2));
+    drop-shadow(0 0 6px rgba(120, 220, 255, 0.80))
+    drop-shadow(0 0 18px rgba(120, 220, 255, 0.45));
   animation-name: cwEmblemBreatheCool;
 }
 
 @keyframes cwEmblemBreathe {
   0%, 100% {
     filter:
-      drop-shadow(0 0 3px rgba(33, 220, 153, 0.55))
-      drop-shadow(0 0 11px rgba(33, 220, 153, 0.22));
+      drop-shadow(0 0 5px rgba(33, 220, 153, 0.70))
+      drop-shadow(0 0 16px rgba(33, 220, 153, 0.38));
   }
   50% {
     filter:
-      drop-shadow(0 0 5px rgba(33, 220, 153, 0.78))
-      drop-shadow(0 0 18px rgba(33, 220, 153, 0.34));
+      drop-shadow(0 0 8px rgba(33, 220, 153, 0.90))
+      drop-shadow(0 0 28px rgba(33, 220, 153, 0.55));
   }
 }
 
 @keyframes cwEmblemBreatheWarm {
   0%, 100% {
     filter:
-      drop-shadow(0 0 3px rgba(239, 219, 180, 0.5))
-      drop-shadow(0 0 12px rgba(239, 219, 180, 0.2));
+      drop-shadow(0 0 5px rgba(239, 219, 180, 0.72))
+      drop-shadow(0 0 16px rgba(239, 219, 180, 0.38));
   }
   50% {
     filter:
-      drop-shadow(0 0 5px rgba(239, 219, 180, 0.7))
-      drop-shadow(0 0 18px rgba(239, 219, 180, 0.3));
+      drop-shadow(0 0 8px rgba(239, 219, 180, 0.90))
+      drop-shadow(0 0 28px rgba(239, 219, 180, 0.52));
   }
 }
 
 @keyframes cwEmblemBreatheCool {
   0%, 100% {
     filter:
-      drop-shadow(0 0 3px rgba(120, 220, 255, 0.5))
-      drop-shadow(0 0 12px rgba(120, 220, 255, 0.2));
+      drop-shadow(0 0 5px rgba(120, 220, 255, 0.72))
+      drop-shadow(0 0 16px rgba(120, 220, 255, 0.38));
   }
   50% {
     filter:
-      drop-shadow(0 0 5px rgba(120, 220, 255, 0.7))
-      drop-shadow(0 0 18px rgba(120, 220, 255, 0.3));
+      drop-shadow(0 0 8px rgba(120, 220, 255, 0.90))
+      drop-shadow(0 0 28px rgba(120, 220, 255, 0.52));
   }
 }
 
@@ -855,11 +855,11 @@ onBeforeUnmount(() => {
 .cw__step-title {
   margin: 0 0 clamp(1.1rem, 2vw, 1.5rem);
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 4.6vw, 3.6rem);
-  line-height: 1.12;
-  letter-spacing: 0;
-  font-weight: var(--font-w-extrabold);
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  line-height: 1.18;
+  font-weight: 700;
   text-wrap: balance;
+  font-synthesis: none;
 }
 
 .cw__word {
@@ -926,7 +926,7 @@ onBeforeUnmount(() => {
   width: 100%;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.45) 0%,
+    rgba(28, 26, 24, 0.30) 0%,
     transparent 100%
   );
   transform-origin: left center;
@@ -950,6 +950,7 @@ onBeforeUnmount(() => {
   font-weight: var(--font-w-regular);
   color: color-mix(in srgb, var(--cw-ink) 40%, transparent);
   transition: transform 0.35s ease, color 0.35s ease;
+  font-synthesis: none;
 }
 
 .cw__chip:hover .cw__chip-mark {
@@ -984,10 +985,10 @@ onBeforeUnmount(() => {
   font-family: var(--font-heading);
   font-size: clamp(1.9rem, 3.6vw, 2.8rem);
   font-weight: var(--font-w-extrabold);
-  letter-spacing: 0;
   line-height: 1.05;
   align-self: center;
   color: var(--cw-ink);
+  font-synthesis: none;
 }
 
 .cw__metric-bar {
@@ -1031,11 +1032,11 @@ onBeforeUnmount(() => {
   font-family: var(--font-heading);
   font-size: clamp(1.35rem, 2.6vw, 2.05rem);
   line-height: 1.3;
-  letter-spacing: 0;
   color: var(--cw-ink);
   font-weight: var(--font-w-regular);
-  font-style: italic;
+  font-style: normal;
   max-width: 42rem;
+  font-synthesis: none;
 }
 
 /* ---------- Responsive ---------- */

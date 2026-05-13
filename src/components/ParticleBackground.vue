@@ -8,38 +8,38 @@ import { onMounted, onUnmounted, ref } from 'vue'
 const canvasRef = ref(null)
 
 const CONFIG = {
-  particleCount: 320,
+  particleCount: 580,
 
   depthLayers: [0.22, 0.55, 1.0],
   depthRatios: [0.48, 0.32, 0.20],
 
   particleColors: [
-    [0.92, 0.98, 1.00],
-    [0.82, 0.96, 0.90],
-    [0.32, 0.88, 0.62],
-    [1.00, 0.95, 0.82],
+    [0.13, 0.86, 0.60],
+    [0.06, 0.55, 0.38],
+    [0.04, 0.42, 0.26],
+    [0.78, 0.58, 0.10],
   ],
-  particleColorWeights: [0.50, 0.32, 0.08, 0.10],
+  particleColorWeights: [0.55, 0.25, 0.14, 0.06],
 
-  baseSize: 1.8,
+  baseSize: 2.2,
   pixelRatioCap: 2,
 
   driftSpeed: 16,
   flowAmplitude: 28,
 
-  revealRadius: 300,
+  revealRadius: 380,
   mouseFollow: 0.11,
   parallaxBase: 6,
   parallaxDepth: 28,
 
-  baseColor: [0.12, 0.155, 0.135],
-  ambientColor: [0.32, 0.78, 0.58],
-  ambientIntensity: 0.14,
-  lightColor: [0.42, 0.92, 0.74],
-  lightIntensity: 0.18,
-  lightRadius: 340,
-  vignetteStrength: 0.10,
-  grainStrength: 0.018,
+  baseColor: [0.97, 0.97, 0.97],
+  ambientColor: [0.68, 0.92, 0.76],
+  ambientIntensity: 0.03,
+  lightColor: [0.13, 0.86, 0.60],
+  lightIntensity: 0.05,
+  lightRadius: 380,
+  vignetteStrength: 0.18,
+  grainStrength: 0.014,
 }
 
 const VERT_QUAD = `
@@ -134,16 +134,17 @@ void main() {
   gl_Position = vec4(clip, 0.0, 1.0);
 
   float depthSize = mix(0.55, 1.75, aSeed.z);
-  gl_PointSize = aSize * depthSize * uPixelRatio;
+  float sizeBreath = 0.55 + 0.45 * sin(uTime * 0.38 + aSeed.x * 8.73);
+  gl_PointSize = aSize * depthSize * uPixelRatio * sizeBreath;
 
-  float twinkle = 0.62 + 0.38 * sin(uTime * 0.55 + aSeed.w);
+  float twinkle = 0.68 + 0.32 * sin(uTime * 0.58 + aSeed.w * 6.28);
 
   float md = distance(pos, uMouse);
   float reveal = 1.0 - smoothstep(0.0, uRevealRadius, md);
   reveal = pow(reveal, 1.7) * uMouseActive;
 
-  float base = mix(0.38, 0.72, aSeed.z);
-  vAlpha = (base + reveal * 0.40) * twinkle;
+  float base = mix(0.55, 0.88, aSeed.z);
+  vAlpha = (base + reveal * 0.28) * twinkle;
   vColor = aColor;
 }`
 
@@ -157,11 +158,12 @@ void main() {
   float d2 = dot(uv, uv);
   if (d2 > 0.25) discard;
 
-  float core = exp(-d2 * 28.0);
-  float halo = exp(-d2 * 6.5) * 0.45;
-  float alpha = (core + halo) * vAlpha;
+  float core = exp(-d2 * 24.0);
+  float halo = exp(-d2 * 5.5) * 0.62;
+  float glow = exp(-d2 * 2.6) * 0.28;
+  float alpha = (core + halo + glow) * vAlpha;
 
-  gl_FragColor = vec4(vColor * alpha, alpha);
+  gl_FragColor = vec4(vColor, alpha);
 }`
 
 let gl = null
@@ -351,7 +353,7 @@ function render(now) {
   gl.drawArrays(gl.TRIANGLES, 0, 6)
 
   gl.enable(gl.BLEND)
-  gl.blendFunc(gl.ONE, gl.ONE)
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
   gl.useProgram(particleProgram)
   gl.bindBuffer(gl.ARRAY_BUFFER, particleBuffer)
 

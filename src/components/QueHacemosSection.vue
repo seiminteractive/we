@@ -344,13 +344,13 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .qh {
-  --qh-ink: #ffffff;
-  --qh-muted: rgba(255, 255, 255, 0.66);
-  --qh-faint: rgba(255, 255, 255, 0.42);
-  --qh-line: rgba(255, 255, 255, 0.16);
-  --qh-line-soft: rgba(255, 255, 255, 0.08);
+  --qh-ink: #000000;
+  --qh-muted: #000000;
+  --qh-faint: #000000;
+  --qh-line: #000000;
+  --qh-line-soft: #000000;
   --qh-accent: #21dc99;
-  --qh-warm: #efdbb4;
+  --qh-warm: #a78bfa;
   --qh-cool: #8cdcff;
 
   position: relative;
@@ -418,7 +418,7 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 0.75rem;
   margin-bottom: clamp(1.25rem, 2.4vw, 1.85rem);
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
 }
 
 .qh__eye-pulse {
@@ -456,9 +456,10 @@ onBeforeUnmount(() => {
 }
 
 .qh__eye-text {
-  font-size: 0.7rem;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
   font-weight: var(--font-w-semibold);
-  letter-spacing: 0.24em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
@@ -469,8 +470,10 @@ onBeforeUnmount(() => {
 }
 
 .qh__eye-sub {
-  font-size: 0.66rem;
-  letter-spacing: 0.2em;
+  font-family: var(--font-heading);
+  font-size: 0.64rem;
+  font-weight: var(--font-w-regular);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--qh-faint);
 }
@@ -489,16 +492,16 @@ onBeforeUnmount(() => {
 .qh__title {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: clamp(1.65rem, 3.4vw, 2.65rem);
-  line-height: 1.18;
-  letter-spacing: -0.01em;
-  font-weight: var(--font-w-bold);
+  font-size: clamp(1.85rem, 4.2vw, 3rem);
+  line-height: 1.12;
+  font-weight: 700;
   color: var(--qh-ink);
   text-wrap: balance;
+  font-synthesis: none;
 }
 
 .qh__title-em {
-  font-style: italic;
+  font-style: normal;
   font-weight: var(--font-w-regular);
   color: var(--qh-faint);
 }
@@ -527,8 +530,8 @@ onBeforeUnmount(() => {
   text-decoration: none;
   color: var(--qh-ink);
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(28, 26, 24, 0.18);
+  background: rgba(28, 26, 24, 0.06);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: 0.45rem 0.45rem 0.45rem 1.25rem;
@@ -555,7 +558,7 @@ onBeforeUnmount(() => {
 
 .qh__cta:hover {
   transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(28, 26, 24, 0.35);
 }
 
 .qh__cta:hover .qh__cta-aura {
@@ -575,7 +578,7 @@ onBeforeUnmount(() => {
   height: 2rem;
   border-radius: 999px;
   background: #fff;
-  color: var(--brand-01);
+  color: var(--qh-ink);
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -603,12 +606,9 @@ onBeforeUnmount(() => {
   flex-direction: column;
   padding: clamp(1.5rem, 2.4vw, 2rem);
   border-radius: 22px;
-  border: 1px solid var(--qh-line);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%),
-    rgba(8, 14, 12, 0.4);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(28, 26, 24, 0.09);
+  background: rgba(28, 26, 24, 0.055);
+  box-shadow: none;
   transform-style: preserve-3d;
   transition:
     border-color 0.4s ease,
@@ -619,15 +619,13 @@ onBeforeUnmount(() => {
 }
 
 .qh-panel:hover {
-  border-color: rgba(255, 255, 255, 0.34);
-  box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  border-color: rgba(28, 26, 24, 0.16);
+  box-shadow: 0 4px 20px rgba(28, 26, 24, 0.08);
 }
 
-.qh-panel--formacion:hover { border-color: color-mix(in srgb, var(--qh-accent) 55%, transparent); }
-.qh-panel--comunicacion:hover { border-color: color-mix(in srgb, var(--qh-warm) 55%, transparent); }
-.qh-panel--estrategia:hover { border-color: color-mix(in srgb, var(--qh-cool) 55%, transparent); }
+.qh-panel--formacion:hover { border-color: color-mix(in srgb, var(--qh-accent) 45%, transparent); }
+.qh-panel--comunicacion:hover { border-color: color-mix(in srgb, var(--qh-warm) 45%, transparent); }
+.qh-panel--estrategia:hover { border-color: color-mix(in srgb, var(--qh-cool) 45%, transparent); }
 
 /* SVG drawing */
 .qh-panel__drawing {
@@ -649,28 +647,24 @@ onBeforeUnmount(() => {
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
-  opacity: 0.6;
-  transition: opacity 0.4s ease;
+  opacity: 1;
 }
 
 .qh-panel--formacion .qh-panel__stroke {
   stroke: var(--qh-accent);
-  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--qh-accent) 45%, transparent));
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--qh-accent) 70%, transparent));
 }
 
 .qh-panel--comunicacion .qh-panel__stroke {
   stroke: var(--qh-warm);
-  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--qh-warm) 45%, transparent));
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--qh-warm) 70%, transparent));
 }
 
 .qh-panel--estrategia .qh-panel__stroke {
   stroke: var(--qh-cool);
-  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--qh-cool) 45%, transparent));
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--qh-cool) 70%, transparent));
 }
 
-.qh-panel:hover .qh-panel__stroke {
-  opacity: 1;
-}
 
 /* Body */
 .qh-panel__body {
@@ -696,9 +690,9 @@ onBeforeUnmount(() => {
   font-family: var(--font-heading);
   font-size: clamp(1.25rem, 1.75vw, 1.55rem);
   line-height: 1.18;
-  letter-spacing: -0.01em;
   font-weight: var(--font-w-bold);
   color: var(--qh-ink);
+  font-synthesis: none;
 }
 
 .qh-panel__desc {
@@ -733,7 +727,7 @@ onBeforeUnmount(() => {
 }
 
 .qh-panel:hover .qh-panel__tag {
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: rgba(28, 26, 24, 0.22);
   color: var(--qh-ink);
 }
 

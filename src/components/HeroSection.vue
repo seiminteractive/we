@@ -1,9 +1,11 @@
 <template>
   <section class="hero" ref="heroRef">
     <div class="hero__bg" aria-hidden="true">
-      <video autoplay loop muted playsinline :src="fondoHero" alt="" class="hero__bg-img" />
+      <div class="hero__bg-scale">
+        <video autoplay loop muted playsinline :src="fondoHero" alt="" class="hero__bg-img" />
+        <div class="hero__bg-overlay" />
+      </div>
     </div>
-    <div class="hero__bg-overlay" aria-hidden="true" />
 
     <header class="hero__nav">
       <a href="/" class="hero__logo">
@@ -100,11 +102,9 @@ function playHeroAnimations(root) {
   ctx = gsap.context(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const easeMain = 'power4.out'
-    const easeSoft = 'power3.out'
 
     if (reduceMotion) {
-      gsap.set('.hero__bg', { opacity: 1 })
-      gsap.set('.hero__bg-img', { scale: 1 })
+      gsap.set('.hero__bg-scale', { scale: 1 })
       if (pageProgressRef.value) {
         gsap.set(pageProgressRef.value, {
           scaleX: 0.38,
@@ -114,13 +114,18 @@ function playHeroAnimations(root) {
       return
     }
 
-    gsap.set('.hero__bg', { opacity: 0 })
-    gsap.set('.hero__bg-img', { scale: 1.1, transformOrigin: 'center center' })
+    gsap.set('.hero__bg-scale', { scale: 1.1, transformOrigin: 'center center' })
 
     const tl = gsap.timeline({ defaults: { ease: easeMain } })
 
-    tl.to('.hero__bg', { opacity: 1, duration: 1.45, ease: easeSoft }, 0)
-      .to('.hero__bg-img', { scale: 1, duration: 2.9, ease: 'power3.out' }, 0)
+    tl.to('.hero__bg-scale', {
+      scale: 1,
+      duration: 2.9,
+      ease: 'power3.out',
+      onComplete: () => {
+        gsap.set('.hero__bg-scale', { clearProps: 'willChange' })
+      },
+    }, 0)
       .from(
         '.hero__logo',
         { y: -32, opacity: 0, filter: 'blur(6px)', duration: 1.32 },
@@ -284,6 +289,16 @@ onUnmounted(() => {
   min-height: 100%;
   z-index: 0;
   pointer-events: none;
+  overflow: hidden;
+}
+
+.hero__bg-scale {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+  will-change: transform;
 }
 
 .hero__bg-img {
@@ -384,8 +399,8 @@ onUnmounted(() => {
   font-weight: var(--font-w-extrabold);
   font-size: clamp(2.15rem, 5.5vw, 3.75rem);
   line-height: 1.05;
-  letter-spacing: -0.035em;
   text-transform: none;
+  font-synthesis: none;
 }
 
 .hero__line {
@@ -544,9 +559,9 @@ onUnmounted(() => {
   font-size: clamp(2.35rem, 5vw, 3rem);
   font-weight: var(--font-w-extrabold);
   line-height: 0.95;
-  letter-spacing: -0.04em;
   color: var(--brand-02);
   text-shadow: 0 1px 18px color-mix(in srgb, var(--brand-03) 22%, transparent);
+  font-synthesis: none;
 }
 
 .hero__stat-label {

@@ -224,7 +224,7 @@ onUnmounted(() => {
 
 <style scoped>
 .svc {
-  --svc-ink: #ffffff;
+  --svc-ink: #1c1a18;
 
   position: relative;
   background: transparent;
@@ -267,8 +267,8 @@ onUnmounted(() => {
   padding: 0.35rem 0.85rem 0.35rem 0.55rem;
   border-radius: 999px;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: #fff;
+  border: 1px solid rgba(28, 26, 24, 0.20);
+  color: var(--svc-ink);
   margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
 }
 
@@ -278,10 +278,10 @@ onUnmounted(() => {
 }
 
 .svc__tag-text {
-  font-family: var(--font-body);
-  font-size: 0.625rem;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
   font-weight: var(--font-w-semibold);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
@@ -289,11 +289,11 @@ onUnmounted(() => {
   margin: 0;
   max-width: min(26rem, 100%);
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 4.5vw, 3.35rem);
+  font-size: clamp(1.85rem, 4.2vw, 3rem);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.08;
-  color: #fff;
+  line-height: 1.12;
+  color: var(--svc-ink);
+  font-synthesis: none;
 }
 
 .svc__body {
@@ -303,17 +303,17 @@ onUnmounted(() => {
   font-size: clamp(0.9375rem, 1.35vw, 1.0625rem);
   font-weight: var(--font-w-regular);
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(28, 26, 24, 0.72);
 }
 
 .svc__cta {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  color: #fff;
+  color: var(--svc-ink);
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(28, 26, 24, 0.22);
+  background: rgba(28, 26, 24, 0.06);
   padding: 0.2rem 0.2rem 0.2rem 1.35rem;
   box-shadow: none;
   font-family: var(--font-body);
@@ -326,8 +326,8 @@ onUnmounted(() => {
 }
 
 .svc__cta:hover {
-  border-color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(28, 26, 24, 0.45);
+  background: rgba(28, 26, 24, 0.10);
 }
 
 .svc__cta-label {
@@ -341,8 +341,8 @@ onUnmounted(() => {
   width: 2.4rem;
   height: 2.4rem;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.22);
-  color: #fff;
+  background: rgba(28, 26, 24, 0.10);
+  color: var(--svc-ink);
 }
 
 .svc__cta-icon .pi {
@@ -506,10 +506,10 @@ onUnmounted(() => {
   font-family: var(--font-heading);
   font-size: clamp(1.15rem, 2.2vw, 1.5rem);
   font-weight: 700;
-  letter-spacing: -0.02em;
   line-height: 1.2;
   color: #fff;
   max-width: 20rem;
+  font-synthesis: none;
 }
 
 .svc-carousel__slide-desc {

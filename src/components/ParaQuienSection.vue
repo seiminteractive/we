@@ -89,7 +89,10 @@
 
           <div class="para__col-chrome" aria-hidden="true">
             <span class="para__col-code">{{ item.code }}</span>
-            <span class="para__col-mark">+</span>
+            <div class="para__col-mark-wrap">
+              <span class="para__col-mark">+</span>
+              <span class="para__col-hint">Más info</span>
+            </div>
           </div>
 
           <div class="para__col-foot">
@@ -501,11 +504,11 @@ onUnmounted(() => {
 
 <style scoped>
 .para {
-  --para-ink: #ffffff;
-  --para-muted: rgba(255, 255, 255, 0.7);
-  --para-rule: rgba(255, 255, 255, 0.32);
-  --para-line: rgba(255, 255, 255, 0.16);
-  --para-line-soft: rgba(255, 255, 255, 0.08);
+  --para-ink: #1c1a18;
+  --para-muted: rgba(28, 26, 24, 0.60);
+  --para-rule: rgba(28, 26, 24, 0.18);
+  --para-line: rgba(28, 26, 24, 0.12);
+  --para-line-soft: rgba(28, 26, 24, 0.07);
   --para-accent: #21dc99;
   --para-warm: #efdbb4;
 
@@ -602,16 +605,16 @@ onUnmounted(() => {
   width: 0.45rem;
   height: 0.45rem;
   border-radius: 999px;
-  background: #fff;
+  background: #1c1a18;
 }
 
 .para__brand-text {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
   font-weight: var(--font-w-semibold);
-  letter-spacing: 0.24em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #fff;
+  color: #1c1a18;
 }
 
 .para__brand-rule {
@@ -625,7 +628,11 @@ onUnmounted(() => {
   font-size: 0.66rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.65);
+  font-family: var(--font-heading);
+  font-size: 0.64rem;
+  font-weight: var(--font-w-regular);
+  letter-spacing: 0.18em;
+  color: rgba(28, 26, 24, 0.55);
 }
 
 .para__head-row {
@@ -638,20 +645,20 @@ onUnmounted(() => {
 .para__title {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: clamp(2.1rem, 5.4vw, 3.95rem);
-  line-height: 0.94;
-  letter-spacing: -0.04em;
-  font-weight: var(--font-w-extrabold);
-  color: #fff;
+  font-size: clamp(1.85rem, 4.2vw, 3rem);
+  line-height: 1.12;
+  font-weight: 700;
+  color: #1c1a18;
   text-wrap: balance;
   max-width: 36rem;
+  font-synthesis: none;
 }
 
 .para__title-em {
   display: block;
-  font-style: italic;
+  font-style: normal;
   font-weight: var(--font-w-regular);
-  color: rgba(255, 255, 255, 0.58);
+  color: rgba(28, 26, 24, 0.50);
 }
 
 .para__back {
@@ -662,7 +669,7 @@ onUnmounted(() => {
   border: 0;
   padding: 0.4rem 0;
   cursor: pointer;
-  color: #fff;
+  color: #1c1a18;
   font-family: var(--font-body);
   font-size: 0.76rem;
   font-weight: var(--font-w-semibold);
@@ -689,9 +696,9 @@ onUnmounted(() => {
   align-items: center;
   gap: 0.7rem;
   padding: 0.65rem 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.32);
+  border: 1px solid rgba(28, 26, 24, 0.18);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(28, 26, 24, 0.05);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   text-decoration: none;
@@ -700,7 +707,7 @@ onUnmounted(() => {
   font-weight: var(--font-w-semibold);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #fff;
+  color: #1c1a18;
   transition: border-color 0.35s ease, background 0.35s ease,
     transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   align-self: end;
@@ -708,8 +715,8 @@ onUnmounted(() => {
 }
 
 .para__cta:hover {
-  border-color: rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(28, 26, 24, 0.38);
+  background: rgba(28, 26, 24, 0.08);
 }
 
 .para__cta-arrow {
@@ -734,7 +741,7 @@ onUnmounted(() => {
   border: 1px solid var(--para-line);
   border-radius: clamp(20px, 2vw, 28px);
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(8, 10, 9, 0.07);
 }
 
 .para__col {
@@ -910,7 +917,7 @@ onUnmounted(() => {
 }
 
 .para__col-code {
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
   font-size: 0.62rem;
   font-weight: var(--font-w-semibold);
   letter-spacing: 0.22em;
@@ -937,6 +944,7 @@ onUnmounted(() => {
   font-family: var(--font-heading);
   font-size: 1.05rem;
   line-height: 1;
+  font-synthesis: none;
   color: rgba(255, 255, 255, 0.85);
   width: 2.1rem;
   height: 2.1rem;
@@ -944,20 +952,68 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.30);
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  opacity: 0;
-  transform: scale(0.6) rotate(-45deg);
-  transition: opacity 0.5s ease,
-    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+  position: relative;
+  opacity: 0.65;
+  transform: scale(1);
+  transition: opacity 0.4s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     color 0.4s ease, border-color 0.4s ease;
+}
+
+.para__col:not(.is-active) .para__col-mark::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  animation: paraMarkPulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes paraMarkPulse {
+  0%   { transform: scale(1);   opacity: 0.60; }
+  70%  { transform: scale(2.1); opacity: 0;    }
+  100% { transform: scale(2.1); opacity: 0;    }
 }
 
 .para__col:hover .para__col-mark {
   opacity: 1;
-  transform: scale(1) rotate(0deg);
+  transform: scale(1.08);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.para__col:hover .para__col-mark::before {
+  animation-play-state: paused;
+}
+
+.para__col-mark-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.para__col-hint {
+  font-family: var(--font-heading);
+  font-size: 0.56rem;
+  font-weight: var(--font-w-semibold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.60);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  white-space: nowrap;
+}
+
+.para__col.is-active .para__col-hint {
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
 }
 
 .para__col.is-active .para__col-mark {
@@ -997,9 +1053,9 @@ onUnmounted(() => {
   font-family: var(--font-heading);
   font-size: clamp(1.7rem, 2.8vw, 2.4rem);
   line-height: 1;
-  letter-spacing: -0.025em;
   font-weight: var(--font-w-extrabold);
   color: #fff;
+  font-synthesis: none;
 }
 
 .para__col-line {
@@ -1056,16 +1112,16 @@ onUnmounted(() => {
 .para__col-kicker {
   display: inline-flex;
   align-items: center;
-  font-family: var(--font-body);
-  font-size: 0.66rem;
+  font-family: var(--font-heading);
+  font-size: 0.64rem;
   font-weight: var(--font-w-semibold);
-  letter-spacing: 0.24em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(28, 26, 24, 0.70);
   padding: 0.4rem 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(28, 26, 24, 0.14);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   justify-self: start;
@@ -1075,12 +1131,12 @@ onUnmounted(() => {
 .para__col-headline {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: clamp(1.7rem, 3.2vw, 2.55rem);
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-  font-weight: var(--font-w-extrabold);
-  color: #fff;
+  font-size: clamp(1.85rem, 4.2vw, 3rem);
+  line-height: 1.12;
+  font-weight: 700;
+  color: #1c1a18;
   text-wrap: balance;
+  font-synthesis: none;
 }
 
 .para__col-word {
@@ -1102,7 +1158,7 @@ onUnmounted(() => {
   font-family: var(--font-body);
   font-size: clamp(0.92rem, 1.1vw, 1.05rem);
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(28, 26, 24, 0.65);
   max-width: 34rem;
   will-change: opacity, transform;
 }
@@ -1133,14 +1189,14 @@ onUnmounted(() => {
   font-size: 0.62rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(28, 26, 24, 0.42);
 }
 
 .para__col-highlight-line {
   height: 1px;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.55) 0%,
+    rgba(28, 26, 24, 0.25) 0%,
     transparent 100%
   );
 }
@@ -1148,7 +1204,7 @@ onUnmounted(() => {
 .para__col-highlight-text {
   font-family: var(--font-body);
   font-size: clamp(0.88rem, 1.05vw, 0.98rem);
-  color: #fff;
+  color: #1c1a18;
   line-height: 1.4;
 }
 
@@ -1169,7 +1225,7 @@ onUnmounted(() => {
   font-weight: var(--font-w-semibold);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #fff;
+  color: #1c1a18;
   transition: border-color 0.35s ease, background 0.35s ease,
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
@@ -1253,6 +1309,14 @@ onUnmounted(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .para__col-mark::before {
+    animation: none !important;
+  }
+
+  .para__col-hint {
+    transition: none !important;
+  }
+
   .para__col-img,
   .para__fx-orb,
   .para__col-line,
