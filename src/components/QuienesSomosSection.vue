@@ -40,24 +40,7 @@
         </div>
 
         <div class="about__visual">
-          <div class="about__frame">
-            <span class="about__corner about__corner--tl" aria-hidden="true" />
-            <span class="about__corner about__corner--tr" aria-hidden="true" />
-            <span class="about__corner about__corner--bl" aria-hidden="true" />
-            <span class="about__corner about__corner--br" aria-hidden="true" />
-            <div class="about__earth">
-              <Earth3D ref="earth3dRef" />
-            </div>
-            <div class="about__frame-axis about__frame-axis--h" aria-hidden="true" />
-            <div class="about__frame-axis about__frame-axis--v" aria-hidden="true" />
-          </div>
-          <div class="about__frame-meta">
-            <span class="about__frame-tag">
-              <span class="about__frame-dot" aria-hidden="true" />
-              Plataforma · En órbita
-            </span>
-            <span class="about__frame-coords" ref="coordRef">— · —</span>
-          </div>
+          <img :src="pruebalogoWe" alt="WE Logo" class="about__logo-img" ref="logoImgRef" />
         </div>
       </div>
 
@@ -136,14 +119,14 @@
 import { onMounted, onUnmounted, ref, computed } from 'vue'
 import { gsap } from '../lib/gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Earth3D from './Earth3D.vue'
+import pruebalogoWe from '../assets/PruebaLogoWe.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const sectionRef = ref(null)
 const lightRef = ref(null)
 const titleRef = ref(null)
-const earth3dRef = ref(null)
+const logoImgRef = ref(null)
 const statementRef = ref(null)
 const ctaRef = ref(null)
 const pulseLineRef = ref(null)
@@ -194,7 +177,7 @@ let pointer = { x: 0, y: 0, tx: 0, ty: 0 }
 let pointerRAF = 0
 let scrollTrigger = null
 let pulseTween = null
-let lightQX, lightQY, ctaQX, ctaQY
+let lightQX, lightQY, ctaQX, ctaQY, logoRotX, logoRotY
 let coordRAF = 0
 let coordLon = 0
 let cleanupCTA
@@ -217,15 +200,22 @@ function pointerLoop() {
   pointerRAF = requestAnimationFrame(pointerLoop)
   pointer.x += (pointer.tx - pointer.x) * 0.06
   pointer.y += (pointer.ty - pointer.y) * 0.06
-  if (earth3dRef.value) {
-    earth3dRef.value.setPointer(pointer.x, pointer.y)
-  }
+  // if (logoRotX && logoRotY) {
+  //   logoRotX(pointer.x * 25)
+  //   logoRotY(pointer.y * 25)
+  // }
 }
 
 function setupCursorLight() {
   if (!lightRef.value) return
   lightQX = gsap.quickTo(lightRef.value, 'x', { duration: 0.55, ease: 'power3.out' })
   lightQY = gsap.quickTo(lightRef.value, 'y', { duration: 0.55, ease: 'power3.out' })
+}
+
+function setupLogoFollowCursor() {
+  if (!logoImgRef.value) return
+  // logoRotX = gsap.quickTo(logoImgRef.value, 'rotationY', { duration: 0.35, ease: 'power2.out' })
+  // logoRotY = gsap.quickTo(logoImgRef.value, 'rotationX', { duration: 0.35, ease: 'power2.out' })
 }
 
 function setupCTAMagnetic() {
@@ -390,9 +380,6 @@ function setupScrollLink() {
     start: 'top bottom',
     end: 'bottom top',
     scrub: true,
-    onUpdate: (self) => {
-      if (earth3dRef.value) earth3dRef.value.setScrollProgress(self.progress)
-    },
   })
 }
 
@@ -413,6 +400,7 @@ function startCoordTicker() {
 onMounted(() => {
   ctx = gsap.context(() => {
     setupCursorLight()
+    setupLogoFollowCursor()
     setupReveal()
     setupScrollLink()
     cleanupCTA = setupCTAMagnetic()
@@ -572,6 +560,18 @@ onUnmounted(() => {
   gap: 0.85rem;
   align-items: stretch;
   min-width: 0;
+  perspective: 1200px;
+}
+
+.about__logo-img {
+  width: 100%;
+  height: auto;
+  max-width: 22rem;
+  margin: 0 auto;
+  display: block;
+  object-fit: contain;
+  will-change: transform;
+  transform-style: preserve-3d;
 }
 
 .about__frame {
@@ -751,12 +751,12 @@ onUnmounted(() => {
   position: absolute;
   inset: -10px;
   border-radius: 999px;
-  background: radial-gradient(
+  /* background: radial-gradient(
     circle,
     rgba(33, 220, 153, 0.30) 0%,
     rgba(33, 220, 153, 0.08) 50%,
     transparent 80%
-  );
+  ); */
   filter: blur(14px);
   opacity: 0;
   z-index: -1;
