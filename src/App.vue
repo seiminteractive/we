@@ -1,6 +1,6 @@
 <template>
   <div id="app-root">
-    <ParticleBackground />
+    <!-- <ParticleBackground /> -->
     <HeroSection />
     <QuienesSomosSection />
     <ParaQuienSection />
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import ParticleBackground from './components/ParticleBackground.vue'
+// import ParticleBackground from './components/ParticleBackground.vue'
 import HeroSection from './components/HeroSection.vue'
 import QuienesSomosSection from './components/QuienesSomosSection.vue'
 import ParaQuienSection from './components/ParaQuienSection.vue'

@@ -2,7 +2,8 @@
   <section class="hero" ref="heroRef">
     <div class="hero__bg" aria-hidden="true">
       <div class="hero__bg-scale">
-        <video autoplay loop muted playsinline :src="fondoHero" alt="" class="hero__bg-img" />
+        <!-- <video autoplay loop muted playsinline :src="fondoHero" alt="" class="hero__bg-img" /> -->
+        <img :src="fondoHero" alt="" class="hero__bg-img" />
         <div class="hero__bg-overlay" />
       </div>
     </div>
@@ -25,7 +26,7 @@
     <div class="hero__main">
       <div class="hero__copy">
         <h1 class="hero__title">
-          <span class="hero__line">Liderar el futuro</span>
+          <span class="hero__line">Liderar el <br>futuro</span>
         </h1>
         <p class="hero__desc">
           Formamos, posicionamos y transformamos organizaciones
@@ -82,7 +83,8 @@
 
 <script setup>
 import { nextTick, onMounted, onUnmounted, ref } from 'vue'
-import fondoHero from '../assets/fondoHeroVideo.mp4'
+// import fondoHero from '../assets/ReunionWe.jpeg'
+import fondoHero from '../assets/ReunionWePrueba.jpg'
 import logoBlanco from '../assets/logoBlanco.png'
 import { gsap } from '../lib/gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -131,14 +133,25 @@ function playHeroAnimations(root) {
         { y: -32, opacity: 0, filter: 'blur(6px)', duration: 1.32 },
         0.14
       )
-      .from(
-        '.hero__nav-center a',
-        { y: -22, opacity: 0, filter: 'blur(4px)', duration: 1.1, stagger: 0.082 },
-        0.2
-      )
+      .fromTo(
+  '.hero__nav-center a',
+  {
+    y: -22,
+    opacity: 1,
+    filter: 'blur(4px)'
+  },
+  {
+    y: 0,
+    opacity: 1,
+    filter: 'blur(0px)',
+    duration: 1.1,
+    stagger: 0.082
+  },
+  0.2
+)
       .from(
         '.hero__line',
-        { yPercent: 115, opacity: 0, rotate: 0.001, duration: 1.42 },
+        { yPercent: 115, opacity: 0, rotate: 0.0001, duration: 1.42 },
         0.26
       )
       .from(
@@ -270,12 +283,12 @@ onUnmounted(() => {
   width: clamp(18rem, 28vw, 26rem);
   height: clamp(18rem, 28vw, 26rem);
   border-radius: 50%;
-  background: radial-gradient(
+  /* background: radial-gradient(
     circle,
     rgba(112, 255, 170, 0.16) 0%,
     rgba(112, 255, 170, 0.07) 35%,
     transparent 70%
-  );
+  ); */
   filter: blur(42px);
   z-index: 0;
   pointer-events: none;
@@ -396,8 +409,8 @@ onUnmounted(() => {
 .hero__title {
   margin: 0 0 clamp(1.1rem, 2.2vh, 1.5rem);
   font-family: var(--font-heading);
-  font-weight: var(--font-w-extrabold);
-  font-size: clamp(2.15rem, 5.5vw, 3.75rem);
+  /* font-weight: var(--font-w-extrabold); */
+  font-size: clamp(2.6rem, 6.5vw, 4.5rem);
   line-height: 1.05;
   text-transform: none;
   font-synthesis: none;
@@ -414,7 +427,7 @@ onUnmounted(() => {
   font-size: clamp(0.875rem, 1.1vw, 1rem);
   font-weight: var(--font-w-regular);
   line-height: 1.65;
-  max-width: min(38rem, 100%);
+  max-width: min(29rem, 100%);
   opacity: 0.94;
 }
 
@@ -475,9 +488,9 @@ onUnmounted(() => {
   overflow: hidden;
   isolation: isolate;
 
-  background:
+  /* background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.03) 100%),
-    linear-gradient(135deg, rgba(40, 100, 70, 0.2) 0%, rgba(10, 50, 35, 0.18) 100%);
+    linear-gradient(135deg, rgba(40, 100, 70, 0.2) 0%, rgba(10, 50, 35, 0.18) 100%); */
 
   backdrop-filter: blur(28px) saturate(170%) brightness(1.06);
   -webkit-backdrop-filter: blur(28px) saturate(170%) brightness(1.06);
@@ -557,7 +570,7 @@ onUnmounted(() => {
   margin: 0;
   font-family: var(--font-heading);
   font-size: clamp(2.35rem, 5vw, 3rem);
-  font-weight: var(--font-w-extrabold);
+  /* font-weight: var(--font-w-extrabold); */
   line-height: 0.95;
   color: var(--brand-02);
   text-shadow: 0 1px 18px color-mix(in srgb, var(--brand-03) 22%, transparent);
@@ -617,9 +630,9 @@ onUnmounted(() => {
   position: absolute;
   z-index: 2;
 
-  background:
+  /* background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%),
-    linear-gradient(135deg, rgba(40, 100, 70, 0.18) 0%, rgba(10, 50, 35, 0.16) 100%);
+    linear-gradient(135deg, rgba(40, 100, 70, 0.18) 0%, rgba(10, 50, 35, 0.16) 100%); */
 
   backdrop-filter: blur(34px) saturate(165%) brightness(1.08);
   -webkit-backdrop-filter: blur(34px) saturate(165%) brightness(1.08);

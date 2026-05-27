@@ -49,9 +49,10 @@ body,
   min-height: 100%;
 }
 
-/* Fallback coherente con el fondo cinemático mientras inicializa el canvas */
+/* Fondo blanco liso */
 html {
-  background-color: #f7f7f7;
+  /* background-color: #f7f7f7; */
+  background-color: #ffffff;
 }
 
 #app {

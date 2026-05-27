@@ -7,7 +7,7 @@
     @mousemove="onSectionMouseMove"
     @mouseleave="onSectionMouseLeave"
   >
-    <div class="about__cursor-light" ref="lightRef" aria-hidden="true" />
+    <!-- <div class="about__cursor-light" ref="lightRef" aria-hidden="true" /> -->
 
     <div class="about__shell">
       <!-- Kicker (same pattern as the rest of the site) -->
@@ -832,7 +832,7 @@ onUnmounted(() => {
 .about__vert-num {
   font-family: var(--font-heading);
   font-size: clamp(1.6rem, 2.3vw, 2.05rem);
-  font-weight: var(--font-w-extrabold);
+  /* font-weight: var(--font-w-extrabold); */
   line-height: 0.95;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;

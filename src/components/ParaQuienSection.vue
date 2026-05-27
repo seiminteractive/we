@@ -1053,7 +1053,7 @@ onUnmounted(() => {
   font-family: var(--font-heading);
   font-size: clamp(1.7rem, 2.8vw, 2.4rem);
   line-height: 1;
-  font-weight: var(--font-w-extrabold);
+  /* font-weight: var(--font-w-extrabold); */
   color: #fff;
   font-synthesis: none;
 }

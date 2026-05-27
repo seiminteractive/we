@@ -1359,7 +1359,7 @@ onUnmounted(() => {
 .temas__panel-now {
   font-family: var(--font-heading);
   font-size: clamp(2.6rem, 4.4vw, 3.6rem);
-  font-weight: var(--font-w-extrabold);
+  /* font-weight: var(--font-w-extrabold); */
   line-height: 0.95;
   display: inline-block;
   will-change: transform, opacity, filter;

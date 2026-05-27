@@ -718,7 +718,7 @@ onBeforeUnmount(() => {
   right: -3vw;
   font-family: var(--font-heading);
   font-size: clamp(11rem, 28vw, 26rem);
-  font-weight: var(--font-w-extrabold);
+  /* font-weight: var(--font-w-extrabold); */
   line-height: 0.92;
   color: rgba(28, 26, 24, 0.06);
   pointer-events: none;
@@ -984,7 +984,7 @@ onBeforeUnmount(() => {
   grid-row: 1 / span 2;
   font-family: var(--font-heading);
   font-size: clamp(1.9rem, 3.6vw, 2.8rem);
-  font-weight: var(--font-w-extrabold);
+  /* font-weight: var(--font-w-extrabold); */
   line-height: 1.05;
   align-self: center;
   color: var(--cw-ink);
