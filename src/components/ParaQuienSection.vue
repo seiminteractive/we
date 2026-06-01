@@ -143,7 +143,7 @@
 
 <script setup>
 import { nextTick, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue'
-import imgEmpresas from '../assets/empresas.jpeg'
+import imgEmpresas from '../assets/fondoEmpresasDef.jpeg'
 import imgGobiernos from '../assets/gobiernos.jpeg'
 import imgOrganizaciones from '../assets/organizaciones.jpeg'
 import { useScrollReveal } from '../composables/useScrollReveal'

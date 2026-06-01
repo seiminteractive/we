@@ -10,7 +10,7 @@
 
     <header class="hero__nav">
       <a href="/" class="hero__logo">
-        <img :src="logoBlanco" alt="WE Plus" class="hero__logo-img" />
+        <LogoWe ref="logoWeRef" class="hero__logo-img" />
       </a>
 
       <nav class="hero__nav-center" aria-label="Principal">
@@ -34,7 +34,6 @@
         </p>
         <div class="hero__cta-group">
           <a href="#" class="hero__btn hero__btn--primary">Agendar reunión</a>
-          <a href="#" class="hero__btn hero__btn--ghost">Ver qué hacemos</a>
         </div>
       </div>
     </div>
@@ -85,7 +84,7 @@
 import { nextTick, onMounted, onUnmounted, ref } from 'vue'
 // import fondoHero from '../assets/ReunionWe.jpeg'
 import fondoHero from '../assets/ReunionWePrueba.jpg'
-import logoBlanco from '../assets/logoBlanco.png'
+import LogoWe from './LogoWe.vue'
 import { gsap } from '../lib/gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -93,6 +92,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const heroRef = ref(null)
 const pageProgressRef = ref(null)
+const logoWeRef = ref(null)
 let ctx
 let heroReplayTrigger
 
@@ -107,6 +107,7 @@ function playHeroAnimations(root) {
 
     if (reduceMotion) {
       gsap.set('.hero__bg-scale', { scale: 1 })
+      logoWeRef.value?.showInstant()
       if (pageProgressRef.value) {
         gsap.set(pageProgressRef.value, {
           scaleX: 0.38,
@@ -133,7 +134,10 @@ function playHeroAnimations(root) {
         { y: -32, opacity: 0, filter: 'blur(6px)', duration: 1.32 },
         0.14
       )
-      .fromTo(
+
+    logoWeRef.value?.addRevealToTimeline(tl, 0.18)
+
+    tl.fromTo(
   '.hero__nav-center a',
   {
     y: -22,
@@ -358,10 +362,6 @@ onUnmounted(() => {
 
 .hero__logo-img {
   display: block;
-  height: clamp(1.75rem, 4.2vw, 2.35rem);
-  width: auto;
-  object-fit: contain;
-  object-position: left center;
 }
 
 .hero__nav-center {
