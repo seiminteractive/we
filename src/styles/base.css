@@ -8,7 +8,7 @@
   /* Ancho del contenido principal (Quiénes somos, Para quién, etc.) */
   --layout-content-max: 1280px;
 
-  /* Deja ver el degradado animado (Neat); Pilares mantiene su propio fondo con imagen */
+  /* Las secciones son transparentes: dejan ver el fondo cálido del page-stack */
   --section-bg: transparent;
 
   /* Padding horizontal común de secciones */
@@ -20,14 +20,32 @@
   --section-pad-footer-y: clamp(3.25rem, 6.5vw, 5rem);
   --section-pad-footer-y-bottom: clamp(2rem, 3.8vw, 2.75rem);
 
-  /* Paleta de marca */
-  --brand-01: #151516;
-  --brand-02: #ffffff;
-  --brand-03: #21dc99;
-  --brand-04: #d9d9d9;
-  --brand-05: #373737;
-  --brand-06: #efdbb4;
-  --brand-07: #da5933;
+  /* ─────────────────────────────────────────────
+     Paleta de marca (colores del cliente)
+     ───────────────────────────────────────────── */
+  --brand-terracotta: #da5933; /* acento principal */
+  --brand-cream:      #efdbb4; /* crema cálida */
+  --brand-graphite:   #373737; /* gris oscuro */
+  --brand-gray:       #d9d9d9; /* gris claro */
+  --brand-sage:       #919789; /* verde salvia apagado */
+  --brand-sand:       #ede7db; /* off-white cálido (base de página) */
+  --brand-ink:        #151516; /* casi negro */
+  --brand-white:      #ffffff;
+
+  /* Tokens semánticos */
+  --accent:      var(--brand-terracotta);
+  --accent-rgb:  218, 89, 51;
+  --sage-rgb:    145, 151, 137;
+  --cream-rgb:   239, 219, 180;
+
+  /* Compatibilidad con nombres previos (--brand-0X) */
+  --brand-01: var(--brand-ink);
+  --brand-02: var(--brand-white);
+  --brand-03: var(--brand-terracotta); /* antes verde — ahora terracota */
+  --brand-04: var(--brand-gray);
+  --brand-05: var(--brand-graphite);
+  --brand-06: var(--brand-cream);
+  --brand-07: var(--brand-terracotta);
 
   /* Tipografía — títulos: Syne (Titling Syne) · textos: Work Sans */
   --font-heading: "Syne", system-ui, sans-serif;
@@ -49,9 +67,8 @@ body,
   min-height: 100%;
 }
 
-/* Fondo blanco liso */
+/* Fondo claro (casi blanco) */
 html {
-  /* background-color: #f7f7f7; */
   background-color: #ffffff;
 }
 

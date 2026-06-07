@@ -8,14 +8,14 @@
             <span class="svc__tag-text">PROGRAMAS</span>
           </div>
           <h2 id="svc-heading" class="svc__title">
-            Iniciativas que dan forma a un futuro más sostenible.
+            Iniciativas que dan forma a un futuro más sostenible e inteligente.
           </h2>
         </div>
 
         <div class="svc__left-bottom" data-reveal>
           <p class="svc__body">
-            Desde infraestructura verde hasta programas comunitarios, descubrí cómo construimos
-            ecosistemas resilientes para el mañana: una iniciativa a la vez.
+            Desde programas organizacionales hasta iniciativas territoriales,
+            diseñamos soluciones que fortalecen organizaciones, equipos y comunidades para el futuro, una iniciativa a la vez.
           </p>
           <a href="#" class="svc__cta">
             <span class="svc__cta-label">Comenzá</span>
@@ -83,7 +83,6 @@
             </button>
 
             <div class="svc-carousel__overlay">
-              <p class="svc-carousel__date">{{ slides[current].date }}</p>
               <p class="svc-carousel__slide-title">{{ slides[current].title }}</p>
               <p class="svc-carousel__slide-desc">{{ slides[current].description }}</p>
             </div>
@@ -97,13 +96,13 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
-import imgFormacionSostenibilidad from '../assets/formacionEnSostenibilidad.jpeg'
-import imgUsoIA from '../assets/usoDeIA.jpeg'
-import imgTalleresGobEmpSind from '../assets/talleresGobiernosEmpresas.jpeg'
-import imgComunicacionInstitucional from '../assets/comunicacionInstitucional.jpeg'
-import imgCampaniasPosicionamiento from '../assets/campaniasYPosicionamiento.jpeg'
-import imgEstrategiasPublicas from '../assets/estrategiasPublicasDeTransformacion.jpeg'
-import imgTallerFinanciamiento from '../assets/tallerFinanciamiento.jpeg'
+import imgFormacionSostenibilidad from '../assets/imagenesDefinitivas/programaSustentabilidad.jpeg'
+import imgUsoIA from '../assets/imagenesDefinitivas/formacionEnIA.jpeg'
+import imgTalleresGobEmpSind from '../assets/imagenesDefinitivas/talleresGobiernosEmpresasSindicatos.jpeg'
+import imgComunicacionInstitucional from '../assets/imagenesDefinitivas/tallerComunicacionInstitucional.jpeg'
+import imgCampaniasPosicionamiento from '../assets/imagenesDefinitivas/tallerCampaniaYPosicionamiento.jpeg'
+import imgEstrategiasPublicas from '../assets/imagenesDefinitivas/tallerDeEstrategiaPublica.jpeg'
+import imgTallerFinanciamiento from '../assets/imagenesDefinitivas/tallerFinanciamientoDeImpacto.jpeg'
 
 const { sectionRef } = useScrollReveal()
 
@@ -115,7 +114,6 @@ const slides = [
     title: 'Formación en sostenibilidad',
     description:
       'Programas aplicados para integrar criterios ambientales y sociales en equipos y proyectos.',
-    date: '12/03/2025',
     image: imgFormacionSostenibilidad,
   },
   {
@@ -123,7 +121,6 @@ const slides = [
     title: 'Formación en IA',
     description:
       'Capacitación práctica para adoptar IA con foco en productividad y gobernanza responsable.',
-    date: '28/03/2025',
     image: imgUsoIA,
   },
   {
@@ -131,7 +128,6 @@ const slides = [
     title: 'Talleres para gobiernos, empresas y sindicatos',
     description:
       'Espacios de trabajo conjunto para alinear lenguajes y prioridades entre actores clave.',
-    date: '5/04/2025',
     image: imgTalleresGobEmpSind,
   },
   {
@@ -139,7 +135,6 @@ const slides = [
     title: 'Comunicación institucional',
     description:
       'Estrategias que fortalecen reputación, claridad de mensaje y confianza de las audiencias.',
-    date: '18/04/2025',
     image: imgComunicacionInstitucional,
   },
   {
@@ -147,7 +142,6 @@ const slides = [
     title: 'Campañas y posicionamiento',
     description:
       'Campañas que conectan propósito, narrativa y canales con objetivos medibles.',
-    date: '2/05/2025',
     image: imgCampaniasPosicionamiento,
   },
   {
@@ -155,7 +149,6 @@ const slides = [
     title: 'Estrategias públicas y de transformación',
     description:
       'Rutas, decisiones y métricas para modernizar procesos y sostener el impacto.',
-    date: '20/05/2025',
     image: imgEstrategiasPublicas,
   },
   {
@@ -163,7 +156,6 @@ const slides = [
     title: 'Financiamiento para proyectos de impacto',
     description:
       'Estructuración de propuestas, alianzas y fondos orientados a resultados verificables.',
-    date: '7/06/2025',
     image: imgTallerFinanciamiento,
   },
 ]
@@ -224,10 +216,10 @@ onUnmounted(() => {
 
 <style scoped>
 .svc {
-  --svc-ink: #1c1a18;
+  --svc-ink: #fdfaf5;
 
   position: relative;
-  background: transparent;
+  background: #373737;
   color: var(--svc-ink);
   box-sizing: border-box;
   overflow: visible;
@@ -267,14 +259,15 @@ onUnmounted(() => {
   padding: 0.35rem 0.85rem 0.35rem 0.55rem;
   border-radius: 999px;
   background: transparent;
-  border: 1px solid rgba(28, 26, 24, 0.20);
+  border: 1px solid rgba(255, 255, 255, 0.20);
   color: var(--svc-ink);
   margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
 }
 
 .svc__tag-ico {
   font-size: 0.7rem;
-  opacity: 0.95;
+  opacity: 1;
+  color: #fdfaf5;
 }
 
 .svc__tag-text {
@@ -303,7 +296,7 @@ onUnmounted(() => {
   font-size: clamp(0.9375rem, 1.35vw, 1.0625rem);
   font-weight: var(--font-w-regular);
   line-height: 1.55;
-  color: rgba(28, 26, 24, 0.72);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .svc__cta {
@@ -312,8 +305,8 @@ onUnmounted(() => {
   text-decoration: none;
   color: var(--svc-ink);
   border-radius: 999px;
-  border: 1px solid rgba(28, 26, 24, 0.22);
-  background: rgba(28, 26, 24, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
   padding: 0.2rem 0.2rem 0.2rem 1.35rem;
   box-shadow: none;
   font-family: var(--font-body);
@@ -326,8 +319,8 @@ onUnmounted(() => {
 }
 
 .svc__cta:hover {
-  border-color: rgba(28, 26, 24, 0.45);
-  background: rgba(28, 26, 24, 0.10);
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.10);
 }
 
 .svc__cta-label {
@@ -341,8 +334,13 @@ onUnmounted(() => {
   width: 2.4rem;
   height: 2.4rem;
   border-radius: 50%;
-  background: rgba(28, 26, 24, 0.10);
-  color: var(--svc-ink);
+  background: #ffffff;
+  color: var(--brand-terracotta);
+  transition: transform 0.25s ease;
+}
+
+.svc__cta:hover .svc__cta-icon {
+  transform: translateX(2px);
 }
 
 .svc__cta-icon .pi {
@@ -439,7 +437,7 @@ onUnmounted(() => {
 }
 
 .svc-carousel__seg-fill--active {
-  background: #fff;
+  background: var(--accent);
 }
 
 .svc-carousel__seg-fill--idle {
@@ -490,15 +488,6 @@ onUnmounted(() => {
   padding: clamp(1.35rem, 3.5vw, 2.25rem);
   background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 100%);
   z-index: 3;
-}
-
-.svc-carousel__date {
-  margin: 0 0 0.35rem;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: var(--font-w-medium);
-  letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.85);
 }
 
 .svc-carousel__slide-title {

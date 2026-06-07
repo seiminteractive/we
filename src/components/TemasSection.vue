@@ -42,52 +42,15 @@
               :key="t.id"
               :ref="(el) => setSlideRef(el, i)"
               class="temas__stage-slide"
-              :class="{ 'is-active': i === active, 'is-compare': t.compare }"
+              :class="{ 'is-active': i === active }"
             >
-              <template v-if="!t.compare">
-                <img
-                  :src="t.image"
-                  alt=""
-                  class="temas__stage-img"
-                  loading="lazy"
-                  draggable="false"
-                />
-              </template>
-              <template v-else>
-                <div
-                  ref="compareRef"
-                  class="temas-compare"
-                  @pointerdown="onComparePointerDown"
-                >
-                  <img
-                    :src="compareAfter"
-                    alt=""
-                    class="temas-compare__base"
-                    draggable="false"
-                  />
-                  <div
-                    class="temas-compare__before"
-                    :style="{ clipPath: `inset(0 ${100 - comparePct}% 0 0)` }"
-                  >
-                    <img
-                      :src="compareBefore"
-                      alt=""
-                      class="temas-compare__before-img"
-                      draggable="false"
-                    />
-                  </div>
-                  <div
-                    class="temas-compare__handle"
-                    :style="{ left: `${comparePct}%` }"
-                  >
-                    <span class="temas-compare__line" aria-hidden="true" />
-                    <span class="temas-compare__knob" aria-hidden="true">
-                      <i class="pi pi-angle-left"></i>
-                      <i class="pi pi-angle-right"></i>
-                    </span>
-                  </div>
-                </div>
-              </template>
+              <img
+                :src="t.image"
+                alt=""
+                class="temas__stage-img"
+                loading="lazy"
+                draggable="false"
+              />
             </div>
           </div>
 
@@ -104,9 +67,6 @@
             <span class="temas__stage-mark" aria-hidden="true">+</span>
           </div>
 
-          <div class="temas__progress" aria-hidden="true">
-            <span class="temas__progress-fill" ref="progressRef" />
-          </div>
         </div>
 
         <Transition
@@ -116,10 +76,9 @@
           @leave="onCaptionLeave"
         >
           <div :key="activeTopic.id" class="temas__caption">
-            <span class="temas__caption-kicker">{{ activeTopic.tagline }}</span>
             <h3 class="temas__caption-title">
               <span
-                v-for="(w, wi) in activeTopic.headline.split(' ')"
+                v-for="(w, wi) in activeTopic.label.split(' ')"
                 :key="wi"
                 class="temas-word"
               >
@@ -150,8 +109,8 @@
               <button
                 type="button"
                 class="temas__panel-btn"
-                @click="setActive(i, true)"
-                @mouseenter="setActive(i, true)"
+                @click="setActive(i)"
+                @mouseenter="setActive(i)"
                 :aria-current="i === active ? 'true' : 'false'"
                 :aria-label="`Mostrar ${t.label}`"
               >
@@ -159,65 +118,12 @@
                 <span class="temas__panel-line" aria-hidden="true" />
                 <span class="temas__panel-copy">
                   <span class="temas__panel-name">{{ t.label }}</span>
-                  <span class="temas__panel-tagline">{{ t.tagline }}</span>
                 </span>
                 <span class="temas__panel-dot" aria-hidden="true" />
               </button>
             </li>
           </ol>
 
-          <Transition
-            :css="false"
-            mode="out-in"
-            @enter="onHighlightsEnter"
-            @leave="onHighlightsLeave"
-          >
-            <div
-              :key="activeTopic.id + '-h'"
-              class="temas__panel-highlights"
-            >
-              <span class="temas__panel-tag">Prácticas clave</span>
-              <ul role="list">
-                <li
-                  v-for="(h, hi) in activeTopic.highlights"
-                  :key="h"
-                  class="temas__panel-highlight"
-                >
-                  <span class="temas__panel-highlight-num">A · {{ pad(hi + 1) }}</span>
-                  <span class="temas__panel-highlight-line" aria-hidden="true" />
-                  <span class="temas__panel-highlight-text">{{ h }}</span>
-                </li>
-              </ul>
-            </div>
-          </Transition>
-
-          <div class="temas__panel-controls">
-            <button
-              type="button"
-              class="temas__ctrl"
-              @click="setActive(active - 1, true)"
-              aria-label="Vertical anterior"
-            >
-              <i class="pi pi-arrow-left"></i>
-            </button>
-            <button
-              type="button"
-              class="temas__ctrl temas__ctrl--toggle"
-              @click="toggleAutoplay"
-              :aria-pressed="autoplay ? 'true' : 'false'"
-            >
-              <i :class="autoplay ? 'pi pi-pause' : 'pi pi-play'"></i>
-              <span>{{ autoplay ? 'Pausar' : 'Reanudar' }}</span>
-            </button>
-            <button
-              type="button"
-              class="temas__ctrl"
-              @click="setActive(active + 1, true)"
-              aria-label="Vertical siguiente"
-            >
-              <i class="pi pi-arrow-right"></i>
-            </button>
-          </div>
         </aside>
       </div>
     </div>
@@ -230,18 +136,16 @@ import {
   nextTick,
   onBeforeUnmount,
   onMounted,
-  onUnmounted,
   ref,
   watch,
 } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
 import { gsap } from '../lib/gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import imgSostenibilidad from '../assets/sostenibilidad.jpeg'
-import imgInteligenciaArtificial from '../assets/inteligenciaArtificial.jpeg'
-import imgComunicacionNarrativa from '../assets/comunicacionNarrativa.jpeg'
-import imgInnovacionInstitucional from '../assets/innovacionInstitucional.jpeg'
-import temaEnLosQueTrabajamosDos from '../assets/temaEnLosQueTrabajamosDos.png'
+import imgSostenibilidad from '../assets/imagenesDefinitivas/programaSustentabilidad.jpeg'
+import imgInteligenciaArtificial from '../assets/imagenesDefinitivas/verticalIA.jpeg'
+import imgComunicacionNarrativa from '../assets/imagenesDefinitivas/verticalComunicacinoYPosicionamiento.jpeg'
+import imgInnovacionInstitucional from '../assets/imagenesDefinitivas/verticalTransformacionOrganizacional.jpeg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -249,94 +153,53 @@ const { sectionRef } = useScrollReveal()
 
 const stageRef = ref(null)
 const deckRef = ref(null)
-const compareRef = ref(null)
-const progressRef = ref(null)
 const counterRef = ref(null)
 const slideRefs = ref([])
 
 const active = ref(0)
-const autoplay = ref(true)
-const comparePct = ref(48)
-
-const compareBefore = imgInnovacionInstitucional
-const compareAfter = temaEnLosQueTrabajamosDos
 
 const topics = [
   {
     id: 'sostenibilidad',
     code: 'T · 01',
     label: 'Sostenibilidad',
-    tagline: 'Práctica + estrategia',
-    headline: 'Sostenibilidad accionable.',
     desc:
-      'Formación y estrategia para integrar sostenibilidad de manera realista y medible, alineada con los objetivos de cada organización.',
-    highlights: [
-      'Diagnóstico y estrategia ESG',
-      'Capacitaciones aplicadas',
-      'Reporte y comunicación',
-    ],
+      'Programas y estrategias para integrar sostenibilidad de forma concreta en organizaciones y territorios.',
     image: imgSostenibilidad,
   },
   {
     id: 'inteligencia-artificial',
     code: 'T · 02',
     label: 'Inteligencia artificial',
-    tagline: 'Adopción + aplicación',
-    headline: 'IA aplicada al cambio.',
     desc:
-      'Capacitaciones y programas para comprender, adoptar y aplicar inteligencia artificial dentro de las organizaciones, con foco en impacto real.',
-    highlights: [
-      'Programas de adopción',
-      'Casos de uso aplicados',
-      'Gobernanza y ética',
-    ],
+      'Formación y programas para incorporar IA en procesos, equipos y toma de decisiones.',
     image: imgInteligenciaArtificial,
   },
   {
-    id: 'innovacion-institucional',
+    id: 'comunicacion-posicionamiento',
     code: 'T · 03',
-    label: 'Innovación institucional',
-    tagline: 'Modelos + capacidades',
-    headline: 'Antes y después del cambio.',
+    label: 'Comunicación y posicionamiento',
     desc:
-      'Herramientas para actualizar modelos, agendas y capacidades institucionales. Arrastrá el divisor para ver la transformación.',
-    highlights: [
-      'Rediseño de procesos',
-      'Mapas de capacidades',
-      'Roadmap institucional',
-    ],
-    image: imgInnovacionInstitucional,
-    compare: true,
+      'Diseño de narrativas, mensajes y campañas para construir relevancia y acompañar procesos de cambio.',
+    image: imgComunicacionNarrativa,
   },
   {
-    id: 'comunicacion-narrativa',
+    id: 'transformacion-organizacional',
     code: 'T · 04',
-    label: 'Comunicación y narrativa',
-    tagline: 'Mensajes + relevancia',
-    headline: 'Narrativa que construye relevancia.',
+    label: 'Transformación organizacional',
     desc:
-      'Diseño de mensajes, posicionamiento y campañas para construir la voz institucional y conectar con públicos clave.',
-    highlights: [
-      'Estrategia de posicionamiento',
-      'Campañas integrales',
-      'Narrativas internas',
-    ],
-    image: imgComunicacionNarrativa,
+      'Ideación e implementación de iniciativas para actualizar modelos, agendas y capacidades.',
+    image: imgInnovacionInstitucional,
   },
 ]
 
 const activeTopic = computed(() => topics[active.value])
 
 let reduce = false
-let autoplayTimer = null
-let progressTween = null
 let orbTweens = []
 let stageCtx = null
 let initialTrigger = null
 let pointerHover = false
-let pointerActive = false
-
-const AUTOPLAY_MS = 7000
 
 function pad(n) {
   return String(n).padStart(2, '0')
@@ -346,54 +209,11 @@ function setSlideRef(el, i) {
   if (el) slideRefs.value[i] = el
 }
 
-function setActive(i, manual = false) {
+function setActive(i) {
   const n = topics.length
   const next = ((i % n) + n) % n
   if (next === active.value) return
   active.value = next
-  if (manual) restartAutoplay()
-}
-
-function startAutoplay() {
-  if (!autoplay.value || autoplayTimer || reduce) return
-  autoplayTimer = window.setInterval(() => {
-    if (!pointerHover) setActive(active.value + 1)
-  }, AUTOPLAY_MS)
-  startProgress()
-}
-
-function stopAutoplay() {
-  if (autoplayTimer) {
-    window.clearInterval(autoplayTimer)
-    autoplayTimer = null
-  }
-  if (progressTween) {
-    progressTween.kill()
-    progressTween = null
-  }
-  if (progressRef.value) gsap.set(progressRef.value, { scaleX: 0 })
-}
-
-function restartAutoplay() {
-  stopAutoplay()
-  startAutoplay()
-}
-
-function toggleAutoplay() {
-  autoplay.value = !autoplay.value
-  if (autoplay.value) startAutoplay()
-  else stopAutoplay()
-}
-
-function startProgress() {
-  if (!progressRef.value || reduce) return
-  if (progressTween) progressTween.kill()
-  gsap.set(progressRef.value, { scaleX: 0, transformOrigin: 'left center' })
-  progressTween = gsap.to(progressRef.value, {
-    scaleX: 1,
-    duration: AUTOPLAY_MS / 1000,
-    ease: 'none',
-  })
 }
 
 function animateSlideSwitch(prevIdx, newIdx) {
@@ -465,21 +285,19 @@ function onCaptionEnter(el, done) {
     return
   }
   const words = el.querySelectorAll('.temas-word-inner')
-  const kicker = el.querySelector('.temas__caption-kicker')
   const desc = el.querySelector('.temas__caption-desc')
   gsap.set(words, { yPercent: 118 })
-  gsap.set([kicker, desc].filter(Boolean), { opacity: 0, y: 16 })
+  gsap.set(desc, { opacity: 0, y: 16 })
   const tl = gsap.timeline({
     onComplete: done,
     defaults: { ease: 'power3.out' },
   })
-  tl.to(kicker, { opacity: 1, y: 0, duration: 0.55 }, 0)
   tl.to(
     words,
     { yPercent: 0, duration: 1.0, stagger: 0.055, ease: 'expo.out' },
-    0.08
+    0
   )
-  tl.to(desc, { opacity: 1, y: 0, duration: 0.7 }, 0.32)
+  tl.to(desc, { opacity: 1, y: 0, duration: 0.7 }, 0.24)
 }
 
 function onCaptionLeave(el, done) {
@@ -488,58 +306,22 @@ function onCaptionLeave(el, done) {
     return
   }
   const words = el.querySelectorAll('.temas-word-inner')
-  const kicker = el.querySelector('.temas__caption-kicker')
   const desc = el.querySelector('.temas__caption-desc')
   const tl = gsap.timeline({
     onComplete: done,
     defaults: { ease: 'power2.in' },
   })
-  tl.to([kicker, desc].filter(Boolean), { opacity: 0, y: -10, duration: 0.3 }, 0)
+  tl.to(desc, { opacity: 0, y: -10, duration: 0.3 }, 0)
   tl.to(words, { yPercent: -130, duration: 0.36, stagger: 0.03 }, 0)
-}
-
-function onHighlightsEnter(el, done) {
-  if (reduce) {
-    done()
-    return
-  }
-  const tag = el.querySelector('.temas__panel-tag')
-  const items = el.querySelectorAll('.temas__panel-highlight')
-  gsap.set([tag, ...items].filter(Boolean), { opacity: 0, x: -16 })
-  const tl = gsap.timeline({
-    onComplete: done,
-    defaults: { ease: 'power3.out' },
-  })
-  tl.to(tag, { opacity: 1, x: 0, duration: 0.5 }, 0)
-  tl.to(items, { opacity: 1, x: 0, duration: 0.6, stagger: 0.07 }, 0.12)
-}
-
-function onHighlightsLeave(el, done) {
-  if (reduce) {
-    done()
-    return
-  }
-  const tag = el.querySelector('.temas__panel-tag')
-  const items = el.querySelectorAll('.temas__panel-highlight')
-  gsap.to([tag, ...items].filter(Boolean), {
-    opacity: 0,
-    x: -10,
-    duration: 0.32,
-    stagger: 0.03,
-    ease: 'power2.in',
-    onComplete: done,
-  })
 }
 
 function onStageEnter() {
   pointerHover = true
-  if (progressTween) progressTween.pause()
 }
 
 function onStageLeave() {
   pointerHover = false
-  if (autoplay.value && progressTween) progressTween.resume()
-  if (reduce || activeTopic.value.compare || !stageRef.value) return
+  if (reduce || !stageRef.value) return
   gsap.to(stageRef.value, {
     rotationX: 0,
     rotationY: 0,
@@ -557,7 +339,7 @@ function onStageLeave() {
 }
 
 function onStageMouseMove(e) {
-  if (reduce || activeTopic.value.compare || !stageRef.value) return
+  if (reduce || !stageRef.value) return
   const rect = stageRef.value.getBoundingClientRect()
   const x = (e.clientX - rect.left) / rect.width - 0.5
   const y = (e.clientY - rect.top) / rect.height - 0.5
@@ -579,40 +361,8 @@ function onStageMouseMove(e) {
   }
 }
 
-function setPctFromClientX(clientX) {
-  const el = compareRef.value
-  if (!el) return
-  const r = el.getBoundingClientRect()
-  const x = clientX - r.left
-  comparePct.value = Math.min(100, Math.max(0, (x / r.width) * 100))
-}
-
-function onComparePointerDown(e) {
-  const root = compareRef.value
-  if (!root || !root.contains(e.target)) return
-  e.preventDefault()
-  pointerActive = true
-  root.setPointerCapture?.(e.pointerId)
-  setPctFromClientX(e.clientX)
-
-  const move = (ev) => {
-    if (!pointerActive) return
-    setPctFromClientX(ev.clientX)
-  }
-  const up = () => {
-    pointerActive = false
-    window.removeEventListener('pointermove', move)
-    window.removeEventListener('pointerup', up)
-    window.removeEventListener('pointercancel', up)
-  }
-  window.addEventListener('pointermove', move)
-  window.addEventListener('pointerup', up)
-  window.addEventListener('pointercancel', up)
-}
-
 watch(active, (newIdx, prevIdx) => {
   animateSlideSwitch(prevIdx, newIdx)
-  if (autoplay.value && !pointerHover) startProgress()
 })
 
 onMounted(async () => {
@@ -641,22 +391,7 @@ onMounted(async () => {
   const captionEl = sectionRef.value?.querySelector('.temas__caption')
   if (captionEl) {
     gsap.set(captionEl.querySelectorAll('.temas-word-inner'), { yPercent: 118 })
-    gsap.set(
-      [
-        captionEl.querySelector('.temas__caption-kicker'),
-        captionEl.querySelector('.temas__caption-desc'),
-      ].filter(Boolean),
-      { opacity: 0, y: 16 }
-    )
-  }
-
-  const highlightsEl = sectionRef.value?.querySelector(
-    '.temas__panel-highlights'
-  )
-  if (highlightsEl) {
-    const tag = highlightsEl.querySelector('.temas__panel-tag')
-    const items = highlightsEl.querySelectorAll('.temas__panel-highlight')
-    gsap.set([tag, ...items].filter(Boolean), { opacity: 0, x: -16 })
+    gsap.set(captionEl.querySelector('.temas__caption-desc'), { opacity: 0, y: 16 })
   }
 
   if (reduce) {
@@ -671,22 +406,7 @@ onMounted(async () => {
     })
     if (captionEl) {
       gsap.set(captionEl.querySelectorAll('.temas-word-inner'), { yPercent: 0 })
-      gsap.set(
-        [
-          captionEl.querySelector('.temas__caption-kicker'),
-          captionEl.querySelector('.temas__caption-desc'),
-        ].filter(Boolean),
-        { opacity: 1, y: 0 }
-      )
-    }
-    if (highlightsEl) {
-      gsap.set(
-        [
-          highlightsEl.querySelector('.temas__panel-tag'),
-          ...highlightsEl.querySelectorAll('.temas__panel-highlight'),
-        ].filter(Boolean),
-        { opacity: 1, x: 0 }
-      )
+      gsap.set(captionEl.querySelector('.temas__caption-desc'), { opacity: 1, y: 0 })
     }
     return
   }
@@ -711,28 +431,20 @@ onMounted(async () => {
 
         if (captionEl) {
           const words = captionEl.querySelectorAll('.temas-word-inner')
-          const kicker = captionEl.querySelector('.temas__caption-kicker')
           const desc = captionEl.querySelector('.temas__caption-desc')
-          gsap.to(kicker, {
-            opacity: 1,
-            y: 0,
-            duration: 0.55,
-            ease: 'power3.out',
-            delay: 0.28,
-          })
           gsap.to(words, {
             yPercent: 0,
             duration: 1.05,
             stagger: 0.055,
             ease: 'expo.out',
-            delay: 0.38,
+            delay: 0.28,
           })
           gsap.to(desc, {
             opacity: 1,
             y: 0,
             duration: 0.7,
             ease: 'power3.out',
-            delay: 0.7,
+            delay: 0.55,
           })
         }
 
@@ -761,38 +473,6 @@ onMounted(async () => {
           ease: 'power3.out',
           delay: 0.3,
         })
-        gsap.from('.temas__panel-controls > *', {
-          opacity: 0,
-          y: 12,
-          duration: 0.55,
-          stagger: 0.07,
-          ease: 'power3.out',
-          delay: 0.95,
-        })
-
-        if (highlightsEl) {
-          const tag = highlightsEl.querySelector('.temas__panel-tag')
-          const items = highlightsEl.querySelectorAll(
-            '.temas__panel-highlight'
-          )
-          gsap.to(tag, {
-            opacity: 1,
-            x: 0,
-            duration: 0.5,
-            ease: 'power3.out',
-            delay: 0.7,
-          })
-          gsap.to(items, {
-            opacity: 1,
-            x: 0,
-            duration: 0.6,
-            stagger: 0.07,
-            ease: 'power3.out',
-            delay: 0.85,
-          })
-        }
-
-        gsap.delayedCall(1.8, () => startAutoplay())
       },
     })
   }, sectionRef.value)
@@ -820,7 +500,6 @@ onMounted(async () => {
 })
 
 onBeforeUnmount(() => {
-  stopAutoplay()
   stageCtx?.revert()
   stageCtx = null
   initialTrigger?.kill()
@@ -829,9 +508,6 @@ onBeforeUnmount(() => {
   orbTweens = []
 })
 
-onUnmounted(() => {
-  pointerActive = false
-})
 </script>
 
 <style scoped>
@@ -842,7 +518,7 @@ onUnmounted(() => {
   --temas-rule: rgba(28, 26, 24, 0.18);
   --temas-line-soft: rgba(28, 26, 24, 0.10);
   --temas-line-faint: rgba(28, 26, 24, 0.07);
-  --temas-accent: #21dc99;
+  --temas-accent: #da5933;
   --temas-warm: #efdbb4;
 
   position: relative;

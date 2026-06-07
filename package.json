@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "flag-icons": "^7.5.0",
     "gsap": "^3.12.7",
     "lenis": "^1.2.3",
     "primeicons": "^7.0.0",

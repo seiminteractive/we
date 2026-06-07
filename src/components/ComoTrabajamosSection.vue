@@ -474,16 +474,17 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .cw {
-  --cw-ink: #1c1a18;
-  --cw-muted: rgba(28, 26, 24, 0.60);
-  --cw-line: rgba(28, 26, 24, 0.12);
-  --cw-line-soft: rgba(28, 26, 24, 0.07);
-  --cw-accent: #21dc99;
+  --cw-ink: #f4efe6;
+  --cw-muted: rgba(255, 255, 255, 0.60);
+  --cw-line: rgba(255, 255, 255, 0.12);
+  --cw-line-soft: rgba(255, 255, 255, 0.07);
+  --cw-accent: #da5933;
   --cw-warm: #efdbb4;
-  --cw-glow: rgba(33, 220, 153, 0.55);
-  --cw-glow-soft: rgba(33, 220, 153, 0.22);
+  --cw-glow: rgba(218, 89, 51, 0.55);
+  --cw-glow-soft: rgba(218, 89, 51, 0.22);
 
   position: relative;
+  background: #373737;
   color: var(--cw-ink);
   overflow: clip;
   isolation: isolate;
@@ -659,8 +660,8 @@ onBeforeUnmount(() => {
   height: 0.5rem;
   border-radius: 50%;
   background: var(--cw-accent);
-  border: 1px solid rgba(33, 220, 153, 0.55);
-  box-shadow: 0 0 6px rgba(33, 220, 153, 0.4);
+  border: 1px solid rgba(218, 89, 51, 0.55);
+  box-shadow: 0 0 6px rgba(218, 89, 51, 0.4);
   transform: translate(-50%, -50%);
 }
 
@@ -720,7 +721,7 @@ onBeforeUnmount(() => {
   font-size: clamp(11rem, 28vw, 26rem);
   /* font-weight: var(--font-w-extrabold); */
   line-height: 0.92;
-  color: rgba(28, 26, 24, 0.06);
+  color: rgba(255, 255, 255, 0.06);
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
@@ -742,7 +743,7 @@ onBeforeUnmount(() => {
   max-width: 12rem;
   height: auto;
   aspect-ratio: 1 / 1;
-  stroke: rgba(18, 20, 18, 0.82);
+  stroke: rgba(244, 239, 230, 0.82);
   stroke-width: 1.4;
   fill: none;
   overflow: visible;
@@ -768,21 +769,21 @@ onBeforeUnmount(() => {
 
 .cw__step--acompanamos .cw__step-emblem {
   filter:
-    drop-shadow(0 0 6px rgba(120, 220, 255, 0.80))
-    drop-shadow(0 0 18px rgba(120, 220, 255, 0.45));
+    drop-shadow(0 0 6px rgba(145, 151, 137, 0.80))
+    drop-shadow(0 0 18px rgba(145, 151, 137, 0.45));
   animation-name: cwEmblemBreatheCool;
 }
 
 @keyframes cwEmblemBreathe {
   0%, 100% {
     filter:
-      drop-shadow(0 0 5px rgba(33, 220, 153, 0.70))
-      drop-shadow(0 0 16px rgba(33, 220, 153, 0.38));
+      drop-shadow(0 0 5px rgba(218, 89, 51, 0.70))
+      drop-shadow(0 0 16px rgba(218, 89, 51, 0.38));
   }
   50% {
     filter:
-      drop-shadow(0 0 8px rgba(33, 220, 153, 0.90))
-      drop-shadow(0 0 28px rgba(33, 220, 153, 0.55));
+      drop-shadow(0 0 8px rgba(218, 89, 51, 0.90))
+      drop-shadow(0 0 28px rgba(218, 89, 51, 0.55));
   }
 }
 
@@ -802,13 +803,13 @@ onBeforeUnmount(() => {
 @keyframes cwEmblemBreatheCool {
   0%, 100% {
     filter:
-      drop-shadow(0 0 5px rgba(120, 220, 255, 0.72))
-      drop-shadow(0 0 16px rgba(120, 220, 255, 0.38));
+      drop-shadow(0 0 5px rgba(145, 151, 137, 0.72))
+      drop-shadow(0 0 16px rgba(145, 151, 137, 0.38));
   }
   50% {
     filter:
-      drop-shadow(0 0 8px rgba(120, 220, 255, 0.90))
-      drop-shadow(0 0 28px rgba(120, 220, 255, 0.52));
+      drop-shadow(0 0 8px rgba(145, 151, 137, 0.90))
+      drop-shadow(0 0 28px rgba(145, 151, 137, 0.52));
   }
 }
 
@@ -926,7 +927,7 @@ onBeforeUnmount(() => {
   width: 100%;
   background: linear-gradient(
     90deg,
-    rgba(28, 26, 24, 0.30) 0%,
+    rgba(255, 255, 255, 0.30) 0%,
     transparent 100%
   );
   transform-origin: left center;

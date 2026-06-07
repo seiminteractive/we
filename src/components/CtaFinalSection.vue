@@ -41,7 +41,7 @@
 
 <script setup>
 import { useScrollReveal } from '../composables/useScrollReveal'
-import imagenCta from '../assets/imagenCta.png'
+import imagenCta from '../assets/imagenesDefinitivas/acompaniamosOrganizaciones.jpeg'
 
 const { sectionRef } = useScrollReveal()
 
@@ -50,13 +50,12 @@ const ctaImage = imagenCta
 
 <style scoped>
 .fcta {
-  --fcta-bg: var(--section-bg);
   --fcta-ink: #1c1a18;
-  --fcta-muted: rgba(28, 26, 24, 0.62);
-  --fcta-line: rgba(28, 26, 24, 0.20);
+  --fcta-muted: rgba(28, 26, 24, 0.70);
+  --fcta-line: rgba(28, 26, 24, 0.22);
 
   position: relative;
-  background: var(--fcta-bg);
+  background: var(--brand-sage);
   color: var(--fcta-ink);
   box-sizing: border-box;
   overflow-x: clip;
@@ -183,23 +182,26 @@ const ctaImage = imagenCta
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  color: var(--fcta-ink);
+  color: #fff;
   border-radius: 8px;
-  border: 1px solid var(--fcta-line);
-  background: rgba(28, 26, 24, 0.06);
+  border: 1px solid var(--brand-terracotta);
+  background: var(--brand-terracotta);
   padding: 0.35rem 0.35rem 0.35rem 1.1rem;
   font-family: var(--font-body);
   font-size: 0.8125rem;
-  font-weight: var(--font-w-medium);
+  font-weight: var(--font-w-semibold);
   letter-spacing: 0.01em;
+  box-shadow: 0 12px 30px rgba(var(--accent-rgb), 0.30);
   transition:
-    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
     background-color 0.2s ease;
 }
 
 .fcta__cta:hover {
-  border-color: rgba(28, 26, 24, 0.40);
-  background: rgba(28, 26, 24, 0.10);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 38px rgba(var(--accent-rgb), 0.42);
+  background: #c44e2c;
 }
 
 .fcta__cta-label {
@@ -213,8 +215,8 @@ const ctaImage = imagenCta
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 6px;
-  background: rgba(28, 26, 24, 0.10);
-  color: var(--fcta-ink);
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
 }
 
 .fcta__cta-icon .pi {

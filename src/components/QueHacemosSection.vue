@@ -33,14 +33,13 @@
 
         <div class="qh__head-grid">
           <h2 id="qh-heading" class="qh__title" data-reveal>
-            Formación, comunicación y estrategia
-            <em class="qh__title-em">para transformar organizaciones.</em>
+            FORMACIÓN Y DESARROLLO
           </h2>
 
           <div class="qh__head-right" data-reveal>
             <p class="qh__lead">
-              Tres disciplinas, una misma intención:
-              mover lo posible hacia lo concreto.
+              Programas en sostenibilidad, inteligencia artificial e innovación,
+              orientados al desarrollo de líderes, equipos y comunidades.
             </p>
             <a href="#contacto" class="qh__cta">
               <span class="qh__cta-aura" aria-hidden="true" />
@@ -105,9 +104,9 @@ import { useScrollReveal } from '../composables/useScrollReveal'
 import { gsap } from '../lib/gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-import imgFormacion from '../assets/formacionEnSostenibilidad.jpeg'
-import imgComunicacion from '../assets/comunicacionInstitucional.jpeg'
-import imgEstrategia from '../assets/estrategiasPublicasDeTransformacion.jpeg'
+import imgFormacion from '../assets/imagenesDefinitivas/programaSustentabilidad.jpeg'
+import imgComunicacion from '../assets/imagenesDefinitivas/verticalComunicacinoYPosicionamiento.jpeg'
+import imgEstrategia from '../assets/imagenesDefinitivas/verticalTransformacionOrganizacional.jpeg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -125,20 +124,16 @@ const pillars = [
     tags: ['Líderes', 'Equipos', 'Comunidades'],
     floatImg: imgFormacion,
     paths: [
-      // Open book – left page
-      'M 110 160 C 100 155, 50 150, 40 130 L 40 80 C 50 95, 100 100, 110 105 Z',
-      // Open book – right page
-      'M 110 160 C 120 155, 170 150, 180 130 L 180 80 C 170 95, 120 100, 110 105 Z',
-      // Book spine
-      'M 110 105 L 110 160',
-      // Rising knowledge sparks
-      'M 80 75 C 80 60, 85 50, 90 38',
-      'M 110 70 L 110 28',
-      'M 140 75 C 140 60, 135 50, 130 38',
-      // Sparkle crosses
-      'M 87 35 L 93 41 M 90 33 L 90 43',
-      'M 107 25 L 113 31 M 110 23 L 110 33',
-      'M 127 35 L 133 41 M 130 33 L 130 43',
+      // Graduation cap – mortarboard (perspective top)
+      'M 110 55 L 180 90 L 110 125 L 40 90 Z',
+      // Cap band / head
+      'M 78 100 L 78 124 C 78 140, 142 140, 142 124 L 142 100',
+      // Tassel string
+      'M 180 90 L 180 138',
+      // Tassel end
+      'M 180 138 L 174 156 M 180 138 L 186 156 M 180 138 L 180 158',
+      // Center button
+      'M 105 91 A 5 5 0 1 0 115 91 A 5 5 0 1 0 105 91',
     ],
   },
   {
@@ -149,16 +144,16 @@ const pillars = [
     tags: ['Narrativa', 'Campañas', 'Institucional'],
     floatImg: imgComunicacion,
     paths: [
-      // Main speech bubble
-      'M 30 55 C 30 38, 45 30, 55 30 L 125 30 C 140 30, 150 38, 150 55 L 150 95 C 150 112, 140 120, 125 120 L 68 120 L 48 145 L 54 120 C 40 120, 30 112, 30 95 Z',
-      // Small reply bubble
-      'M 160 75 C 160 66, 168 60, 175 60 L 200 60 C 207 60, 215 66, 215 75 L 215 100 C 215 109, 207 115, 200 115 L 183 115 L 176 130 L 179 115 C 168 115, 160 109, 160 100 Z',
-      // Text lines in main bubble
-      'M 44 58 L 120 58',
-      'M 44 74 L 136 74',
-      'M 44 90 L 100 90',
-      // Bridge between bubbles
-      'M 150 92 C 153 87, 156 83, 160 86',
+      // Megaphone horn
+      'M 48 102 L 48 138 L 96 150 L 150 166 L 150 64 L 96 90 Z',
+      // Neck rim
+      'M 96 90 L 96 150',
+      // Sound wave – inner
+      'M 165 92 C 177 108, 177 122, 165 138',
+      // Sound wave – outer
+      'M 180 76 C 198 100, 198 130, 180 154',
+      // Handle
+      'M 68 150 L 68 170 C 68 176, 82 176, 82 170 L 82 154',
     ],
   },
   {
@@ -169,17 +164,16 @@ const pillars = [
     tags: ['Agendas', 'Proyectos', 'Impacto'],
     floatImg: imgEstrategia,
     paths: [
-      // Route / journey path
-      'M 20 185 C 40 185, 50 165, 60 145 C 70 125, 90 115, 110 115 C 130 115, 140 95, 150 75 C 160 55, 180 42, 200 32',
-      // Waypoint dots (small circles via arcs)
-      'M 65 145 A 5 5 0 1 1 65 144.99 Z',
-      'M 115 115 A 5 5 0 1 1 115 114.99 Z',
-      'M 155 75 A 5 5 0 1 1 155 74.99 Z',
-      // Start marker
-      'M 25 185 A 5 5 0 1 1 25 184.99 Z',
-      // Flag at destination
-      'M 200 32 L 200 10',
-      'M 200 10 L 218 18 L 200 26',
+      // Target – outer ring
+      'M 57 115 A 48 48 0 1 0 153 115 A 48 48 0 1 0 57 115',
+      // Target – middle ring
+      'M 77 115 A 28 28 0 1 0 133 115 A 28 28 0 1 0 77 115',
+      // Bullseye
+      'M 95 115 A 10 10 0 1 0 115 115 A 10 10 0 1 0 95 115',
+      // Arrow shaft (tip in the center)
+      'M 178 188 L 105 115',
+      // Arrowhead
+      'M 105 115 L 124 121 M 105 115 L 111 134',
     ],
   },
 ]
@@ -344,14 +338,14 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .qh {
-  --qh-ink: #000000;
-  --qh-muted: #000000;
-  --qh-faint: #000000;
-  --qh-line: #000000;
-  --qh-line-soft: #000000;
-  --qh-accent: #21dc99;
-  --qh-warm: #a78bfa;
-  --qh-cool: #8cdcff;
+  --qh-ink: #1c1a18;
+  --qh-muted: rgba(28, 26, 24, 0.62);
+  --qh-faint: rgba(28, 26, 24, 0.42);
+  --qh-line: rgba(28, 26, 24, 0.14);
+  --qh-line-soft: rgba(28, 26, 24, 0.08);
+  --qh-accent: #da5933;
+  --qh-warm: #919789;
+  --qh-cool: #373737;
 
   position: relative;
   isolation: isolate;

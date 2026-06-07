@@ -23,16 +23,33 @@
 
         <div class="para__head-row">
           <Transition :css="false" mode="out-in" @enter="onHeadEnter" @leave="onHeadLeave">
-            <h2
-              v-if="activeIx === null"
-              key="title"
-              id="para-heading"
-              class="para__title"
-              data-reveal
-            >
-              Organizaciones
-              <em class="para__title-em">que buscan liderar el futuro.</em>
-            </h2>
+            <div v-if="activeIx === null" key="title" class="para__head-main">
+              <h2 id="para-heading" class="para__title" data-reveal>
+                Trabajamos con quienes lideran y transforman
+                <em class="para__title-em">organizaciones.</em>
+              </h2>
+              <p class="para__lead" data-reveal>
+                Diseñamos e implementamos soluciones en formación, comunicación
+                y transformación, conectando liderazgo, ejecución y tecnología.
+              </p>
+              <p class="para__reach" data-reveal>
+                Experiencia en
+                <span
+                  v-for="(region, ri) in regions"
+                  :key="region.name"
+                  class="para__reach-region"
+                >
+                  <template v-if="ri > 0 && ri < regions.length - 1">, </template>
+                  <template v-else-if="ri === regions.length - 1 && ri > 0"> y </template>
+                  <span
+                    :class="['fi', `fi-${region.code}`, 'para__reach-flag']"
+                    aria-hidden="true"
+                  />
+                  {{ region.name }}
+                </span>,
+                articulando sector privado, público y social.
+              </p>
+            </div>
             <button
               v-else
               key="back"
@@ -99,7 +116,7 @@
             <span class="para__col-ix">{{ item.ix }}</span>
             <h3 class="para__col-label">{{ item.label }}</h3>
             <span class="para__col-line" aria-hidden="true" />
-            <span class="para__col-tagline">{{ item.tagline }}</span>
+            <p class="para__col-desc-foot">{{ item.desc }}</p>
           </div>
 
           <div
@@ -108,28 +125,33 @@
             :ref="(el) => setPanelRef(el, i)"
             aria-hidden="true"
           >
-            <span class="para__col-kicker">{{ item.tagline }}</span>
-            <h4 class="para__col-headline">
-              <span
-                v-for="(w, wi) in item.headline.split(' ')"
-                :key="wi"
-                class="para__col-word"
-              >
-                <span class="para__col-word-inner">{{ w }}</span>
-              </span>
-            </h4>
-            <p class="para__col-desc">{{ item.detail }}</p>
-            <ul class="para__col-highlights" role="list">
+            <span class="para__col-kicker">{{ item.label }}</span>
+            <p class="para__col-desc">{{ item.panelIntro }}</p>
+            <ul class="para__col-areas" role="list">
               <li
-                v-for="(h, hi) in item.highlights"
-                :key="h"
-                class="para__col-highlight"
+                v-for="area in item.areas"
+                :key="area"
+                class="para__col-area"
               >
-                <span class="para__col-highlight-num">A · {{ pad(hi + 1) }}</span>
-                <span class="para__col-highlight-line" aria-hidden="true" />
-                <span class="para__col-highlight-text">{{ h }}</span>
+                {{ area }}
               </li>
             </ul>
+            <p class="para__col-note">
+              <span class="para__col-note-mark" aria-hidden="true">◆</span>
+              <span>{{ item.note }}</span>
+            </p>
+            <div class="para__col-clients">
+              <p class="para__col-clients-kicker">Algunas organizaciones</p>
+              <ul class="para__col-clients-list" role="list">
+                <li
+                  v-for="client in item.clients"
+                  :key="client"
+                  class="para__col-client"
+                >
+                  {{ client }}
+                </li>
+              </ul>
+            </div>
             <a href="#contacto" class="para__col-cta">
               <span>Trabajar con nosotros</span>
               <span class="para__col-cta-arrow" aria-hidden="true">→</span>
@@ -143,9 +165,9 @@
 
 <script setup>
 import { nextTick, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue'
-import imgEmpresas from '../assets/fondoEmpresasDef.jpeg'
-import imgGobiernos from '../assets/gobiernos.jpeg'
-import imgOrganizaciones from '../assets/organizaciones.jpeg'
+import imgEmpresas from '../assets/imagenesDefinitivas/acompaniamosEmpresas.jpeg'
+import imgGobiernos from '../assets/imagenesDefinitivas/acompaniamosGobiernos.jpeg'
+import imgOrganizaciones from '../assets/imagenesDefinitivas/acompaniamosOrganizaciones.jpeg'
 import { useScrollReveal } from '../composables/useScrollReveal'
 import { gsap } from '../lib/gsap'
 
@@ -161,14 +183,19 @@ const audiences = [
     ix: '01',
     code: 'P · 01',
     label: 'Empresas',
-    tagline: 'Escala y posicionamiento',
-    headline: 'Escalar con foco, no con ruido.',
-    detail:
-      'Acompañamos a equipos de liderazgo en estrategia, comunicación e innovación aplicada para crecer con foco y diferenciación real.',
-    highlights: [
-      'Estrategia de posicionamiento',
-      'Liderazgo y cultura',
-      'Innovación aplicada',
+    desc: 'Transformamos organizaciones desde el liderazgo y la ejecución.',
+    panelIntro: 'Transformamos organizaciones desde el liderazgo y la ejecución.',
+    areas: [
+      'Logística y operaciones',
+      'Retail y comercialización',
+      'Innovación y estrategia',
+    ],
+    note: 'Trabajamos con quienes toman decisiones y hacen que las cosas pasen.',
+    clients: [
+      'Empresas de logística (ej. OCA)',
+      'Movilidad urbana en Uruguay',
+      'Movilidad en Europa (Valencia)',
+      'Retail (Ribeiro)',
     ],
     image: imgEmpresas,
   },
@@ -176,32 +203,43 @@ const audiences = [
     ix: '02',
     code: 'P · 02',
     label: 'Gobiernos',
-    tagline: 'Transformación pública',
-    headline: 'Política pública que se ejecuta.',
-    detail:
-      'Diseñamos soluciones para gestionar complejidad, fortalecer capacidades institucionales y mejorar la implementación de políticas públicas.',
-    highlights: [
-      'Gestión de complejidad',
-      'Capacidades institucionales',
-      'Implementación de políticas',
+    desc: 'Diseñamos soluciones para ciudades más eficientes y sostenibles.',
+    panelIntro: 'Acompañamos la transformación de la gestión pública y las ciudades.',
+    areas: [
+      'Infraestructura y movilidad urbana',
+      'Tecnología y sistemas de gestión (smart city)',
+      'Desarrollo comunitario y servicios esenciales',
     ],
+    note: 'Integramos innovación, gestión y territorio.',
+    clients: ['Paraná (Entre Ríos)', 'La Rioja'],
     image: imgGobiernos,
   },
   {
     ix: '03',
     code: 'P · 03',
     label: 'Organizaciones',
-    tagline: 'Impacto y sostenibilidad',
-    headline: 'Impacto que perdura en el tiempo.',
-    detail:
-      'Impulsamos procesos de evolución organizacional, articulación y narrativa para ampliar alcance y generar resultados medibles.',
-    highlights: [
-      'Evolución organizacional',
-      'Articulación y alianzas',
-      'Narrativa de impacto',
+    desc: 'Impulsamos procesos de formación, innovación y transformación del trabajo.',
+    panelIntro: 'Impulsamos procesos de formación y transformación del trabajo.',
+    areas: [
+      'Sostenibilidad y ambiente',
+      'Inteligencia artificial aplicada',
+      'Desarrollo de equipos',
+    ],
+    note:
+      'Acompañamos a personas y equipos que impulsan transformación en sus organizaciones.',
+    clients: [
+      'Sindicato de Camioneros (Ambiente)',
+      'Fundación Geo Ecoreciclaje',
     ],
     image: imgOrganizaciones,
   },
+]
+
+const regions = [
+  { code: 'ar', name: 'Argentina' },
+  { code: 'cl', name: 'Chile' },
+  { code: 'uy', name: 'Uruguay' },
+  { code: 'eu', name: 'Europa' },
 ]
 
 let reduce = false
@@ -211,10 +249,6 @@ let ambientTweens = []
 let orbTweens = []
 
 const isMobile = () => window.matchMedia('(max-width: 960px)').matches
-
-function pad(n) {
-  return String(n).padStart(2, '0')
-}
 
 function setColRef(el, i) {
   if (el) colRefs.value[i] = el
@@ -318,15 +352,17 @@ function expandColumn(targetIx) {
 
   if (panel) {
     const kicker = panel.querySelector('.para__col-kicker')
-    const words = panel.querySelectorAll('.para__col-word-inner')
     const desc = panel.querySelector('.para__col-desc')
-    const highlights = panel.querySelectorAll('.para__col-highlight')
+    const areas = panel.querySelectorAll('.para__col-area')
+    const note = panel.querySelector('.para__col-note')
+    const clients = panel.querySelector('.para__col-clients')
+    const clientItems = panel.querySelectorAll('.para__col-client')
     const cta = panel.querySelector('.para__col-cta')
 
     gsap.set(panel, { opacity: 1, pointerEvents: 'auto' })
-    gsap.set(words, { yPercent: 118 })
-    gsap.set([kicker, desc, cta].filter(Boolean), { opacity: 0, y: 22 })
-    gsap.set(highlights, { opacity: 0, x: -18 })
+    gsap.set([kicker, desc, note, clients, cta].filter(Boolean), { opacity: 0, y: 22 })
+    gsap.set(areas, { opacity: 0, x: -18 })
+    gsap.set(clientItems, { opacity: 0, y: 10 })
 
     if (corners.length) {
       mainTl.fromTo(
@@ -344,18 +380,20 @@ function expandColumn(targetIx) {
     }
 
     mainTl.to(kicker, { opacity: 1, y: 0, duration: 0.55 }, 0.7)
+    mainTl.to(desc, { opacity: 1, y: 0, duration: 0.7 }, 0.82)
     mainTl.to(
-      words,
-      { yPercent: 0, duration: 1.05, stagger: 0.06, ease: 'expo.out' },
-      0.75
+      areas,
+      { opacity: 1, x: 0, duration: 0.65, stagger: 0.08 },
+      0.95
     )
-    mainTl.to(desc, { opacity: 1, y: 0, duration: 0.7 }, 0.95)
+    mainTl.to(note, { opacity: 1, y: 0, duration: 0.7 }, 1.15)
+    mainTl.to(clients, { opacity: 1, y: 0, duration: 0.7 }, 1.28)
     mainTl.to(
-      highlights,
-      { opacity: 1, x: 0, duration: 0.7, stagger: 0.08 },
-      1.1
+      clientItems,
+      { opacity: 1, y: 0, duration: 0.55, stagger: 0.06 },
+      1.35
     )
-    mainTl.to(cta, { opacity: 1, y: 0, duration: 0.6 }, 1.3)
+    mainTl.to(cta, { opacity: 1, y: 0, duration: 0.6 }, 1.5)
   }
 }
 
@@ -382,26 +420,20 @@ function collapseColumns() {
 
     if (panel) {
       const kicker = panel.querySelector('.para__col-kicker')
-      const words = panel.querySelectorAll('.para__col-word-inner')
       const desc = panel.querySelector('.para__col-desc')
-      const highlights = panel.querySelectorAll('.para__col-highlight')
+      const areas = panel.querySelectorAll('.para__col-area')
+      const note = panel.querySelector('.para__col-note')
+      const clients = panel.querySelector('.para__col-clients')
+      const clientItems = panel.querySelectorAll('.para__col-client')
       const cta = panel.querySelector('.para__col-cta')
 
       mainTl.to(
-        [kicker, desc, cta].filter(Boolean),
+        [kicker, desc, note, clients, cta].filter(Boolean),
         { opacity: 0, y: 14, duration: 0.32 },
         0
       )
-      mainTl.to(
-        highlights,
-        { opacity: 0, x: -10, duration: 0.32, stagger: 0.03 },
-        0
-      )
-      mainTl.to(
-        words,
-        { yPercent: 118, duration: 0.35, stagger: 0.03 },
-        0
-      )
+      mainTl.to(areas, { opacity: 0, x: -10, duration: 0.32, stagger: 0.03 }, 0)
+      mainTl.to(clientItems, { opacity: 0, y: 8, duration: 0.28, stagger: 0.03 }, 0)
       mainTl.set(panel, { opacity: 0, pointerEvents: 'none' }, 0.4)
     }
   })
@@ -509,7 +541,7 @@ onUnmounted(() => {
   --para-rule: rgba(28, 26, 24, 0.18);
   --para-line: rgba(28, 26, 24, 0.12);
   --para-line-soft: rgba(28, 26, 24, 0.07);
-  --para-accent: #21dc99;
+  --para-accent: #da5933;
   --para-warm: #efdbb4;
 
   position: relative;
@@ -521,6 +553,7 @@ onUnmounted(() => {
   min-height: 100dvh;
   height: 100vh;
   height: 100dvh;
+  margin-bottom: clamp(4rem, 8vw, 6.5rem);
 }
 
 /* ---------- FX ---------- */
@@ -637,28 +670,72 @@ onUnmounted(() => {
 
 .para__head-row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  gap: clamp(1rem, 3vw, 2rem);
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.para__head-main {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+  min-width: 0;
+  max-width: min(58rem, 78vw);
 }
 
 .para__title {
   margin: 0;
   font-family: var(--font-heading);
   font-size: clamp(1.85rem, 4.2vw, 3rem);
-  line-height: 1.12;
+  line-height: 1.14;
   font-weight: 700;
   color: #1c1a18;
-  text-wrap: balance;
-  max-width: 36rem;
+  text-wrap: pretty;
+  max-width: none;
   font-synthesis: none;
 }
 
 .para__title-em {
-  display: block;
+  display: inline;
   font-style: normal;
   font-weight: var(--font-w-regular);
   color: rgba(28, 26, 24, 0.50);
+}
+
+.para__lead {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(0.875rem, 1.05vw, 0.96rem);
+  line-height: 1.6;
+  color: rgba(28, 26, 24, 0.62);
+  max-width: min(52rem, 100%);
+}
+
+.para__reach {
+  margin: 0;
+  max-width: min(56rem, 100%);
+  font-family: var(--font-body);
+  font-size: clamp(0.8rem, 0.95vw, 0.88rem);
+  line-height: 1.6;
+  color: rgba(28, 26, 24, 0.52);
+}
+
+.para__reach-globe {
+  margin-right: 0.1rem;
+}
+
+.para__reach-region {
+  white-space: nowrap;
+}
+
+.para__reach-flag {
+  display: inline-block;
+  width: 1.15em;
+  line-height: 0.85em;
+  margin: 0 0.12rem 0 0.32rem;
+  vertical-align: -0.08em;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(28, 26, 24, 0.1);
 }
 
 .para__back {
@@ -1078,20 +1155,22 @@ onUnmounted(() => {
   width: 4.2rem;
 }
 
-.para__col-tagline {
+.para__col-desc-foot {
+  margin: 0;
   font-family: var(--font-body);
-  font-size: 0.7rem;
-  font-weight: var(--font-w-semibold);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.62);
+  font-size: clamp(0.82rem, 1vw, 0.92rem);
+  line-height: 1.45;
+  font-weight: var(--font-w-regular);
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 16rem;
+  text-wrap: balance;
   opacity: 1;
   transform: translateX(0);
   transition: opacity 0.35s cubic-bezier(0.4, 0, 0.4, 1),
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.para__col.is-active .para__col-tagline {
+.para__col.is-active .para__col-desc-foot {
   opacity: 0;
   transform: translateX(-8px);
 }
@@ -1106,7 +1185,11 @@ onUnmounted(() => {
   z-index: 4;
   display: grid;
   gap: clamp(0.85rem, 1.6vw, 1.2rem);
+  max-height: min(34rem, 72vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   pointer-events: none;
+  scrollbar-width: thin;
 }
 
 .para__col-kicker {
@@ -1163,49 +1246,93 @@ onUnmounted(() => {
   will-change: opacity, transform;
 }
 
-.para__col-highlights {
+.para__col-areas {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
+  gap: 0.45rem;
 }
 
-.para__col-highlight {
-  display: grid;
-  grid-template-columns: 3.4rem 2rem 1fr;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 0.7rem 0;
-  border-top: 1px solid var(--para-line-soft);
-  will-change: opacity, transform;
-}
-
-.para__col-highlight:last-child {
-  border-bottom: 1px solid var(--para-line-soft);
-}
-
-.para__col-highlight-num {
-  font-family: var(--font-body);
-  font-size: 0.62rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(28, 26, 24, 0.42);
-}
-
-.para__col-highlight-line {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(28, 26, 24, 0.25) 0%,
-    transparent 100%
-  );
-}
-
-.para__col-highlight-text {
+.para__col-area {
+  position: relative;
+  padding-left: 1rem;
   font-family: var(--font-body);
   font-size: clamp(0.88rem, 1.05vw, 0.98rem);
   color: #1c1a18;
   line-height: 1.4;
+  will-change: opacity, transform;
+}
+
+.para__col-area::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 1px;
+  background: var(--para-accent);
+  transform: rotate(45deg);
+}
+
+.para__col-note {
+  margin: 0;
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  font-family: var(--font-body);
+  font-size: clamp(0.88rem, 1vw, 0.96rem);
+  line-height: 1.5;
+  color: rgba(28, 26, 24, 0.72);
+  max-width: 32rem;
+  will-change: opacity, transform;
+}
+
+.para__col-note-mark {
+  color: var(--para-accent);
+  font-size: 0.55rem;
+  line-height: 1.85;
+  flex-shrink: 0;
+}
+
+.para__col-clients {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--para-line-soft);
+  will-change: opacity, transform;
+}
+
+.para__col-clients-kicker {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  font-weight: var(--font-w-semibold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(28, 26, 24, 0.45);
+}
+
+.para__col-clients-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.para__col-client {
+  font-family: var(--font-body);
+  font-size: clamp(0.74rem, 0.9vw, 0.82rem);
+  line-height: 1.35;
+  color: #1c1a18;
+  padding: 0.38rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid rgba(28, 26, 24, 0.12);
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  will-change: opacity, transform;
 }
 
 .para__col-cta {
@@ -1254,6 +1381,7 @@ onUnmounted(() => {
   .para {
     height: auto;
     min-height: auto;
+    margin-bottom: clamp(3rem, 7vw, 5rem);
   }
 
   .para__shell {
@@ -1269,6 +1397,10 @@ onUnmounted(() => {
     align-items: start;
   }
 
+  .para__head-main {
+    max-width: none;
+  }
+
   .para__cta {
     justify-self: start;
   }
@@ -1278,6 +1410,10 @@ onUnmounted(() => {
     height: auto;
     margin: clamp(1.5rem, 4vw, 2rem) 0 0;
     border-bottom: none;
+  }
+
+  .para__reach-region {
+    white-space: normal;
   }
 
   .para__col {
@@ -1326,7 +1462,10 @@ onUnmounted(() => {
   .para__col-word-inner,
   .para__col-kicker,
   .para__col-desc,
-  .para__col-highlight,
+  .para__col-area,
+  .para__col-note,
+  .para__col-clients,
+  .para__col-client,
   .para__col-cta {
     transform: none !important;
     opacity: 1 !important;

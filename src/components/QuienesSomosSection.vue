@@ -86,11 +86,11 @@
             y1="2"
             x2="1000"
             y2="2"
-            stroke="#21dc99"
+            stroke="#da5933"
             stroke-width="1.8"
             stroke-dasharray="60 940"
             vector-effect="non-scaling-stroke"
-            style="filter: drop-shadow(0 0 5px rgba(33,220,153,0.85));"
+            style="filter: drop-shadow(0 0 5px rgba(218,89,51,0.85));"
           />
         </svg>
       </div>
@@ -140,7 +140,7 @@ const t1Chars = computed(() => titlePart1.split(''))
 const t2Chars = computed(() => titlePart2.split(''))
 
 const stmtWords = computed(() =>
-  'WE es una plataforma de formación, comunicación estratégica y diseño de transformación que acompaña a organizaciones en una nueva etapa: más tecnológica, más sostenible y más exigente en términos de liderazgo. No trabajamos desde lo teórico. Trabajamos desde lo aplicado, lo institucional y lo estratégico.'.split(' ')
+  'WE es una plataforma de formación, comunicación estratégica y transformación institucional que acompaña a empresas, gobiernos y organizaciones en una nueva etapa: más tecnológica, más sostenible y más exigente en liderazgo.'.split(' ')
 )
 
 const verticales = [
@@ -426,7 +426,7 @@ onUnmounted(() => {
   --ink-faint: rgba(28, 26, 24, 0.36);
   --ink-line: rgba(28, 26, 24, 0.12);
   --ink-line-soft: rgba(28, 26, 24, 0.08);
-  --accent: #21dc99;
+  --accent: #da5933;
 
   position: relative;
   background: transparent;
@@ -449,8 +449,8 @@ onUnmounted(() => {
   z-index: 0;
   background: radial-gradient(
     circle,
-    rgba(33, 220, 153, 0.10) 0%,
-    rgba(33, 220, 153, 0.03) 40%,
+    rgba(218, 89, 51, 0.10) 0%,
+    rgba(218, 89, 51, 0.03) 40%,
     transparent 72%
   );
   filter: blur(8px);
@@ -753,8 +753,8 @@ onUnmounted(() => {
   border-radius: 999px;
   /* background: radial-gradient(
     circle,
-    rgba(33, 220, 153, 0.30) 0%,
-    rgba(33, 220, 153, 0.08) 50%,
+    rgba(218, 89, 51, 0.30) 0%,
+    rgba(218, 89, 51, 0.08) 50%,
     transparent 80%
   ); */
   filter: blur(14px);
