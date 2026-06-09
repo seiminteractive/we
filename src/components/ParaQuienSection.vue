@@ -29,25 +29,8 @@
                 <em class="para__title-em">organizaciones.</em>
               </h2>
               <p class="para__lead" data-reveal>
-                Diseñamos e implementamos soluciones en formación, comunicación
-                y transformación, conectando liderazgo, ejecución y tecnología.
-              </p>
-              <p class="para__reach" data-reveal>
-                Experiencia en
-                <span
-                  v-for="(region, ri) in regions"
-                  :key="region.name"
-                  class="para__reach-region"
-                >
-                  <template v-if="ri > 0 && ri < regions.length - 1">, </template>
-                  <template v-else-if="ri === regions.length - 1 && ri > 0"> y </template>
-                  <span
-                    :class="['fi', `fi-${region.code}`, 'para__reach-flag']"
-                    aria-hidden="true"
-                  />
-                  {{ region.name }}
-                </span>,
-                articulando sector privado, público y social.
+                Formación, comunicación y transformación que conectan liderazgo,
+                ejecución y tecnología.
               </p>
             </div>
             <button
@@ -159,6 +142,25 @@
           </div>
         </li>
       </ol>
+
+      <div class="para__reach" data-reveal>
+        <span class="para__reach-kicker">Presencia</span>
+        <ul class="para__reach-list" role="list">
+          <li
+            v-for="region in regions"
+            :key="region.name"
+            class="para__reach-item"
+          >
+            <span
+              :class="['fi', `fi-${region.code}`, 'para__reach-flag']"
+              aria-hidden="true"
+            />
+            <span class="para__reach-name">{{ region.name }}</span>
+          </li>
+        </ul>
+        <span class="para__reach-rule" aria-hidden="true" />
+        <span class="para__reach-tag">Sector privado · público · social</span>
+      </div>
     </div>
   </section>
 </template>
@@ -712,30 +714,79 @@ onUnmounted(() => {
 }
 
 .para__reach {
-  margin: 0;
-  max-width: min(56rem, 100%);
-  font-family: var(--font-body);
-  font-size: clamp(0.8rem, 0.95vw, 0.88rem);
-  line-height: 1.6;
-  color: rgba(28, 26, 24, 0.52);
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(0.7rem, 1.6vw, 1.3rem);
+  margin: 0 clamp(1.5rem, 4vw, 3rem) clamp(1.4rem, 3vw, 2.2rem);
+  transition: opacity 0.45s ease;
 }
 
-.para__reach-globe {
-  margin-right: 0.1rem;
+.para.has-active .para__reach {
+  opacity: 0;
+  pointer-events: none;
 }
 
-.para__reach-region {
+.para__reach-kicker {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: var(--font-w-semibold);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(28, 26, 24, 0.5);
   white-space: nowrap;
+}
+
+.para__reach-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(0.45rem, 1.1vw, 0.8rem);
+}
+
+.para__reach-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: clamp(0.76rem, 0.9vw, 0.84rem);
+  color: rgba(28, 26, 24, 0.72);
+  white-space: nowrap;
+}
+
+.para__reach-name {
+  line-height: 1;
 }
 
 .para__reach-flag {
   display: inline-block;
-  width: 1.15em;
-  line-height: 0.85em;
-  margin: 0 0.12rem 0 0.32rem;
+  width: 1.1em;
+  line-height: 0.82em;
   vertical-align: -0.08em;
   border-radius: 2px;
   box-shadow: 0 0 0 1px rgba(28, 26, 24, 0.1);
+}
+
+.para__reach-rule {
+  flex: 1;
+  min-width: 1.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--para-line) 0%, transparent 100%);
+}
+
+.para__reach-tag {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: var(--font-w-regular);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(28, 26, 24, 0.45);
+  white-space: nowrap;
 }
 
 .para__back {
@@ -792,8 +843,9 @@ onUnmounted(() => {
 }
 
 .para__cta:hover {
-  border-color: rgba(28, 26, 24, 0.38);
-  background: rgba(28, 26, 24, 0.08);
+  border-color: color-mix(in srgb, var(--para-accent) 55%, transparent);
+  background: rgba(var(--accent-rgb), 0.10);
+  color: var(--para-accent);
 }
 
 .para__cta-arrow {
@@ -1412,8 +1464,16 @@ onUnmounted(() => {
     border-bottom: none;
   }
 
-  .para__reach-region {
-    white-space: normal;
+  .para__reach {
+    margin: clamp(1.4rem, 5vw, 2rem) var(--section-pad-x);
+  }
+
+  .para__reach-rule {
+    display: none;
+  }
+
+  .para__reach-tag {
+    flex-basis: 100%;
   }
 
   .para__col {

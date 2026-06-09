@@ -1131,6 +1131,7 @@ onBeforeUnmount(() => {
   transform: scaleX(1);
 }
 
+.temas__panel-btn:hover .temas__panel-line,
 .temas__panel-item.is-active .temas__panel-line {
   background: linear-gradient(
     90deg,
@@ -1276,8 +1277,9 @@ onBeforeUnmount(() => {
 }
 
 .temas__ctrl:hover {
-  border-color: rgba(28, 26, 24, 0.28);
-  background: rgba(28, 26, 24, 0.09);
+  border-color: color-mix(in srgb, var(--temas-accent) 50%, transparent);
+  background: rgba(var(--accent-rgb), 0.10);
+  color: var(--temas-accent);
 }
 
 .temas__ctrl--toggle {

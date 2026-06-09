@@ -319,8 +319,8 @@ onUnmounted(() => {
 }
 
 .svc__cta:hover {
-  border-color: rgba(255, 255, 255, 0.45);
-  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(var(--accent-rgb), 0.6);
+  background: rgba(var(--accent-rgb), 0.12);
 }
 
 .svc__cta-label {
@@ -336,11 +336,13 @@ onUnmounted(() => {
   border-radius: 50%;
   background: #ffffff;
   color: var(--brand-terracotta);
-  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
 }
 
 .svc__cta:hover .svc__cta-icon {
   transform: translateX(2px);
+  background: var(--brand-terracotta);
+  color: #ffffff;
 }
 
 .svc__cta-icon .pi {
@@ -465,7 +467,8 @@ onUnmounted(() => {
 }
 
 .svc-carousel__nav:hover {
-  background: rgba(0, 0, 0, 0.55);
+  background: var(--brand-terracotta);
+  color: #fff;
 }
 
 .svc-carousel__nav .pi {

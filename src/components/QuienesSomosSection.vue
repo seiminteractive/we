@@ -751,12 +751,12 @@ onUnmounted(() => {
   position: absolute;
   inset: -10px;
   border-radius: 999px;
-  /* background: radial-gradient(
+  background: radial-gradient(
     circle,
-    rgba(218, 89, 51, 0.30) 0%,
-    rgba(218, 89, 51, 0.08) 50%,
+    rgba(var(--accent-rgb), 0.30) 0%,
+    rgba(var(--accent-rgb), 0.08) 50%,
     transparent 80%
-  ); */
+  );
   filter: blur(14px);
   opacity: 0;
   z-index: -1;
@@ -764,7 +764,7 @@ onUnmounted(() => {
 }
 
 .about__cta:hover {
-  border-color: rgba(28, 26, 24, 0.3);
+  border-color: rgba(var(--accent-rgb), 0.55);
   background: rgba(255, 255, 255, 0.78);
 }
 
@@ -781,11 +781,13 @@ onUnmounted(() => {
   border-radius: 50%;
   background: var(--ink);
   color: #fff;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.35s ease;
 }
 
 .about__cta:hover .about__cta-arrow {
   transform: rotate(-12deg);
+  background: var(--accent);
 }
 
 .about__cta-arrow .pi {
