@@ -13,6 +13,7 @@
       <QueHacemosSection />
       <TemasSection />
       <ComoTrabajamosSection />
+      <NoticiasSection />
       <CtaFinalSection />
       <SiteFooter />
     </div>
@@ -31,6 +32,7 @@ import QueHacemosSection from './components/QueHacemosSection.vue'
 import ServiciosSection from './components/ServiciosSection.vue'
 import TemasSection from './components/TemasSection.vue'
 import ComoTrabajamosSection from './components/ComoTrabajamosSection.vue'
+import NoticiasSection from './components/NoticiasSection.vue'
 import CtaFinalSection from './components/CtaFinalSection.vue'
 import SiteFooter from './components/SiteFooter.vue'
 
@@ -43,7 +45,7 @@ let bendTweens = []
 onMounted(() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const max = Math.min(90, Math.round(window.innerWidth * 0.06))
-  const selectors = ['#servicios', '#como-trabajamos', '#contacto', '.foot']
+  const selectors = ['#servicios', '#como-trabajamos', '#noticias', '#contacto', '.foot']
 
   selectors.forEach((sel) => {
     const el = document.querySelector(sel)
@@ -106,6 +108,7 @@ onUnmounted(() => {
    forma de semicírculo; su altura (--bend) baja a 0 con el scroll → recto. */
 #servicios,
 #como-trabajamos,
+#noticias,
 #contacto,
 .foot {
   --bend: 0px;
@@ -113,6 +116,7 @@ onUnmounted(() => {
 
 #servicios::before,
 #como-trabajamos::before,
+#noticias::before,
 #contacto::before,
 .foot::before {
   content: '';
@@ -129,11 +133,14 @@ onUnmounted(() => {
 /* Color del cap = color de la sección anterior, para que la curva se lea
    como el borde de la sección de color que está entrando. */
 #servicios::before,
-#como-trabajamos::before {
+#como-trabajamos::before,
+#contacto::before {
   background: #ffffff;
 }
 
-#contacto::before {
+/* La sección de noticias entra después del bloque grafito "Cómo trabajamos",
+   por eso su "cap" curvo usa ese color para una transición suave. */
+#noticias::before {
   background: #373737;
 }
 

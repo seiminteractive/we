@@ -62,9 +62,11 @@
           :class="{
             'is-active': activeIx === item.ix,
             'is-faded': activeIx !== null && activeIx !== item.ix,
+            'is-open': mobileOpenIx === item.ix,
           }"
           tabindex="0"
           :aria-label="item.label"
+          :aria-expanded="activeIx === item.ix || mobileOpenIx === item.ix ? 'true' : 'false'"
           @click="handleColumnClick(item.ix)"
           @keydown.enter.prevent="handleColumnClick(item.ix)"
           @keydown.space.prevent="handleColumnClick(item.ix)"
@@ -102,43 +104,49 @@
             <p class="para__col-desc-foot">{{ item.desc }}</p>
           </div>
 
+          <span class="para__col-chevron" aria-hidden="true">
+            <i class="pi pi-chevron-down"></i>
+          </span>
+
           <div
             class="para__col-panel"
             :class="{ 'is-visible': activeIx === item.ix }"
             :ref="(el) => setPanelRef(el, i)"
             aria-hidden="true"
           >
-            <span class="para__col-kicker">{{ item.label }}</span>
-            <p class="para__col-desc">{{ item.panelIntro }}</p>
-            <ul class="para__col-areas" role="list">
-              <li
-                v-for="area in item.areas"
-                :key="area"
-                class="para__col-area"
-              >
-                {{ area }}
-              </li>
-            </ul>
-            <p class="para__col-note">
-              <span class="para__col-note-mark" aria-hidden="true">◆</span>
-              <span>{{ item.note }}</span>
-            </p>
-            <div class="para__col-clients">
-              <p class="para__col-clients-kicker">Algunas organizaciones</p>
-              <ul class="para__col-clients-list" role="list">
+            <div class="para__col-panel-inner">
+              <span class="para__col-kicker">{{ item.label }}</span>
+              <p class="para__col-desc">{{ item.panelIntro }}</p>
+              <ul class="para__col-areas" role="list">
                 <li
-                  v-for="client in item.clients"
-                  :key="client"
-                  class="para__col-client"
+                  v-for="area in item.areas"
+                  :key="area"
+                  class="para__col-area"
                 >
-                  {{ client }}
+                  {{ area }}
                 </li>
               </ul>
+              <p class="para__col-note">
+                <span class="para__col-note-mark" aria-hidden="true">◆</span>
+                <span>{{ item.note }}</span>
+              </p>
+              <div class="para__col-clients">
+                <p class="para__col-clients-kicker">Algunas organizaciones</p>
+                <ul class="para__col-clients-list" role="list">
+                  <li
+                    v-for="client in item.clients"
+                    :key="client"
+                    class="para__col-client"
+                  >
+                    {{ client }}
+                  </li>
+                </ul>
+              </div>
+              <a href="#contacto" class="para__col-cta">
+                <span>Trabajar con nosotros</span>
+                <span class="para__col-cta-arrow" aria-hidden="true">→</span>
+              </a>
             </div>
-            <a href="#contacto" class="para__col-cta">
-              <span>Trabajar con nosotros</span>
-              <span class="para__col-cta-arrow" aria-hidden="true">→</span>
-            </a>
           </div>
         </li>
       </ol>
@@ -179,6 +187,7 @@ const mediaRefs = ref([])
 const imgRefs = ref([])
 const panelRefs = ref([])
 const activeIx = ref(null)
+const mobileOpenIx = ref(null)
 
 const audiences = [
   {
@@ -442,13 +451,86 @@ function collapseColumns() {
 }
 
 function handleColumnClick(ix) {
-  if (isMobile()) return
+  if (isMobile()) {
+    toggleMobile(ix)
+    return
+  }
   if (activeIx.value === ix) {
     handleClose()
     return
   }
   activeIx.value = ix
   nextTick(() => expandColumn(ix))
+}
+
+// ----- Acordeón móvil: abre/cierra el panel animando el alto con GSAP -----
+const MOBILE_OPEN_EASE = 'power3.inOut'
+
+function animatePanelClose(panel, dur) {
+  if (!panel) return
+  gsap.to(panel, {
+    height: 0,
+    duration: dur,
+    ease: MOBILE_OPEN_EASE,
+    overwrite: true,
+  })
+}
+
+function toggleMobile(ix) {
+  const idx = audiences.findIndex((a) => a.ix === ix)
+  const panel = panelRefs.value[idx]
+  if (!panel) return
+
+  const dur = reduce ? 0 : 0.55
+
+  if (mobileOpenIx.value === ix) {
+    mobileOpenIx.value = null
+    animatePanelClose(panel, dur)
+    return
+  }
+
+  // Cierra la card abierta previa (acordeón de a una).
+  if (mobileOpenIx.value !== null) {
+    const prevIdx = audiences.findIndex((a) => a.ix === mobileOpenIx.value)
+    animatePanelClose(panelRefs.value[prevIdx], dur)
+  }
+
+  mobileOpenIx.value = ix
+
+  // Mide el alto real y anima 0 → alto; al terminar fija "auto" para que siga
+  // siendo responsive si cambia el contenido/viewport.
+  gsap.set(panel, { height: 'auto' })
+  const full = panel.offsetHeight
+  gsap.fromTo(
+    panel,
+    { height: 0 },
+    {
+      height: full,
+      duration: reduce ? 0 : 0.6,
+      ease: MOBILE_OPEN_EASE,
+      overwrite: true,
+      onComplete: () => gsap.set(panel, { height: 'auto' }),
+    }
+  )
+
+  if (!reduce) {
+    const inner = panel.querySelectorAll('.para__col-panel-inner > *')
+    gsap.from(inner, {
+      opacity: 0,
+      y: 12,
+      duration: 0.5,
+      stagger: 0.05,
+      ease: 'power3.out',
+      delay: 0.08,
+    })
+  }
+}
+
+function closeMobile() {
+  if (mobileOpenIx.value === null) return
+  const idx = audiences.findIndex((a) => a.ix === mobileOpenIx.value)
+  animatePanelClose(panelRefs.value[idx], reduce ? 0 : 0.5)
+  mobileOpenIx.value = null
 }
 
 function handleClose() {
@@ -492,18 +574,43 @@ function onHeadLeave(el, done) {
 }
 
 function onEscape(e) {
-  if (e.key === 'Escape' && activeIx.value !== null) {
-    handleClose()
-  }
+  if (e.key !== 'Escape') return
+  if (activeIx.value !== null) handleClose()
+  else if (mobileOpenIx.value !== null) closeMobile()
+}
+
+function initPanelsForViewport() {
+  panelRefs.value.forEach((p) => {
+    if (!p) return
+    gsap.killTweensOf(p)
+    if (isMobile()) {
+      // Acordeón: colapsado y visible (el contenido aparece al expandir el alto).
+      gsap.set(p, { height: 0, overflow: 'hidden', clearProps: 'opacity,pointerEvents' })
+    } else {
+      // Escritorio: panel flotante oculto que se anima al expandir la columna.
+      gsap.set(p, { opacity: 0, pointerEvents: 'none', clearProps: 'height,overflow' })
+    }
+  })
+}
+
+let wasMobile = false
+
+function onResize() {
+  const nowMobile = isMobile()
+  if (nowMobile === wasMobile) return
+  wasMobile = nowMobile
+  // Al cruzar el breakpoint, reseteamos estados para evitar estilos pegados.
+  activeIx.value = null
+  mobileOpenIx.value = null
+  initPanelsForViewport()
 }
 
 onMounted(async () => {
   await nextTick()
   reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  wasMobile = isMobile()
 
-  panelRefs.value.forEach((p) => {
-    if (p) gsap.set(p, { opacity: 0, pointerEvents: 'none' })
-  })
+  initPanelsForViewport()
 
   colRefs.value.forEach((el) => {
     if (!el) return
@@ -518,6 +625,7 @@ onMounted(async () => {
   }
 
   window.addEventListener('keydown', onEscape)
+  window.addEventListener('resize', onResize)
 })
 
 onBeforeUnmount(() => {
@@ -533,6 +641,7 @@ onBeforeUnmount(() => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onEscape)
+  window.removeEventListener('resize', onResize)
 })
 </script>
 
@@ -1227,6 +1336,38 @@ onUnmounted(() => {
   transform: translateX(-8px);
 }
 
+/* Chevron indicador de "abrir" — solo móvil (acordeón). */
+.para__col-chevron {
+  display: none;
+  position: absolute;
+  top: clamp(1rem, 4vw, 1.3rem);
+  right: clamp(1rem, 4vw, 1.3rem);
+  z-index: 6;
+  width: 2.1rem;
+  height: 2.1rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(8, 10, 14, 0.4);
+  color: #fff;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease, border-color 0.3s ease;
+}
+
+.para__col-chevron .pi {
+  font-size: 0.7rem;
+}
+
+.para__col.is-open .para__col-chevron {
+  transform: rotate(180deg);
+  background: var(--para-accent);
+  border-color: var(--para-accent);
+}
+
 /* Active panel */
 .para__col-panel {
   position: absolute;
@@ -1235,13 +1376,19 @@ onUnmounted(() => {
   width: min(36rem, 44%);
   transform: translateY(-50%);
   z-index: 4;
-  display: grid;
-  gap: clamp(0.85rem, 1.6vw, 1.2rem);
   max-height: min(34rem, 72vh);
   overflow-y: auto;
   overscroll-behavior: contain;
   pointer-events: none;
   scrollbar-width: thin;
+}
+
+/* El contenido vive en un wrapper interno: así, en el acordeón móvil, el padding
+   no impide que el panel colapse a 0 real (con border-box el padding ocuparía
+   alto). En escritorio es simplemente la grilla de contenido. */
+.para__col-panel-inner {
+  display: grid;
+  gap: clamp(0.85rem, 1.6vw, 1.2rem);
 }
 
 .para__col-kicker {
@@ -1482,25 +1629,86 @@ onUnmounted(() => {
     border-right: none;
     border-bottom: 1px solid var(--para-line);
     height: auto;
-    min-height: clamp(20rem, 60vw, 28rem);
-    cursor: default;
+    cursor: pointer;
   }
 
+  /* La imagen idle es muy tenue para el efecto hover de escritorio; en móvil
+     no hay hover, así que la subimos para que la foto se lea con claridad. El
+     velo inferior mantiene el contraste del título en blanco. */
+  .para__col-img {
+    opacity: 0.8;
+  }
+
+  /* La imagen pasa a ser un bloque de alto fijo arriba; el panel de detalle
+     fluye debajo (acordeón), por eso no se estira ni se superpone al texto. */
+  .para__col-media {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: clamp(18rem, 64vw, 24rem);
+    border-radius: 0;
+  }
+
+  /* El título se mantiene superpuesto, anclado al borde inferior de la imagen. */
   .para__col-foot {
-    bottom: clamp(1.3rem, 4vw, 1.8rem);
+    top: 0;
+    bottom: auto;
+    height: clamp(18rem, 64vw, 24rem);
+    align-content: end;
+    padding-bottom: clamp(1.3rem, 4vw, 1.8rem);
   }
 
+  /* El chrome "+ Más info" es de escritorio; en móvil usamos el chevron. */
+  .para__col-chrome {
+    display: none;
+  }
+
+  .para__col-chevron {
+    display: inline-flex;
+  }
+
+  /* Panel de detalle como acordeón: arranca colapsado (GSAP anima el alto) y
+     se revela debajo de la imagen sobre superficie clara → texto legible.
+     Sin padding acá: el padding vive en el inner para que colapse a 0 real. */
   .para__col-panel {
     position: relative;
-    top: auto;
-    right: auto;
+    inset: auto;
     width: 100%;
+    max-height: none;
+    height: 0;
     transform: none;
-    padding: clamp(1.4rem, 4vw, 2rem) clamp(var(--section-pad-x), 5vw, 2.5rem);
+    overflow: hidden;
+    opacity: 1;
     pointer-events: auto;
-    opacity: 1 !important;
-    background: rgba(0, 0, 0, 0.18);
+    background: var(--brand-sand);
     border-top: 1px solid var(--para-line);
+  }
+
+  .para__col-panel-inner {
+    gap: clamp(0.7rem, 2.8vw, 1rem);
+    padding: clamp(1.3rem, 5vw, 1.75rem) clamp(1.2rem, 5vw, 1.6rem);
+  }
+
+  /* Detalle más legible y compacto en móvil. */
+  .para__col-desc {
+    font-size: 0.95rem;
+  }
+
+  .para__col-area {
+    font-size: 0.92rem;
+  }
+
+  .para__col-clients {
+    padding-top: 0.6rem;
+  }
+
+  /* Botón a ancho de contenido (no full-width) y un poco más compacto. */
+  .para__col-cta {
+    justify-self: start;
+    width: auto;
+    margin-top: 0.45rem;
+    padding: 0.68rem 1.15rem;
+    font-size: 0.7rem;
   }
 }
 

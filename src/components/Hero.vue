@@ -15,17 +15,67 @@
         <a href="#quienes-somos">Quiénes somos</a>
         <a href="#que-hacemos">Qué hacemos</a>
         <a href="#temas">Verticales</a>
+        <a href="#noticias">Noticias</a>
         <a href="#contacto">Contacto</a>
       </nav>
 
-      <a href="#contacto" class="hero__nav-cta">Agendar reunión</a>
+      <div class="hero__nav-end">
+        <a href="#contacto" class="hero__nav-cta">Agendar reunión</a>
+        <button
+          type="button"
+          class="hero__burger"
+          :class="{ 'is-open': menuOpen }"
+          :aria-expanded="menuOpen ? 'true' : 'false'"
+          aria-controls="hero-mobile-menu"
+          aria-label="Abrir menú de navegación"
+          @click="toggleMenu"
+        >
+          <span class="hero__burger-line" aria-hidden="true" />
+          <span class="hero__burger-line" aria-hidden="true" />
+        </button>
+      </div>
     </header>
+
+    <Teleport to="body">
+      <div
+        id="hero-mobile-menu"
+        class="hero__menu"
+        :class="{ 'is-open': menuOpen }"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navegación"
+        @click.self="closeMenu"
+      >
+        <button
+          type="button"
+          class="hero__menu-close"
+          aria-label="Cerrar menú"
+          @click="closeMenu"
+        >
+          <span class="hero__menu-close-line" aria-hidden="true" />
+          <span class="hero__menu-close-line" aria-hidden="true" />
+        </button>
+
+        <nav class="hero__menu-nav" aria-label="Principal móvil">
+          <a href="#quienes-somos" @click="closeMenu">Quiénes somos</a>
+          <a href="#que-hacemos" @click="closeMenu">Qué hacemos</a>
+          <a href="#temas" @click="closeMenu">Verticales</a>
+          <a href="#noticias" @click="closeMenu">Noticias</a>
+          <a href="#contacto" @click="closeMenu">Contacto</a>
+        </nav>
+        <a href="#contacto" class="hero__menu-cta" @click="closeMenu">
+          <span>Agendar reunión</span>
+          <i class="pi pi-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+    </Teleport>
 
     <div class="hero__main">
       <a href="#que-hacemos" class="hero__badge">
+        <span class="hero__badge-dot" aria-hidden="true" />
         <span class="hero__badge-label">Consultoría estratégica</span>
-        <span class="hero__badge-sep" aria-hidden="true">·</span>
-        <span class="hero__badge-tag">EST. 2024</span>
+        <span class="hero__badge-rule" aria-hidden="true" />
+        <span class="hero__badge-sub">Est. 2024</span>
       </a>
 
       <h1 class="hero__title">
@@ -78,12 +128,34 @@ import { nextTick, onMounted, onUnmounted, ref } from 'vue'
 import logoSrc from '../assets/logoBlancoDefinitivo.png'
 import { gsap } from '../lib/gsap'
 import { createSmokeBackground } from '../lib/smokeBackground'
+import { getLenis } from '../lib/lenis'
 
 const heroRef = ref(null)
 const canvasRef = ref(null)
+const menuOpen = ref(false)
 
 let ctx
 let smoke
+
+function openMenu() {
+  menuOpen.value = true
+  getLenis()?.stop()
+  document.body.style.overflow = 'hidden'
+}
+
+function closeMenu() {
+  menuOpen.value = false
+  getLenis()?.start()
+  document.body.style.overflow = ''
+}
+
+function toggleMenu() {
+  menuOpen.value ? closeMenu() : openMenu()
+}
+
+function onKeydown(e) {
+  if (e.key === 'Escape' && menuOpen.value) closeMenu()
+}
 
 function playReveal() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -92,7 +164,7 @@ function playReveal() {
   const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
   tl.from('.hero__logo', { y: -18, opacity: 0, duration: 0.95 }, 0)
     .from('.hero__nav-center a', { y: -16, opacity: 0, duration: 0.85, stagger: 0.07 }, 0.06)
-    .from('.hero__nav-cta', { y: -16, opacity: 0, duration: 0.85 }, 0.16)
+    .from('.hero__nav-end', { y: -16, opacity: 0, duration: 0.85 }, 0.16)
     .from('.hero__badge', { y: 18, opacity: 0, duration: 0.9 }, 0.3)
     .from('.hero__title-word', { yPercent: 110, opacity: 0, duration: 1.25, stagger: 0.12 }, 0.38)
     .from('.hero__desc', { y: 18, opacity: 0, duration: 0.9 }, 0.85)
@@ -121,11 +193,16 @@ onMounted(async () => {
   ctx = gsap.context(() => {
     playReveal()
   }, root)
+
+  window.addEventListener('keydown', onKeydown)
 })
 
 onUnmounted(() => {
   smoke?.destroy()
   ctx?.revert()
+  window.removeEventListener('keydown', onKeydown)
+  document.body.style.overflow = ''
+  getLenis()?.start()
 })
 </script>
 
@@ -249,6 +326,179 @@ onUnmounted(() => {
   color: #fff;
 }
 
+.hero__nav-end {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* ───── Botón hamburguesa (solo móvil) ───── */
+.hero__burger {
+  display: none;
+  position: relative;
+  width: 2.6rem;
+  height: 2.6rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  z-index: 1001;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.hero__burger:hover {
+  border-color: rgba(var(--accent-rgb), 0.55);
+}
+
+.hero__burger-line {
+  display: block;
+  width: 1.15rem;
+  height: 1.6px;
+  border-radius: 2px;
+  background: #f4efe6;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease;
+}
+
+.hero__burger.is-open .hero__burger-line:first-child {
+  transform: translateY(3.3px) rotate(45deg);
+}
+
+.hero__burger.is-open .hero__burger-line:last-child {
+  transform: translateY(-3.3px) rotate(-45deg);
+}
+
+/* ───── Menú móvil a pantalla completa ───── */
+.hero__menu {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.75rem, 6vh, 3rem);
+  padding: 2rem;
+  background: rgba(10, 10, 11, 0.94);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.hero__menu.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.hero__menu-close {
+  position: absolute;
+  top: clamp(1.1rem, 3.5vw, 1.6rem);
+  right: clamp(1.1rem, 4vw, 1.6rem);
+  width: 2.8rem;
+  height: 2.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.hero__menu-close:hover {
+  border-color: rgba(var(--accent-rgb), 0.55);
+  background: rgba(var(--accent-rgb), 0.12);
+}
+
+.hero__menu-close-line {
+  position: absolute;
+  width: 1.25rem;
+  height: 1.6px;
+  border-radius: 2px;
+  background: #f4efe6;
+}
+
+.hero__menu-close-line:first-child {
+  transform: rotate(45deg);
+}
+
+.hero__menu-close-line:last-child {
+  transform: rotate(-45deg);
+}
+
+.hero__menu-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.1rem, 4.5vh, 1.85rem);
+}
+
+.hero__menu-nav a {
+  font-family: var(--font-heading);
+  font-size: clamp(1.7rem, 8vw, 2.5rem);
+  font-weight: var(--font-w-semibold);
+  letter-spacing: -0.01em;
+  color: #f4efe6;
+  text-decoration: none;
+  font-synthesis: none;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.2s ease;
+}
+
+.hero__menu-nav a:hover {
+  color: var(--accent);
+}
+
+.hero__menu.is-open .hero__menu-nav a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero__menu.is-open .hero__menu-nav a:nth-child(1) { transition-delay: 0.08s; }
+.hero__menu.is-open .hero__menu-nav a:nth-child(2) { transition-delay: 0.14s; }
+.hero__menu.is-open .hero__menu-nav a:nth-child(3) { transition-delay: 0.20s; }
+.hero__menu.is-open .hero__menu-nav a:nth-child(4) { transition-delay: 0.26s; }
+.hero__menu.is-open .hero__menu-nav a:nth-child(5) { transition-delay: 0.32s; }
+
+.hero__menu-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: var(--font-w-semibold);
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease 0.38s,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.38s;
+}
+
+.hero__menu.is-open .hero__menu-cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero__menu-cta .pi {
+  font-size: 0.78rem;
+}
+
 /* ───── Main centrado ───── */
 .hero__main {
   flex: 1;
@@ -261,38 +511,63 @@ onUnmounted(() => {
   padding-bottom: clamp(1rem, 3vh, 2rem);
 }
 
+/* Eyebrow alineado al "kicker" que usa todo el sitio (punto + texto en
+   mayúscula con tracking + línea fina + subtítulo). Mismo lenguaje que
+   Quiénes somos, Para quién, Temas, Cómo trabajamos… adaptado al fondo oscuro
+   del hero, con el punto en terracota para sumar un acento de marca. */
 .hero__badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 0.7rem;
   text-decoration: none;
-  color: rgba(244, 239, 230, 0.78);
-  font-family: var(--font-body);
-  font-size: 0.74rem;
-  font-weight: var(--font-w-medium);
-  letter-spacing: 0.01em;
-  padding: 0.4rem 0.85rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  backdrop-filter: blur(8px) saturate(140%);
-  -webkit-backdrop-filter: blur(8px) saturate(140%);
-  transition: background 0.2s ease, border-color 0.2s ease;
+  font-family: var(--font-heading);
+  /* El humo puede aclararse justo detrás del eyebrow; una sombra suave oscura
+     despega el texto del fondo, sea claro u oscuro. */
+  text-shadow: 0 1px 14px rgba(8, 8, 10, 0.55), 0 0 3px rgba(8, 8, 10, 0.45);
+  transition: opacity 0.3s ease;
 }
 
 .hero__badge:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(var(--accent-rgb), 0.45);
+  opacity: 0.82;
 }
 
-.hero__badge-sep {
-  opacity: 0.45;
+.hero__badge-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.7);
+  flex-shrink: 0;
 }
 
-.hero__badge-tag {
+.hero__badge-label {
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
   font-weight: var(--font-w-semibold);
-  letter-spacing: 0.08em;
-  color: var(--brand-cream);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #f6f1e8;
+  white-space: nowrap;
+}
+
+.hero__badge-rule {
+  width: 2.2rem;
+  height: 1px;
+  background: rgba(244, 239, 230, 0.55);
+  box-shadow: 0 0 8px rgba(8, 8, 10, 0.4);
+  flex-shrink: 0;
+}
+
+.hero__badge-sub {
+  font-family: var(--font-heading);
+  font-size: 0.64rem;
+  font-weight: var(--font-w-regular);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.82);
+  white-space: nowrap;
 }
 
 /* Título */
@@ -510,8 +785,8 @@ onUnmounted(() => {
     display: none;
   }
 
-  .hero__nav-cta {
-    justify-self: end;
+  .hero__burger {
+    display: inline-flex;
   }
 
   .hero__footer {
@@ -535,16 +810,86 @@ onUnmounted(() => {
     padding-right: 1.1rem;
   }
 
+  .hero__main {
+    gap: clamp(0.85rem, 2vh, 1.3rem);
+  }
+
+  /* Eyebrow más compacto para que entre en una sola línea en teléfonos. */
+  .hero__badge {
+    gap: 0.5rem;
+  }
+
+  .hero__badge-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+  }
+
+  .hero__badge-rule {
+    width: 1.4rem;
+  }
+
+  .hero__badge-sub {
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+  }
+
   .hero__title {
     font-size: clamp(2.6rem, 14vw, 4rem);
+  }
+
+  /* En pantallas muy angostas el título dejaría de entrar en una sola línea;
+     permitimos que "futuro" baje a un segundo renglón en lugar de recortarse. */
+  .hero__title-row {
+    white-space: normal;
+    flex-wrap: wrap;
+    overflow: visible;
   }
 
   .hero__desc-br {
     display: none;
   }
 
+  /* En pantallas chicas priorizamos el CTA: ocultamos la píldora redundante
+     del nav (sigue accesible dentro del menú) y dejamos solo la hamburguesa. */
+  .hero__nav-cta {
+    display: none;
+  }
+
   .hero__footer-num {
     font-size: 1.5rem;
+  }
+
+  .hero__footer {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 0.95rem;
+  }
+
+  .hero__footer-stat {
+    min-width: 0;
+  }
+
+  .hero__footer-scroll {
+    justify-self: end;
+  }
+
+  .hero__footer-scroll-track {
+    width: clamp(3.2rem, 20vw, 4.4rem);
+  }
+
+  /* El bloque de footer del hero es alto; en teléfonos cortos ocultamos el
+     párrafo secundario para que el contenido principal nunca quede cortado. */
+  .hero__footer-text {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__menu,
+  .hero__menu-nav a,
+  .hero__menu-cta,
+  .hero__burger-line {
+    transition-duration: 0.01ms !important;
   }
 }
 </style>
