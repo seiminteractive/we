@@ -1,10 +1,10 @@
 <template>
-  <footer ref="sectionRef" class="foot" aria-label="Pie de página">
+  <footer class="foot" aria-label="Pie de página">
     <div class="foot__grain" aria-hidden="true" />
 
     <div class="foot__shell">
       <div class="foot__grid">
-        <div class="foot__col foot__col--brand" data-reveal>
+        <div class="foot__col foot__col--brand">
           <a href="/" class="foot__brand">
             <img
               :src="logoBlanco"
@@ -20,7 +20,7 @@
           </p>
         </div>
 
-        <div class="foot__col" data-reveal>
+        <div class="foot__col">
           <h2 class="foot__heading">Explorar</h2>
           <ul class="foot__list" role="list">
             <li><a href="#quienes-somos" class="foot__link">Quiénes somos</a></li>
@@ -30,7 +30,7 @@
           </ul>
         </div>
 
-        <div class="foot__col" data-reveal>
+        <div class="foot__col">
           <h2 class="foot__heading">Más</h2>
           <ul class="foot__list" role="list">
             <li><a href="#para-quien" class="foot__link">Para quién</a></li>
@@ -39,19 +39,28 @@
           </ul>
         </div>
 
-        <div class="foot__col foot__col--contact" data-reveal>
+        <div class="foot__col foot__col--contact">
           <h2 class="foot__heading">Escribinos</h2>
-          <a href="mailto:hola@weplus.com" class="foot__mail">hola@weplus.com</a>
+          <a href="mailto:consultingweco@gmail.com" class="foot__mail">consultingweco@gmail.com</a>
           <p class="foot__hint">Respondemos en breve para coordinar una primera conversación.</p>
           <div class="foot__social" aria-label="Redes sociales">
-            <a href="#" class="foot__social-btn" aria-label="LinkedIn">
+            <a
+              href="https://www.linkedin.com/company/we-co-consulting/"
+              class="foot__social-btn"
+              aria-label="LinkedIn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i class="pi pi-linkedin" aria-hidden="true"></i>
             </a>
-            <a href="#" class="foot__social-btn" aria-label="Instagram">
+            <a
+              href="https://www.instagram.com/dsgroup__/"
+              class="foot__social-btn"
+              aria-label="Instagram"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i class="pi pi-instagram" aria-hidden="true"></i>
-            </a>
-            <a href="#" class="foot__social-btn" aria-label="YouTube">
-              <i class="pi pi-youtube" aria-hidden="true"></i>
             </a>
           </div>
         </div>
@@ -59,7 +68,7 @@
 
       <div class="foot__rule" aria-hidden="true" />
 
-      <div class="foot__bar" data-reveal>
+      <div class="foot__bar">
         <p class="foot__legal">© {{ year }} WE Plus. Todos los derechos reservados.</p>
         <div class="foot__legal-links">
           <a href="#" class="foot__legal-link">Política de privacidad</a>
@@ -72,10 +81,7 @@
 </template>
 
 <script setup>
-import { useScrollReveal } from '../composables/useScrollReveal'
 import logoBlanco from '../assets/logoBlanco.png'
-
-const { sectionRef } = useScrollReveal()
 
 const year = new Date().getFullYear()
 </script>
@@ -311,8 +317,17 @@ const year = new Date().getFullYear()
 }
 
 @media (max-width: 560px) {
+  /* Footer más compacto en móvil: marca arriba a todo el ancho, las dos
+     columnas de enlaces (Explorar / Más) una al lado de la otra, y contacto
+     debajo a todo el ancho. */
   .foot__grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem 1.25rem;
+  }
+
+  .foot__col--brand,
+  .foot__col--contact {
+    grid-column: 1 / -1;
   }
 
   .foot__bar {

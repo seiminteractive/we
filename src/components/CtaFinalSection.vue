@@ -225,14 +225,8 @@ const ctaImage = imagenCta
 
 @media (max-width: 720px) {
   .fcta__layout {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .fcta__media {
-    width: min(17rem, 72%);
-    align-self: center;
-    order: -1;
+    flex-direction: row;
+    align-items: center;
   }
 
   .fcta__content {
@@ -245,6 +239,17 @@ const ctaImage = imagenCta
   .fcta__cta {
     width: 100%;
     justify-content: space-between;
+  }
+}
+
+@media (max-width: 900px) {
+  .fcta__media {
+    display: none;
+  }
+
+  .fcta__content {
+    max-width: none;
+    margin-left: 0;
   }
 }
 </style>

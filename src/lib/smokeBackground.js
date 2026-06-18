@@ -419,11 +419,20 @@ export function createSmokeBackground(canvas, hitArea) {
     const rect = hitArea.getBoundingClientRect()
     const w = Math.max(1, Math.round(rect.width * dpr))
     const h = Math.max(1, Math.round(rect.height * dpr))
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w
-      canvas.height = h
-      initFramebuffers()
-    }
+
+    // En móvil, scrollear muestra/oculta la barra de URL y cambia la altura del
+    // viewport (100dvh) constantemente. Reasignar canvas.width/height borra el
+    // drawing buffer y reinicializar los framebuffers limpia el humo a negro =>
+    // parpadeo al scrollear. Sólo reaccionamos a cambios de ANCHO (orientación /
+    // resize real de ventana); los cambios sólo de alto los absorbe el CSS
+    // estirando el canvas (el humo se estira de forma imperceptible), sin tocar
+    // el buffer ni los framebuffers, así que no hay parpadeo.
+    if (canvas.width === w) return
+
+    canvas.width = w
+    canvas.height = h
+    initFramebuffers()
+    warmup()
   }
 
   // ── Splats (inyección de color y fuerza) ─────────────────────
@@ -581,18 +590,21 @@ export function createSmokeBackground(canvas, hitArea) {
     blit(null)
   }
 
+  // Pre-cargamos humo para que ya invada la pantalla (al iniciar y tras un
+  // reinit por cambio de tamaño real), evitando un arranque en negro.
+  function warmup() {
+    for (let i = 0; i < 120; i++) {
+      feed(i * 0.016, 0.016)
+      step(0.016, i * 0.016)
+    }
+  }
+
   // ── Arranque ─────────────────────────────────────────────────
   resize()
   const ro = new ResizeObserver(resize)
   ro.observe(hitArea)
   window.addEventListener('pointermove', onPointerMove, { passive: true })
   hitArea.addEventListener('pointerleave', onPointerLeave)
-
-  // Pre-cargamos humo para que ya invada la pantalla en el primer frame.
-  for (let i = 0; i < 120; i++) {
-    feed(i * 0.016, 0.016)
-    step(0.016, i * 0.016)
-  }
 
   let intensity = 0
   let last = performance.now()
