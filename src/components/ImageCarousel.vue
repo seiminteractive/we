@@ -77,11 +77,15 @@ function onScroll() {
 
 <style scoped>
 .ncar {
-  margin: 0;
+  margin: 0 0 clamp(1.5rem, 3vw, 2rem);
 }
 
 .ncar__viewport {
   position: relative;
+  border-radius: clamp(14px, 1.6vw, 20px);
+  overflow: hidden;
+  background: #e3ddd0;
+  box-shadow: 0 18px 46px rgba(21, 21, 22, 0.12);
 }
 
 .ncar__track {
@@ -91,7 +95,6 @@ function onScroll() {
   list-style: none;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  border-radius: clamp(14px, 1.4vw, 20px);
   scrollbar-width: none;
 }
 
@@ -108,81 +111,83 @@ function onScroll() {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 70vh;
+  max-height: 68vh;
   object-fit: cover;
-  background: #ebe7df;
 }
 
+/* Los controles solo aparecen sobre la imagen, sin robarle protagonismo. */
 .ncar__nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 2.6rem;
-  height: 2.6rem;
+  width: 2.5rem;
+  height: 2.5rem;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 1px solid rgba(28, 26, 24, 0.12);
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(6px);
-  color: var(--brand-ink);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(21, 21, 22, 0.42);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 0.78rem;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+  opacity: 0.9;
+  transition: background 0.25s ease, opacity 0.25s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .ncar__nav:hover:not(:disabled) {
   background: var(--brand-terracotta);
-  color: #fff;
+  border-color: var(--brand-terracotta);
 }
 
 .ncar__nav:disabled {
-  opacity: 0.35;
+  opacity: 0.28;
   cursor: default;
 }
 
-.ncar__nav--prev {
-  left: 0.75rem;
-}
+.ncar__nav--prev { left: 0.8rem; }
+.ncar__nav--next { right: 0.8rem; }
 
-.ncar__nav--next {
-  right: 0.75rem;
-}
+.ncar__nav--prev:hover:not(:disabled) { transform: translateY(-50%) translateX(-2px); }
+.ncar__nav--next:hover:not(:disabled) { transform: translateY(-50%) translateX(2px); }
 
 .ncar__dots {
   display: flex;
   justify-content: center;
   gap: 0.4rem;
-  margin-top: 0.85rem;
+  margin-top: 0.9rem;
 }
 
 .ncar__dot {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.45rem;
+  height: 0.45rem;
   padding: 0;
   border: none;
   border-radius: 999px;
-  background: rgba(28, 26, 24, 0.2);
+  background: rgba(21, 21, 22, 0.2);
   cursor: pointer;
-  transition: width 0.3s ease, background 0.3s ease;
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
 }
 
 .ncar__dot.is-active {
-  width: 1.5rem;
+  width: 1.6rem;
   background: var(--brand-terracotta);
 }
 
+/* Epigrafe: credito discreto, alineado con el cuerpo del texto. */
 .ncar__caption {
-  margin: 0.85rem 0 0;
+  margin: 0.9rem 0 0;
+  padding-left: 0.9rem;
+  border-left: 2px solid rgba(var(--accent-rgb), 0.35);
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   line-height: 1.5;
-  color: rgba(28, 26, 24, 0.6);
-  text-align: center;
+  color: rgba(21, 21, 22, 0.55);
+  text-wrap: pretty;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ncar__track {
-    scroll-behavior: auto;
-  }
+  .ncar__track { scroll-behavior: auto; }
 }
 </style>

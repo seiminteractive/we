@@ -1,0 +1,21 @@
+# Empaqueta un dist/ ya compilado dentro de nginx.
+#
+# Por que existe, ademas del Dockerfile normal: compilar en un contenedor
+# linux/amd64 emulado desde una Mac Apple Silicon falla, porque Vite usa
+# esbuild (escrito en Go) y el runtime de Go se rompe bajo QEMU
+# ("lfstack.push invalid packing"). El dist son archivos estaticos y no
+# dependen de la arquitectura, asi que se compila nativo con `npm run build`
+# y aca solo se copia: esta imagen no ejecuta nada durante el build.
+#
+#   npm run build
+#   docker buildx build --platform linux/amd64 -f Dockerfile.dist -t <tag> --load .
+#
+# Para construir desde cero en un host amd64 (por ejemplo el VPS), usar el
+# Dockerfile normal, que si compila adentro y es reproducible.
+FROM nginx:alpine
+
+COPY dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

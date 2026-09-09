@@ -201,9 +201,29 @@ onMounted(async () => {
   }, root)
 
   window.addEventListener('keydown', onKeydown)
+  window.addEventListener('scroll', onScrollHumo, { passive: true })
+  onScrollHumo()
 })
 
+/**
+ * El hero es sticky: no sale del viewport, queda tapado por .page-stack. El
+ * IntersectionObserver del fondo lo ve siempre visible, asi que la simulacion
+ * de fluidos seguia corriendo a pleno mientras se recorria toda la landing,
+ * sin que se viera nada. Se pausa por posicion de scroll.
+ */
+let humoTapado = false
+
+function onScrollHumo() {
+  if (!smoke) return
+  const tapado = window.scrollY >= window.innerHeight * 0.9
+  if (tapado === humoTapado) return
+  humoTapado = tapado
+  if (tapado) smoke.pause()
+  else smoke.resume()
+}
+
 onUnmounted(() => {
+  window.removeEventListener('scroll', onScrollHumo)
   smoke?.destroy()
   ctx?.revert()
   window.removeEventListener('keydown', onKeydown)

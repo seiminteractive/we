@@ -639,24 +639,47 @@ export function createSmokeBackground(canvas, hitArea) {
   }
   raf = requestAnimationFrame(frame)
 
+  // Pausa externa: la decide quien monta el fondo. Existe porque el hero es
+  // sticky y nunca sale del viewport (queda tapado, no fuera de pantalla), asi
+  // que el IntersectionObserver por si solo no alcanza para frenar la
+  // simulacion mientras se recorre el resto de la pagina.
+  let pausadoAfuera = false
+
+  function arrancar() {
+    if (running || pausadoAfuera) return
+    running = true
+    last = performance.now()
+    raf = requestAnimationFrame(frame)
+  }
+
+  function frenar() {
+    running = false
+    cancelAnimationFrame(raf)
+  }
+
   // Pausa cuando el hero sale de viewport.
   const io = new IntersectionObserver(
     ([entry]) => {
-      if (entry.isIntersecting && !running) {
-        running = true
-        last = performance.now()
-        raf = requestAnimationFrame(frame)
-      } else if (!entry.isIntersecting) {
-        running = false
-        cancelAnimationFrame(raf)
-      }
+      if (entry.isIntersecting) arrancar()
+      else frenar()
     },
     { threshold: 0 }
   )
   io.observe(hitArea)
 
   return {
+    /** Frena la simulacion (no libera el contexto). */
+    pause() {
+      pausadoAfuera = true
+      frenar()
+    },
+    /** Reanuda tras un pause(). */
+    resume() {
+      pausadoAfuera = false
+      arrancar()
+    },
     destroy() {
+      pausadoAfuera = true
       running = false
       cancelAnimationFrame(raf)
       window.removeEventListener('pointermove', onPointerMove)

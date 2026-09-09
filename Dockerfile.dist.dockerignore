@@ -1,0 +1,6 @@
+# Contexto minimo para Dockerfile.dist: solo el dist ya compilado y la config
+# de nginx. El .dockerignore general excluye dist/, porque el Dockerfile
+# normal lo compila adentro; aca hace falta lo contrario.
+*
+!dist
+!nginx.conf
