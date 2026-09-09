@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Guía Panel Admin · WECC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #151516;
+    --terracotta: #da5933;
+    --sand: #ede7db;
+    --gray: #d9d9d9;
+    --muted: rgba(21, 21, 22, 0.58);
+    --faint: rgba(21, 21, 22, 0.42);
+    --line: rgba(21, 21, 22, 0.12);
+    --heading: "Syne", system-ui, sans-serif;
+    --body: "Work Sans", system-ui, sans-serif;
+  }
+
+  @page { size: A4; margin: 0; }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--sand);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 9.8pt;
+    line-height: 1.55;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 14mm 15mm;
+    margin: 0 auto;
+    background: var(--sand);
+    break-after: page;
+    position: relative;
+  }
+  .page:last-child { break-after: auto; }
+
+  /* ── Portada ── */
+  .eyebrow {
+    font-family: var(--heading);
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin: 0 0 6mm;
+  }
+  h1 {
+    font-family: var(--heading);
+    font-size: 27pt;
+    /* 700 y no 800: la ExtraBold de Syne se lee estirada en titulos largos. */
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0 0 5mm;
+  }
+  .lead {
+    font-size: 11pt;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 125mm;
+    margin: 0 0 8mm;
+  }
+
+  /* ── Pasos ── */
+  .step { margin-bottom: 7mm; break-inside: avoid; }
+  .step__head {
+    display: flex;
+    align-items: center;
+    gap: 4mm;
+    margin-bottom: 3mm;
+  }
+  .step__num {
+    flex: 0 0 auto;
+    width: 8mm; height: 8mm;
+    border-radius: 50%;
+    background: var(--terracotta);
+    color: #fff;
+    font-family: var(--heading);
+    font-weight: 700;
+    font-size: 10pt;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step__title {
+    font-family: var(--heading);
+    font-size: 15pt;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .step p { margin: 0 0 3mm; }
+  .step p:last-child { margin-bottom: 0; }
+  .step--indent > p,
+  .step--indent > .figure,
+  .step--indent > .table,
+  .step--indent > .callout,
+  .step--indent > ul { margin-left: 12mm; }
+
+  strong { font-weight: 600; }
+
+  /* ── Separador de seccion ── */
+  .divider {
+    display: flex; align-items: center; gap: 5mm;
+    margin: 8mm 0 6mm;
+  }
+  .divider__label {
+    font-family: var(--heading);
+    font-size: 8pt; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--faint);
+    white-space: nowrap;
+  }
+  .divider__rule { flex: 1; height: 1px; background: var(--line); }
+
+  /* ── Tarjeta oscura de credenciales ── */
+  .creds {
+    background: #1c1c1d;
+    border-radius: 6mm;
+    padding: 6.5mm;
+    color: #fff;
+  }
+  .creds__head { display: flex; align-items: center; gap: 4mm; margin-bottom: 2.5mm; }
+  .creds__title { font-family: var(--heading); font-size: 15pt; font-weight: 700; margin: 0; }
+  .creds__sub { color: rgba(255,255,255,0.6); font-size: 10pt; margin: 0 0 6mm; }
+  .creds__row {
+    display: grid; grid-template-columns: 32mm 1fr;
+    align-items: center; gap: 4mm;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3mm;
+    padding: 3mm 4.5mm;
+    margin-bottom: 2mm;
+  }
+  .creds__key {
+    font-size: 7.5pt; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+  .creds__val { font-family: var(--heading); font-weight: 600; font-size: 11pt; }
+  .creds__val--muted { color: rgba(255,255,255,0.5); font-weight: 400; font-style: italic; }
+  .creds__val a { color: #fff; }
+  .creds__note {
+    display: flex; gap: 3mm; align-items: flex-start;
+    margin-top: 5mm;
+    font-size: 9pt; line-height: 1.5;
+    color: rgba(255,255,255,0.62);
+  }
+
+  /* ── Callouts ── */
+  .callout {
+    display: flex; gap: 3.5mm; align-items: flex-start;
+    border-radius: 3.5mm;
+    padding: 3.6mm 4.5mm;
+    margin: 3.5mm 0;
+    font-size: 10pt;
+    line-height: 1.55;
+    break-inside: avoid;
+  }
+  .callout--info { background: rgba(218, 89, 51, 0.08); color: #a8destaque; }
+  .callout--info { color: #9c3d20; }
+  .callout--warn { background: rgba(190, 50, 30, 0.09); color: #a32c17; }
+  .callout--tip  { background: rgba(21, 21, 22, 0.05); color: rgba(21,21,22,0.72); }
+  .callout__icon { flex: 0 0 auto; margin-top: 0.6mm; }
+  .callout b { font-weight: 600; }
+
+  /* ── Tabla de campos ── */
+  .table {
+    background: #fff;
+    border-radius: 4.5mm;
+    overflow: hidden;
+    margin: 4mm 0;
+    break-inside: avoid;
+  }
+  .table__row {
+    display: grid;
+    grid-template-columns: 32mm 1fr;
+    gap: 5mm;
+    padding: 3mm 5mm;
+    border-bottom: 1px solid rgba(21,21,22,0.07);
+  }
+  .table__row:last-child { border-bottom: none; }
+  .table__key { font-family: var(--heading); font-weight: 700; font-size: 10.5pt; }
+  .table__val { font-size: 9.6pt; line-height: 1.5; color: rgba(21,21,22,0.75); }
+
+  /* ── Figuras ── */
+  .figure { margin: 4mm 0 5mm; break-inside: avoid; }
+  .figure__frame {
+    background: #fff;
+    border-radius: 4.5mm;
+    padding: 5mm;
+    border: 1px solid rgba(21,21,22,0.07);
+  }
+  .figure__frame--sand { background: var(--sand); border-color: rgba(21,21,22,0.12); }
+  .figure__cap {
+    display: flex; align-items: center; gap: 3mm;
+    margin-top: 2.4mm;
+    font-size: 8.5pt;
+    color: var(--faint);
+  }
+  .figure__cap::before {
+    content: ''; width: 6mm; height: 1.5px;
+    background: var(--terracotta); flex: 0 0 auto;
+  }
+
+  /* ══ Mockups: mismo lenguaje visual que el panel real ══ */
+  .m { font-family: var(--body); color: var(--ink); }
+  .m-tabs {
+    display: inline-flex; gap: 1.2mm; padding: 1.1mm;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(21,21,22,0.1);
+    border-radius: 999px;
+  }
+  .m-tab {
+    font-family: var(--heading); font-weight: 600; font-size: 9pt;
+    padding: 2mm 5mm; border-radius: 999px; color: rgba(21,21,22,0.55);
+  }
+  .m-tab.on { background: var(--ink); color: #fff; }
+
+  .m-settings {
+    display: flex; align-items: center; justify-content: space-between; gap: 6mm;
+    background: #fff; border: 1px solid rgba(21,21,22,0.08);
+    border-radius: 4mm; padding: 4mm 4.5mm; margin-top: 4mm;
+  }
+  .m-settings__t { font-family: var(--heading); font-weight: 600; font-size: 10pt; margin: 0 0 0.8mm; }
+  .m-settings__s { font-size: 8.5pt; color: var(--muted); margin: 0; }
+  .m-switch {
+    flex: 0 0 auto; width: 13mm; height: 7.3mm; border-radius: 999px;
+    background: var(--terracotta); position: relative;
+  }
+  .m-switch.off { background: rgba(21,21,22,0.18); }
+  .m-switch::after {
+    content: ''; position: absolute; top: 0.8mm; left: 0.8mm;
+    width: 5.7mm; height: 5.7mm; border-radius: 50%; background: #fff;
+  }
+  .m-switch:not(.off)::after { left: auto; right: 0.8mm; }
+
+  .m-btn {
+    display: inline-flex; align-items: center; gap: 2mm;
+    font-family: var(--heading); font-weight: 600; font-size: 9pt;
+    padding: 2.4mm 5mm; border-radius: 999px;
+    border: 1px solid transparent;
+  }
+  .m-btn--dark { background: var(--ink); color: #fff; }
+  .m-btn--primary { background: var(--terracotta); color: #fff; }
+  .m-btn--ghost { border-color: rgba(21,21,22,0.2); color: var(--ink); background: transparent; }
+  .m-btn--danger { border-color: rgba(190,50,30,0.4); color: #b3301c; background: transparent; }
+  .m-btn--sm { padding: 1.7mm 3.6mm; font-size: 8.5pt; }
+  .m-btn--full { display: flex; justify-content: center; width: 100%; }
+  .m-btn--off { background: #8a8a8a; color: #fff; }
+
+  .m-listhead { display: flex; align-items: center; justify-content: space-between; margin: 5mm 0 3.5mm; }
+  .m-listhead h4 { font-family: var(--heading); font-size: 14pt; margin: 0; }
+  .m-count { font-size: 8.5pt; color: var(--faint); }
+
+  .m-item {
+    display: grid; grid-template-columns: 20mm 1fr auto; gap: 4mm; align-items: center;
+    background: #fff; border: 1px solid rgba(21,21,22,0.08);
+    border-radius: 4mm; padding: 3mm; margin-bottom: 2.5mm;
+  }
+  /* Miniatura de una imagen ya cargada: una textura suave sugiere una foto
+     sin inventar contenido. */
+  .m-thumb {
+    width: 20mm; height: 15mm; border-radius: 2.5mm;
+    background: linear-gradient(135deg, #d3ccbd 0%, #b9b0a0 55%, #97907f 100%);
+  }
+  .m-badge {
+    font-size: 7pt; letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 600; color: var(--terracotta); display: block; margin-bottom: 0.6mm;
+  }
+  .m-item__t { font-family: var(--heading); font-weight: 600; font-size: 10pt; margin: 0 0 0.6mm; }
+  .m-item__s { font-size: 8.5pt; color: var(--muted); margin: 0; }
+  .m-actions { display: flex; gap: 1.6mm; }
+
+  .m-field { margin-bottom: 3.5mm; }
+  .m-label { display: block; font-size: 8.5pt; font-weight: 600; margin-bottom: 1.4mm; }
+  .m-input, .m-textarea {
+    background: var(--sand); border: 1px solid rgba(21,21,22,0.18);
+    border-radius: 2.5mm; padding: 2.6mm 3mm;
+    font-size: 9pt; color: rgba(21,21,22,0.8);
+  }
+  .m-input { height: 8mm; display: flex; align-items: center; }
+  .m-textarea { height: 15mm; }
+  .m-ph { color: rgba(21,21,22,0.38); }
+  .m-hint { font-size: 8pt; color: var(--muted); margin: 1.4mm 0 0; }
+
+  .m-drop { display: flex; align-items: center; gap: 4mm; }
+  /* Hueco vacio, todavia sin imagen. */
+  .m-prev {
+    width: 24mm; height: 17mm; border-radius: 2.5mm;
+    background: #e6e0d4;
+    border: 1px dashed rgba(21,21,22,0.2);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(21,21,22,0.32);
+  }
+  .m-ico { width: 6mm; height: 6mm; }
+
+  .m-card {
+    background: #fff; border: 1px solid rgba(21,21,22,0.08);
+    border-radius: 4.5mm; padding: 5mm; margin-bottom: 4mm;
+  }
+  .m-card h5 { font-family: var(--heading); font-size: 11.5pt; margin: 0 0 1mm; }
+  .m-card__hint { font-size: 8.5pt; color: var(--muted); margin: 0 0 4mm; }
+
+  .m-block {
+    border: 1px solid rgba(21,21,22,0.12); border-radius: 3.5mm;
+    padding: 4mm; background: var(--sand); margin-bottom: 3mm;
+  }
+  .m-block__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3mm; }
+  .m-block__num { font-family: var(--heading); font-weight: 600; font-size: 9pt; color: var(--muted); }
+  .m-img {
+    display: grid; grid-template-columns: 24mm 1fr; gap: 3mm;
+    background: #fff; border: 1px solid rgba(21,21,22,0.08);
+    border-radius: 3mm; padding: 2.5mm; margin-bottom: 3mm;
+  }
+  /* Sin box-shadow: al imprimir, un blur grande se rasteriza como un
+     rectangulo gris visible en vez de una sombra suave. */
+  .m-modal {
+    background: #fff; border-radius: 5mm; padding: 6mm;
+    border: 1px solid rgba(21,21,22,0.1);
+    max-width: 120mm; margin: 0 auto;
+  }
+  .m-modal h5 { font-family: var(--heading); font-size: 13pt; margin: 0 0 4mm; }
+  .m-modal__actions { display: flex; justify-content: flex-end; gap: 2.5mm; margin-top: 5mm; }
+
+  .m-login {
+    background: #fff; border-radius: 5mm; padding: 6mm;
+    max-width: 80mm; margin: 0 auto;
+    border: 1px solid rgba(21,21,22,0.1);
+  }
+  .m-login h5 { font-family: var(--heading); font-weight: 700; font-size: 15pt; margin: 0 0 1mm; }
+  .m-login p { font-size: 9pt; color: var(--muted); margin: 0 0 5mm; }
+
+  .m-empty {
+    text-align: center; padding: 9mm 4mm; color: var(--faint);
+    border: 1px dashed rgba(21,21,22,0.2); border-radius: 4mm; font-size: 9pt;
+  }
+
+  ul.tight { margin: 0 0 3mm; padding-left: 5mm; }
+  ul.tight li { margin-bottom: 1.2mm; }
+
+  .closing {
+    background: #fff; border-radius: 5mm; padding: 6mm;
+    margin-top: 6mm;
+  }
+  .closing p { margin: 0 0 3mm; }
+  .closing p:last-child { margin: 0; }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 9pt;
+    background: rgba(21,21,22,0.06);
+    padding: 0.5mm 1.5mm;
+    border-radius: 1.5mm;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ PÁGINA 1 ══════════ -->
+<section class="page">
+  <p class="eyebrow">Panel de administración · WECC</p>
+  <h1>Cómo manejar tu web,
+    paso a paso</h1>
+  <p class="lead">
+    Una guía corta para cargar y editar las novedades y los programas de tu sitio
+    cuando lo necesites.
+  </p>
+
+  <div class="creds">
+    <div class="creds__head">
+      <span class="step__num">1</span>
+      <h3 class="creds__title">Entrá al panel</h3>
+    </div>
+    <p class="creds__sub">Abrí el panel desde cualquier navegador e ingresá con estos datos.</p>
+
+    <div class="creds__row">
+      <span class="creds__key">Dirección</span>
+      <span class="creds__val">https://wecc.io/admin</span>
+    </div>
+    <div class="creds__row">
+      <span class="creds__key">Usuario</span>
+      <span class="creds__val">admin@wecc.io</span>
+    </div>
+    <div class="creds__row">
+      <span class="creds__key">Contraseña</span>
+      <span class="creds__val creds__val--muted">Se comparte aparte</span>
+    </div>
+
+    <p class="creds__note">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:2px"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <span>Guardá estos datos en un lugar seguro y no los compartas. Si alguna vez los
+      cambiás, acordate de actualizar esta guía.</span>
+    </p>
+  </div>
+
+  <div class="figure">
+    <div class="figure__frame figure__frame--sand">
+      <div class="m m-login">
+        <h5>Admin</h5>
+        <p>Ingresá con tu mail y contraseña.</p>
+        <div class="m-field">
+          <span class="m-label">Mail</span>
+          <div class="m-input"></div>
+        </div>
+        <div class="m-field">
+          <span class="m-label">Contraseña</span>
+          <div class="m-input"></div>
+        </div>
+        <div class="m-btn m-btn--primary m-btn--full">Ingresar</div>
+      </div>
+    </div>
+    <p class="figure__cap">La pantalla de ingreso.</p>
+  </div>
+
+</section>
+
+<!-- ══════════ PÁGINA 2 ══════════ -->
+<section class="page">
+  <div class="step step--indent">
+    <div class="step__head">
+      <span class="step__num">2</span>
+      <h3 class="step__title">Conocé las dos pestañas</h3>
+    </div>
+    <p>
+      Una vez adentro vas a ver dos secciones arriba: <strong>Novedades</strong> y
+      <strong>Programas</strong>. Cada una se administra por separado. Tocá la que
+      quieras editar para pasar a esa pestaña.
+    </p>
+    <p>
+      La sesión queda abierta en ese navegador. Si usás una computadora compartida,
+      cerrala con el botón <strong>Salir</strong>, arriba a la derecha.
+    </p>
+
+    <div class="figure">
+      <div class="figure__frame figure__frame--sand">
+        <div class="m">
+          <div class="m-tabs">
+            <span class="m-tab on">Novedades</span>
+            <span class="m-tab">Programas</span>
+          </div>
+          <div class="m-listhead">
+            <div>
+              <h4>Novedades</h4>
+              <span class="m-count">1 elemento</span>
+            </div>
+            <span class="m-btn m-btn--dark">+ Agregar</span>
+          </div>
+          <div class="m-item">
+            <div class="m-thumb"></div>
+            <div>
+              <span class="m-badge">Buses eléctricos · Sostenibilidad</span>
+              <p class="m-item__t">Paleson: identidad, estrategia y equipo…</p>
+              <p class="m-item__s">Paleson se encontraba frente a una oportunidad que iba…</p>
+            </div>
+            <div class="m-actions">
+              <span class="m-btn m-btn--ghost m-btn--sm">Editar</span>
+              <span class="m-btn m-btn--danger m-btn--sm">Borrar</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="figure__cap">La pestaña activa se ve resaltada en negro.</p>
+    </div>
+  </div>
+
+  <div class="divider">
+    <span class="divider__label">Novedades</span>
+    <span class="divider__rule"></span>
+  </div>
+
+  <div class="step step--indent">
+    <div class="step__head">
+      <span class="step__num">3</span>
+      <h3 class="step__title">Mostrá u ocultá la sección</h3>
+    </div>
+    <p>
+      Arriba de todo hay un <strong>interruptor</strong>. Cuando está encendido
+      (naranja), la sección de Novedades aparece en tu sitio público. Si todavía no
+      cargaste nada, podés apagarlo: la sección desaparece de la web hasta que tengas
+      contenido para mostrar.
+    </p>
+
+    <div class="figure">
+      <div class="figure__frame figure__frame--sand">
+        <div class="m">
+          <div class="m-settings" style="margin-top:0">
+            <div>
+              <p class="m-settings__t">Mostrar sección de Novedades en el sitio</p>
+              <p class="m-settings__s">Apagalo si todavía no tenés novedades: la sección desaparece de la landing pública.</p>
+            </div>
+            <span class="m-switch"></span>
+          </div>
+          <div class="m-settings">
+            <div>
+              <p class="m-settings__t">Mostrar sección de Novedades en el sitio</p>
+              <p class="m-settings__s">Apagalo si todavía no tenés novedades: la sección desaparece de la landing pública.</p>
+            </div>
+            <span class="m-switch off"></span>
+          </div>
+        </div>
+      </div>
+      <p class="figure__cap">Arriba encendido, abajo apagado.</p>
+    </div>
+
+    <div class="callout callout--info">
+      <svg class="callout__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9c3d20" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.6v.6"/></svg>
+      <span><b>En resumen:</b> el interruptor decide si los visitantes ven o no esta
+      sección. No borra nada, solo la oculta.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PÁGINA 3 ══════════ -->
+<section class="page">
+  <div class="step step--indent">
+    <div class="step__head">
+      <span class="step__num">4</span>
+      <h3 class="step__title">Agregá una novedad</h3>
+    </div>
+    <p>
+      Tocá <strong>+ Agregar</strong>. A diferencia de los programas, una novedad se abre
+      en <strong>una página completa</strong>, porque además de la tarjeta vas a escribir
+      el artículo entero. La primera parte es la <strong>tarjeta del carrusel</strong>:
+    </p>
+
+    <div class="figure">
+      <div class="figure__frame figure__frame--sand">
+        <div class="m m-card" style="margin-bottom:0">
+          <h5>Tarjeta del carrusel</h5>
+          <p class="m-card__hint">Esto es lo que se ve en la home. El texto es un resumen corto: el artículo completo se arma más abajo.</p>
+          <div class="m-field">
+            <span class="m-label">Imagen de portada</span>
+            <div class="m-drop">
+              <span class="m-prev"><svg class="m-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6.5 6.5"/></svg></span>
+              <span class="m-btn m-btn--ghost m-btn--sm">Subir imagen</span>
+            </div>
+          </div>
+          <div class="m-field">
+            <span class="m-label">Título</span>
+            <div class="m-input"></div>
+          </div>
+          <div class="m-field">
+            <span class="m-label">Badge</span>
+            <div class="m-input"><span class="m-ph">Sostenibilidad</span></div>
+            <p class="m-hint">Etiqueta corta. Si es muy larga se recorta en la tarjeta.</p>
+          </div>
+          <div class="m-field" style="margin-bottom:0">
+            <span class="m-label">Texto del resumen</span>
+            <div class="m-textarea"><span class="m-ph">Dos o tres líneas que inviten a leer la nota.</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="figure__cap">Los datos que se ven en la home, dentro del carrusel.</p>
+    </div>
+
+    <div class="table">
+      <div class="table__row">
+        <span class="table__key">Imagen de portada</span>
+        <span class="table__val">La foto que acompaña la tarjeta en la home. Se ve apaisada.</span>
+      </div>
+      <div class="table__row">
+        <span class="table__key">Título</span>
+        <span class="table__val">El nombre de la novedad. Va en grande y en negrita.</span>
+      </div>
+      <div class="table__row">
+        <span class="table__key">Badge</span>
+        <span class="table__val">Una etiqueta corta para categorizar (por ejemplo: Sostenibilidad).
+        Aparece arriba del título, en naranja.</span>
+      </div>
+      <div class="table__row">
+        <span class="table__key">Texto del resumen</span>
+        <span class="table__val">Dos o tres líneas que inviten a entrar. <b>No es el artículo</b>:
+        en la tarjeta se recorta a cuatro líneas.</span>
+      </div>
+    </div>
+
+    <div class="callout callout--tip">
+      <svg class="callout__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(21,21,22,0.55)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2.5a6 6 0 0 0-3.5 10.9V15h7v-1.6A6 6 0 0 0 12 2.5Z"/></svg>
+      <span>Ya no existe el campo <b>Link</b>. Antes servía para elegir a dónde llevaba la
+      tarjeta; ahora todas las novedades tienen su propia página, así que
+      <b>Leer más</b> siempre lleva al artículo.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PÁGINA 4 ══════════ -->
+<section class="page">
+  <div class="step step--indent">
+    <div class="step__head">
+      <span class="step__num">5</span>
+      <h3 class="step__title">Escribí el artículo con bloques</h3>
+    </div>
+    <p>
+      La segunda parte de la página es el <strong>artículo</strong>, que es lo que ve
+      alguien cuando entra a la novedad. Se arma con <strong>bloques</strong> que vas
+      apilando: tocá <strong>+ Agregar bloque</strong> y sumá los que necesites.
+    </p>
+    <p>
+      Cada bloque puede llevar imágenes, un título y un texto, y los tres son opcionales.
+      Sin imágenes queda un bloque de solo texto; con una, se muestra grande; y con
+      varias se convierte solo en un <strong>carrusel</strong>.
+    </p>
+
+    <div class="figure">
+      <div class="figure__frame figure__frame--sand">
+        <div class="m">
+          <div class="m-block">
+            <div class="m-block__head">
+              <span class="m-block__num">Bloque 1</span>
+              <div class="m-actions">
+                <span class="m-btn m-btn--ghost m-btn--sm">↑</span>
+                <span class="m-btn m-btn--ghost m-btn--sm">↓</span>
+                <span class="m-btn m-btn--danger m-btn--sm">Quitar</span>
+              </div>
+            </div>
+            <div class="m-img">
+              <span class="m-thumb" style="width:24mm;height:17mm"></span>
+              <div>
+                <div class="m-input"><span class="m-ph">Epígrafe (opcional)</span></div>
+                <div class="m-actions" style="margin-top:2mm">
+                  <span class="m-btn m-btn--ghost m-btn--sm">←</span>
+                  <span class="m-btn m-btn--ghost m-btn--sm">→</span>
+                  <span class="m-btn m-btn--danger m-btn--sm">Quitar</span>
+                </div>
+              </div>
+            </div>
+            <span class="m-btn m-btn--ghost m-btn--sm">Agregar imagen</span>
+            <div class="m-field" style="margin-top:3mm">
+              <span class="m-label">Título del bloque (opcional)</span>
+              <div class="m-input"><span class="m-ph">Ej: El punto de partida</span></div>
+            </div>
+            <div class="m-field" style="margin-bottom:0">
+              <span class="m-label">Texto</span>
+              <div class="m-textarea" style="height:12mm"><span class="m-ph">Texto del bloque. Dejá una línea en blanco para separar párrafos.</span></div>
+            </div>
+          </div>
+          <div class="m-btn m-btn--dark m-btn--full">+ Agregar bloque</div>
+        </div>
+      </div>
+      <p class="figure__cap">Un bloque con una imagen, su epígrafe, un título y el texto.</p>
+    </div>
+
+    <div class="table">
+      <div class="table__row">
+        <span class="table__key">Imágenes</span>
+        <span class="table__val">Podés subir varias de una. Con las flechas <b>←</b> y <b>→</b>
+        cambiás el orden en que se ven.</span>
+      </div>
+      <div class="table__row">
+        <span class="table__key">Epígrafe</span>
+        <span class="table__val">Un pie de foto para cada imagen. Es opcional, y cada foto
+        del carrusel lleva el suyo.</span>
+      </div>
+      <div class="table__row">
+        <span class="table__key">Título del bloque</span>
+        <span class="table__val">Un subtítulo dentro del artículo, como “El punto de partida”.
+        Opcional.</span>
+      </div>
+      <div class="table__row">
+        <span class="table__key">Texto</span>
+        <span class="table__val">El cuerpo. Dejá <b>una línea en blanco</b> entre párrafos
+        para que se separen bien.</span>
+      </div>
+      <div class="table__row">
+        <span class="table__key">Orden</span>
+        <span class="table__val">Con las flechas <b>↑</b> y <b>↓</b> de arriba a la derecha
+        movés el bloque entero para reordenar el artículo.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PÁGINA 5 ══════════ -->
+<section class="page">
+  <div class="step step--indent">
+    <div class="step__head">
+      <span class="step__num">6</span>
+      <h3 class="step__title">Guardá y revisá</h3>
+    </div>
+    <p>
+      Cuando termines, tocá <strong>Guardar</strong> abajo de todo. Si querés salir sin
+      guardar los cambios, usá <strong>Cancelar</strong>.
+    </p>
+
+    <div class="callout callout--warn">
+      <svg class="callout__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a32c17" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5 2.8 20h18.4L12 4.5Z"/><path d="M12 10v4"/><path d="M12 17.2v.4"/></svg>
+      <span>Las imágenes recién se suben cuando tocás <b>Guardar</b>. Si salís con
+      <b>Cancelar</b>, no queda nada a medias, pero tampoco se guarda lo que hayas escrito.</span>
+    </div>
+
+    <p>
+      No podés agregar un bloque nuevo mientras haya uno vacío: primero completalo. Y si
+      al guardar quedó algún bloque sin nada, simplemente no se guarda.
+    </p>
+
+    <div class="figure">
+      <div class="figure__frame figure__frame--sand">
+        <div class="m">
+          <div class="m-btn m-btn--off m-btn--full">+ Agregar bloque</div>
+          <p class="m-hint" style="text-align:left">Completá el bloque vacío (una imagen, un título o texto) antes de agregar otro. Los bloques que queden vacíos no se guardan.</p>
+        </div>
+      </div>
+      <p class="figure__cap">El botón se apaga hasta que completes el bloque que está vacío.</p>
+    </div>
+  </div>
+
+  <div class="step step--indent">
+    <div class="step__head">
+      <span class="step__num">7</span>
+      <h3 class="step__title">Editá o borrá una novedad</h3>
+    </div>
+    <p>
+      Cada novedad aparece como una tarjeta en la lista. Desde ahí la modificás con
+      <strong>Editar</strong> o la eliminás con <strong>Borrar</strong>.
+    </p>
+
+    <div class="callout callout--warn">
+      <svg class="callout__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a32c17" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9.5 7V5h5v2"/><path d="M6.5 7l1 13h9l1-13"/></svg>
+      <span><b>Ojo:</b> al tocar Borrar, la novedad se elimina junto con todas sus
+      imágenes y no se puede recuperar.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PÁGINA 6 ══════════ -->
+<section class="page">
+  <div class="divider" style="margin-top:0">
+    <span class="divider__label">Programas</span>
+    <span class="divider__rule"></span>
+  </div>
+
+  <div class="step step--indent">
+    <div class="step__head">
+      <span class="step__num">8</span>
+      <h3 class="step__title">Cargá un programa</h3>
+    </div>
+    <p>
+      Pasate a la pestaña <strong>Programas</strong> y tocá <strong>+ Agregar</strong>.
+      Los programas son más simples que las novedades: no tienen artículo ni bloques, así
+      que se cargan en una ventana con solo tres campos.
+    </p>
+
+    <div class="figure">
+      <div class="figure__frame figure__frame--sand">
+        <div class="m m-modal">
+          <h5>Nuevo programa</h5>
+          <div class="m-field">
+            <span class="m-label">Imagen</span>
+            <div class="m-drop">
+              <span class="m-prev"><svg class="m-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-6.5 6.5"/></svg></span>
+              <span class="m-btn m-btn--ghost m-btn--sm">Subir imagen</span>
+            </div>
+          </div>
+          <div class="m-field">
+            <span class="m-label">Título</span>
+            <div class="m-input"></div>
+          </div>
+          <div class="m-field" style="margin-bottom:0">
+            <span class="m-label">Texto</span>
+            <div class="m-textarea"></div>
+          </div>
+          <div class="m-modal__actions">
+            <span class="m-btn m-btn--ghost">Cancelar</span>
+            <span class="m-btn m-btn--primary">Guardar</span>
+          </div>
+        </div>
+      </div>
+      <p class="figure__cap">La ventana para cargar un programa nuevo.</p>
+    </div>
+
+    <div class="table">
+      <div class="table__row">
+        <span class="table__key">Imagen</span>
+        <span class="table__val">La foto del programa. Se ve vertical en el sitio.</span>
+      </div>
+      <div class="table__row">
+        <span class="table__key">Título</span>
+        <span class="table__val">El nombre del programa.</span>
+      </div>
+      <div class="table__row">
+        <span class="table__key">Texto</span>
+        <span class="table__val">La descripción de qué se trata. Una o dos líneas.</span>
+      </div>
+    </div>
+
+    <p>
+      Igual que con las novedades, cada programa aparece como una tarjeta con sus botones
+      <strong>Editar</strong> y <strong>Borrar</strong>.
+    </p>
+  </div>
+
+  <div class="closing">
+    <p><strong>¡Y eso es todo!</strong> Con estos pasos ya podés mantener tu web
+    actualizada por tu cuenta.</p>
+    <p>La idea es que entres, cargues lo que necesites y los cambios se vean al toque en
+    el sitio. Cualquier duda, tenés esta guía a mano.</p>
+  </div>
+</section>
+
+</body>
+</html>
