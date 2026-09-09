@@ -5,7 +5,7 @@
     <div class="foot__shell">
       <div class="foot__grid">
         <div class="foot__col foot__col--brand">
-          <a href="/" class="foot__brand">
+          <RouterLink to="/" class="foot__brand">
             <img
               :src="logoBlanco"
               alt="WE Plus"
@@ -13,7 +13,7 @@
               width="120"
               height="32"
             />
-          </a>
+          </RouterLink>
           <p class="foot__tagline">
             Formación, comunicación estratégica y diseño de transformación para organizaciones que
             lideran el cambio.
@@ -23,19 +23,26 @@
         <div class="foot__col">
           <h2 class="foot__heading">Explorar</h2>
           <ul class="foot__list" role="list">
-            <li><a href="#quienes-somos" class="foot__link">Quiénes somos</a></li>
-            <li><a href="#que-hacemos" class="foot__link">Qué hacemos</a></li>
-            <li><a href="#servicios" class="foot__link">Servicios</a></li>
-            <li><a href="#temas" class="foot__link">Temas</a></li>
+            <li v-for="l in explorar" :key="l.hash">
+              <component
+                :is="enLanding ? 'a' : 'RouterLink'"
+                v-bind="enLanding ? { href: l.hash } : { to: { path: '/', hash: l.hash } }"
+                class="foot__link"
+              >{{ l.label }}</component>
+            </li>
           </ul>
         </div>
 
         <div class="foot__col">
           <h2 class="foot__heading">Más</h2>
           <ul class="foot__list" role="list">
-            <li><a href="#para-quien" class="foot__link">Para quién</a></li>
-            <li><a href="#como-trabajamos" class="foot__link">Cómo trabajamos</a></li>
-            <li><a href="#contacto" class="foot__link">Contacto</a></li>
+            <li v-for="l in mas" :key="l.hash">
+              <component
+                :is="enLanding ? 'a' : 'RouterLink'"
+                v-bind="enLanding ? { href: l.hash } : { to: { path: '/', hash: l.hash } }"
+                class="foot__link"
+              >{{ l.label }}</component>
+            </li>
           </ul>
         </div>
 
@@ -54,7 +61,7 @@
               <i class="pi pi-linkedin" aria-hidden="true"></i>
             </a>
             <a
-              href="https://www.instagram.com/dsgroup__/"
+              href="https://www.instagram.com/wecoconsulting/"
               class="foot__social-btn"
               aria-label="Instagram"
               target="_blank"
@@ -81,9 +88,30 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import logoBlanco from '../assets/logoBlanco.png'
 
 const year = new Date().getFullYear()
+
+const route = useRoute()
+
+// En la landing las anclas funcionan solas (y las maneja Lenis). Fuera de ella
+// hay que navegar a "/" con el hash, porque el ancla no existe en la pagina.
+const enLanding = computed(() => route.name === 'landing')
+
+const explorar = [
+  { hash: '#quienes-somos', label: 'Quiénes somos' },
+  { hash: '#que-hacemos', label: 'Qué hacemos' },
+  { hash: '#servicios', label: 'Servicios' },
+  { hash: '#temas', label: 'Temas' },
+]
+
+const mas = [
+  { hash: '#para-quien', label: 'Para quién' },
+  { hash: '#como-trabajamos', label: 'Cómo trabajamos' },
+  { hash: '#contacto', label: 'Contacto' },
+]
 </script>
 
 <style scoped>

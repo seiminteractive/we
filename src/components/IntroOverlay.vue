@@ -62,11 +62,14 @@
 
 <script setup>
 import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { esPrimeraVisita } from '../lib/intro'
 import logoSrc from '../assets/logoBlancoDefinitivo.png'
 import { gsap } from '../lib/gsap'
 
-const visible = ref(true)
-const locked = ref(true)
+// Solo en la primera visita de esta carga de pagina. Al volver desde una
+// noticia no hay nada que animar; una recarga completa si lo vuelve a mostrar.
+const visible = ref(esPrimeraVisita())
+const locked = ref(esPrimeraVisita())
 
 const rootRef = ref(null)
 const coverRef = ref(null)
@@ -110,14 +113,20 @@ const rows = ref(buildRows())
 
 let ctx
 let scrollLockY = 0
+let bloqueoAplicado = false
 
 function lockScroll() {
   scrollLockY = window.scrollY || 0
+  bloqueoAplicado = true
   document.documentElement.style.overflow = 'hidden'
   document.body.style.overflow = 'hidden'
 }
 
 function unlockScroll() {
+  // Si el intro no llego a bloquear el scroll, no hay que tocar nada: al
+  // desmontarse haria un scrollTo(0) que rompe la posicion de la pagina.
+  if (!bloqueoAplicado) return
+  bloqueoAplicado = false
   document.documentElement.style.overflow = ''
   document.body.style.overflow = ''
   window.scrollTo(0, scrollLockY)
@@ -130,6 +139,9 @@ function finish() {
 }
 
 onMounted(async () => {
+  // Ya se vio en esta carga de pagina: no hay nada que animar.
+  if (!visible.value) return
+
   lockScroll()
   await nextTick()
 

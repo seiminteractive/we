@@ -1,5 +1,11 @@
 <template>
-  <section id="noticias" ref="sectionRef" class="news" aria-labelledby="news-heading">
+  <section
+    v-if="noticiasVisible"
+    id="noticias"
+    ref="sectionRef"
+    class="news"
+    aria-labelledby="news-heading"
+  >
     <div class="news__fx" aria-hidden="true">
       <span class="news__fx-orb news__fx-orb--a" />
       <span class="news__fx-orb news__fx-orb--b" />
@@ -58,9 +64,10 @@
             class="news-card"
             :aria-hidden="item._clone ? 'true' : null"
           >
-            <a
+            <component
+              :is="item.to ? 'RouterLink' : 'a'"
               class="news-card__media"
-              :href="item.link"
+              v-bind="item.to ? { to: item.to } : { href: item.link }"
               tabindex="-1"
               aria-hidden="true"
             >
@@ -72,22 +79,23 @@
                 draggable="false"
               />
               <span class="news-card__tag">{{ item.tag }}</span>
-            </a>
+            </component>
 
             <div class="news-card__body">
               <span class="news-card__date">{{ item.date }}</span>
               <h3 class="news-card__title">{{ item.title }}</h3>
               <p class="news-card__excerpt">{{ item.excerpt }}</p>
-              <a
+              <component
+                :is="item.to ? 'RouterLink' : 'a'"
                 class="news-card__cta"
-                :href="item.link"
+                v-bind="item.to ? { to: item.to } : { href: item.link }"
                 :tabindex="item._clone ? -1 : null"
               >
                 <span class="news-card__cta-label">Leer más</span>
                 <span class="news-card__cta-icon" aria-hidden="true">
                   <i class="pi pi-arrow-right"></i>
                 </span>
-              </a>
+              </component>
             </div>
           </li>
         </ul>
@@ -115,8 +123,9 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
+import { formatDate, noticiasApi, useSiteSettings } from '../lib/firebase'
 
 import imgSost from '../assets/imagenesDefinitivas/programaSustentabilidad.jpeg'
 import imgIA from '../assets/imagenesDefinitivas/formacionEnIA.jpeg'
@@ -126,10 +135,12 @@ import imgFin from '../assets/imagenesDefinitivas/tallerFinanciamientoDeImpacto.
 import imgEst from '../assets/imagenesDefinitivas/tallerDeEstrategiaPublica.jpeg'
 
 const { sectionRef } = useScrollReveal()
+const { noticiasVisible } = useSiteSettings()
 
-// Noticias — reemplazables por un feed real. La sección detecta automáticamente
-// si hay más cards que las visibles (máx. 3) y activa el carrusel infinito.
-const news = [
+// Contenido de respaldo: se muestra unicamente si la coleccion "noticias"
+// de Firestore esta vacia o si falla la conexion, para que la seccion nunca
+// quede en blanco. El contenido real se administra desde /admin.
+const newsFallback = [
   {
     id: 'foro-sostenibilidad',
     tag: 'Sostenibilidad',
@@ -192,6 +203,43 @@ const news = [
   },
 ]
 
+const remoteNews = ref([])
+const loaded = ref(false)
+
+let unsubscribeNews = null
+
+// Antes del primer snapshot se renderiza vacio a proposito: mostrar el fallback
+// y reemplazarlo un instante despues produce un parpadeo visible.
+const news = computed(() => {
+  if (!loaded.value) return []
+  return remoteNews.value.length ? remoteNews.value : newsFallback
+})
+
+onMounted(() => {
+  unsubscribeNews = noticiasApi.subscribe(
+    (list) => {
+      remoteNews.value = list.map((n) => ({
+        id: n.id,
+        tag: n.tag,
+        title: n.title,
+        excerpt: n.excerpt,
+        image: n.image,
+        to: `/novedades/${n.slug || n.id}`,
+        date: formatDate(n.createdAt),
+      }))
+      loaded.value = true
+    },
+    (err) => {
+      console.error('No se pudieron cargar las noticias:', err)
+      loaded.value = true
+    }
+  )
+})
+
+onBeforeUnmount(() => {
+  if (unsubscribeNews) unsubscribeNews()
+})
+
 const viewportRef = ref(null)
 const trackRef = ref(null)
 
@@ -216,27 +264,27 @@ let horizontal = false
 const gap = computed(() =>
   perView.value === 1 ? 16 : perView.value === 2 ? 20 : 24
 )
-const isCarousel = computed(() => news.length > perView.value)
+const isCarousel = computed(() => news.value.length > perView.value)
 const settleMs = () => (reduce ? 30 : 640)
 const transDur = () => (reduce ? '0.01s' : '0.6s')
 
 // Track extendido: clones al inicio y al final para el loop sin saltos.
 const displayItems = computed(() => {
   if (!isCarousel.value) {
-    return news.map((n) => ({ ...n, _key: n.id, _clone: false }))
+    return news.value.map((n) => ({ ...n, _key: n.id, _clone: false }))
   }
   const v = perView.value
-  const head = news.slice(0, v).map((n) => ({ ...n, _key: `head-${n.id}`, _clone: true }))
-  const tail = news
-    .slice(news.length - v)
+  const head = news.value.slice(0, v).map((n) => ({ ...n, _key: `head-${n.id}`, _clone: true }))
+  const tail = news.value
+    .slice(news.value.length - v)
     .map((n) => ({ ...n, _key: `tail-${n.id}`, _clone: true }))
-  const real = news.map((n) => ({ ...n, _key: n.id, _clone: false }))
+  const real = news.value.map((n) => ({ ...n, _key: n.id, _clone: false }))
   return [...tail, ...real, ...head]
 })
 
 const activeIndex = computed(() => {
   if (!isCarousel.value) return 0
-  const n = news.length
+  const n = news.value.length
   return (((pos.value - perView.value) % n) + n) % n
 })
 
@@ -276,7 +324,7 @@ function recalc() {
 function scheduleSettle() {
   clearTimeout(settleTimer)
   settleTimer = setTimeout(() => {
-    const n = news.length
+    const n = news.value.length
     const v = perView.value
     if (pos.value >= v + n || pos.value < v) {
       transition.value = false
@@ -374,6 +422,14 @@ onMounted(() => {
   })
   window.addEventListener('resize', onResize)
 })
+
+// Las noticias llegan de Firestore despues del mount. Al cambiar la cantidad
+// hay que recalcular el ancho de cada card y reposicionar el track: si no,
+// step queda en 0 y el carrusel no se mueve.
+watch(
+  () => news.value.length,
+  () => recalc()
+)
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', onResize)
@@ -655,6 +711,12 @@ onBeforeUnmount(() => {
   color: #fff;
   padding: 0.36rem 0.7rem;
   border-radius: 999px;
+  /* Las etiquetas cargadas desde el panel pueden ser largas: se limita el
+     ancho y se recorta en vez de desbordar la tarjeta. */
+  max-width: calc(100% - 1.7rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   background: rgba(28, 26, 24, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.22);
   backdrop-filter: blur(8px);
@@ -695,6 +757,13 @@ onBeforeUnmount(() => {
   line-height: 1.55;
   color: var(--news-muted);
   flex: 1;
+  /* La tarjeta es solo un teaser: se recorta para que un texto largo no
+     estire la altura de toda la fila del carrusel. */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .news-card__cta {

@@ -1,0 +1,39 @@
+rules_version = '2';
+
+// Reglas de Storage para wecc-3717b.
+//
+// Las imagenes se sirven en la landing publica, por eso son de lectura abierta.
+// Subir y borrar queda limitado al mail del panel.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // OJO: este mail tiene que coincidir con VITE_ADMIN_EMAIL del .env.
+    // No se exige email_verified a proposito: las cuentas creadas a mano desde
+    // la consola de Firebase tienen email_verified en false, y pedirlo dejaria
+    // al panel sin poder escribir. Como el mail habilitado es uno solo y fijo,
+    // nadie mas puede cumplir la condicion aunque se registre.
+    function esAdmin() {
+      return request.auth != null
+        && request.auth.token.email.lower() == 'admin@wecc.io';
+    }
+
+    function esImagenValida() {
+      return request.resource.contentType.matches('image/.*')
+        && request.resource.size < 15 * 1024 * 1024;
+    }
+
+    match /noticias/{archivo} {
+      allow read: if true;
+      allow write: if esAdmin() && (request.resource == null || esImagenValida());
+    }
+
+    match /cursos/{archivo} {
+      allow read: if true;
+      allow write: if esAdmin() && (request.resource == null || esImagenValida());
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

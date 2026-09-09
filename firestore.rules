@@ -1,0 +1,45 @@
+rules_version = '2';
+
+// Reglas de Firestore para wecc-3717b.
+//
+// La landing es publica, asi que el contenido se lee sin autenticacion.
+// La escritura queda restringida al mail del panel: el chequeo que hace el
+// cliente en /admin es solo de interfaz y se puede saltear desde la consola
+// del navegador, por eso la barrera real tiene que estar aca.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // OJO: este mail tiene que coincidir con VITE_ADMIN_EMAIL del .env.
+    // No se exige email_verified a proposito: las cuentas creadas a mano desde
+    // la consola de Firebase tienen email_verified en false, y pedirlo dejaria
+    // al panel sin poder escribir. Como el mail habilitado es uno solo y fijo,
+    // nadie mas puede cumplir la condicion aunque se registre.
+    function esAdmin() {
+      return request.auth != null
+        && request.auth.token.email.lower() == 'admin@wecc.io';
+    }
+
+    // Novedades de la landing.
+    match /noticias/{id} {
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
+    // Programas (la coleccion se llama "cursos" por razones historicas).
+    match /cursos/{id} {
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
+    // Ajustes del sitio: hoy solo el interruptor de visibilidad de Novedades.
+    match /settings/{doc} {
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
+    // Todo lo demas queda cerrado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

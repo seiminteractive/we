@@ -1,0 +1,633 @@
+/* Estilos del panel /admin.
+   Reconstruidos desde Admin-BbVBw16E.css del build de produccion recuperado.
+   Reutilizan los tokens de marca definidos en base.css. */
+
+/* ───────────────────────── Layout ───────────────────────── */
+
+.admin {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--brand-sand);
+  color: var(--brand-ink);
+  font-family: var(--font-body);
+}
+
+.admin__bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1rem, 4vw, 2.5rem);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(21, 21, 22, 0.1);
+}
+
+.admin__brand {
+  font-family: var(--font-heading);
+  font-weight: var(--font-w-bold);
+  letter-spacing: 0.04em;
+}
+
+.admin__brand span {
+  color: var(--brand-terracotta);
+}
+
+.admin__user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.85rem;
+}
+
+.admin__user-mail {
+  color: rgba(21, 21, 22, 0.6);
+}
+
+.admin__shell {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 2.75rem) clamp(1rem, 4vw, 2.5rem) 5rem;
+}
+
+/* ───────────────────────── Pestañas ───────────────────────── */
+
+.admin__tabs {
+  display: inline-flex;
+  gap: 0.35rem;
+  padding: 0.3rem;
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(21, 21, 22, 0.1);
+  border-radius: 999px;
+}
+
+.admin__tab {
+  border: none;
+  background: transparent;
+  font-family: var(--font-heading);
+  font-weight: var(--font-w-semibold);
+  font-size: 0.85rem;
+  padding: 0.55rem 1.3rem;
+  border-radius: 999px;
+  cursor: pointer;
+  color: rgba(21, 21, 22, 0.6);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.admin__tab.is-active {
+  background: var(--brand-ink);
+  color: #fff;
+}
+
+/* ───────────────────────── Botones ───────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.6rem 1.25rem;
+  font-family: var(--font-heading);
+  font-weight: var(--font-w-semibold);
+  font-size: 0.85rem;
+  cursor: pointer;
+  /* Algunos .btn son RouterLink (o sea <a>): sin esto el navegador les mete
+     el subrayado por defecto y no se ven como botones. */
+  text-decoration: none;
+  transition: transform 0.15s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.btn--primary {
+  background: var(--brand-terracotta);
+  color: #fff;
+}
+
+.btn--dark {
+  background: var(--brand-ink);
+  color: #fff;
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: rgba(21, 21, 22, 0.2);
+  color: var(--brand-ink);
+}
+
+.btn--danger {
+  background: transparent;
+  border-color: rgba(190, 50, 30, 0.4);
+  color: #b3301c;
+}
+
+.btn--danger.btn--solid {
+  background: #b3301c;
+  border-color: transparent;
+  color: #fff;
+}
+
+.btn--sm {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.78rem;
+}
+
+/* ──────────────── Fila de ajustes + interruptor ──────────────── */
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  background: #fff;
+  border: 1px solid rgba(21, 21, 22, 0.08);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 24px rgba(21, 21, 22, 0.04);
+}
+
+.settings-row__text {
+  min-width: 0;
+}
+
+.settings-row__title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-w-semibold);
+  font-size: 0.95rem;
+  margin: 0 0 0.2rem;
+}
+
+.settings-row__sub {
+  font-size: 0.82rem;
+  color: rgba(21, 21, 22, 0.55);
+  margin: 0;
+}
+
+.switch {
+  flex-shrink: 0;
+  width: 50px;
+  height: 28px;
+  border-radius: 999px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: rgba(21, 21, 22, 0.18);
+  position: relative;
+  transition: background 0.25s ease;
+}
+
+.switch.is-on {
+  background: var(--brand-terracotta);
+}
+
+.switch:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.switch__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(21, 21, 22, 0.25);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.switch.is-on .switch__knob {
+  transform: translateX(22px);
+}
+
+/* ───────────────────── Listado de contenido ───────────────────── */
+
+.mgr__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.mgr__head h2 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.mgr__count {
+  color: rgba(21, 21, 22, 0.5);
+  font-size: 0.85rem;
+}
+
+.mgr__list {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.mgr__item {
+  display: grid;
+  grid-template-columns: 84px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(21, 21, 22, 0.08);
+  border-radius: 16px;
+  padding: 0.8rem;
+  box-shadow: 0 8px 24px rgba(21, 21, 22, 0.04);
+}
+
+.mgr__thumb {
+  width: 84px;
+  height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--brand-gray);
+}
+
+.mgr__info {
+  min-width: 0;
+}
+
+.mgr__info-title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-w-semibold);
+  font-size: 0.98rem;
+  margin: 0 0 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mgr__info-sub {
+  font-size: 0.82rem;
+  color: rgba(21, 21, 22, 0.55);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mgr__badge {
+  display: inline-block;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: var(--font-w-semibold);
+  color: var(--brand-terracotta);
+  margin-bottom: 0.25rem;
+}
+
+.mgr__actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.mgr__empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: rgba(21, 21, 22, 0.5);
+  border: 1px dashed rgba(21, 21, 22, 0.2);
+  border-radius: 16px;
+}
+
+@media (max-width: 640px) {
+  .mgr__item {
+    grid-template-columns: 64px 1fr;
+    grid-template-areas: 'thumb info' 'actions actions';
+  }
+  .mgr__thumb {
+    grid-area: thumb;
+    width: 64px;
+    height: 52px;
+  }
+  .mgr__info {
+    grid-area: info;
+  }
+  .mgr__actions {
+    grid-area: actions;
+    justify-content: flex-end;
+  }
+}
+
+/* ───────────────────────── Modales ───────────────────────── */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(1rem, 5vh, 3rem) 1rem;
+  background: rgba(21, 21, 22, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  overflow-y: auto;
+}
+
+.modal__card {
+  width: 100%;
+  max-width: 520px;
+  background: #fff;
+  border-radius: 20px;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  box-shadow: 0 30px 80px rgba(21, 21, 22, 0.3);
+}
+
+.modal__card--sm {
+  max-width: 420px;
+}
+
+.modal__title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  margin: 0 0 1.25rem;
+}
+
+.modal__text {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(21, 21, 22, 0.7);
+  margin: 0;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+/* ───────────────────────── Formularios ───────────────────────── */
+
+.field {
+  margin-bottom: 1.05rem;
+}
+
+.field__label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: var(--font-w-semibold);
+  margin-bottom: 0.4rem;
+}
+
+.field__input,
+.field__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(21, 21, 22, 0.18);
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  background: var(--brand-sand);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.field__input:focus,
+.field__textarea:focus {
+  outline: none;
+  border-color: var(--brand-terracotta);
+  background: #fff;
+}
+
+.field__textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+/* Evita el zoom automatico de iOS al enfocar un input. */
+@media (pointer: coarse) {
+  .field__input,
+  .field__textarea {
+    font-size: 16px;
+  }
+}
+
+.field__drop {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.field__preview {
+  width: 110px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--brand-gray);
+  flex-shrink: 0;
+}
+
+.field__preview--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(21, 21, 22, 0.4);
+  font-size: 1.4rem;
+}
+
+.form-error {
+  background: rgba(190, 50, 30, 0.08);
+  color: #b3301c;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+/* ───────────────────────── Login ───────────────────────── */
+
+.login {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: var(--brand-sand);
+}
+
+.login__card {
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  border-radius: 22px;
+  padding: clamp(1.75rem, 6vw, 2.5rem);
+  box-shadow: 0 30px 80px rgba(21, 21, 22, 0.12);
+}
+
+.login__brand {
+  font-family: var(--font-heading);
+  font-weight: var(--font-w-bold);
+  font-size: 1.5rem;
+  margin: 0 0 0.3rem;
+}
+
+.login__brand span {
+  color: var(--brand-terracotta);
+}
+
+.login__sub {
+  color: rgba(21, 21, 22, 0.55);
+  font-size: 0.88rem;
+  margin: 0 0 1.75rem;
+}
+
+.login__btn {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* ─────────────── Editor de novedades (pagina completa) ─────────────── */
+
+.editor__title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin: 0 0 1.75rem;
+}
+
+.editor__card {
+  background: #fff;
+  border: 1px solid rgba(21, 21, 22, 0.08);
+  border-radius: 18px;
+  padding: clamp(1.1rem, 3vw, 1.75rem);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 24px rgba(21, 21, 22, 0.04);
+}
+
+.editor__section {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  margin: 0 0 0.35rem;
+}
+
+.editor__hint {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(21, 21, 22, 0.55);
+  margin: 0 0 1.35rem;
+}
+
+.editor__hint--tight {
+  margin: 0.4rem 0 0;
+}
+
+.editor__add {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.editor__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  position: sticky;
+  bottom: 0;
+  padding: 1rem 0;
+  background: linear-gradient(to top, var(--brand-sand) 62%, transparent);
+}
+
+/* ── Bloque ── */
+
+.bloque {
+  border: 1px solid rgba(21, 21, 22, 0.12);
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: var(--brand-sand);
+}
+
+.bloque__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.bloque__num {
+  font-family: var(--font-heading);
+  font-weight: var(--font-w-semibold);
+  font-size: 0.85rem;
+  color: rgba(21, 21, 22, 0.6);
+}
+
+.bloque__acciones {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.bloque__imgs {
+  display: grid;
+  gap: 0.7rem;
+  margin-bottom: 0.9rem;
+}
+
+.bloque__img {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 0.8rem;
+  align-items: start;
+  background: #fff;
+  border: 1px solid rgba(21, 21, 22, 0.08);
+  border-radius: 12px;
+  padding: 0.6rem;
+}
+
+.bloque__thumb {
+  width: 110px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--brand-gray);
+}
+
+.bloque__img-campos {
+  min-width: 0;
+}
+
+.bloque__img-acciones {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.bloque__pie {
+  margin-bottom: 0.9rem;
+}
+
+.bloque__texto {
+  min-height: 140px;
+}
+
+@media (max-width: 560px) {
+  .bloque__img {
+    grid-template-columns: 1fr;
+  }
+  .bloque__thumb {
+    width: 100%;
+    height: 140px;
+  }
+}

@@ -125,6 +125,7 @@
 
 <script setup>
 import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { esPrimeraVisita } from '../lib/intro'
 import logoSrc from '../assets/logoBlancoDefinitivo.png'
 import { gsap } from '../lib/gsap'
 import { createSmokeBackground } from '../lib/smokeBackground'
@@ -160,6 +161,11 @@ function onKeydown(e) {
 function playReveal() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (reduce) return
+
+  // Al volver desde una noticia el Hero se remonta: sin esto, su animacion de
+  // entrada se reproduce de nuevo y se lee como si el intro volviera a correr.
+  // Se usa gsap.from(), asi que saltearla deja todo en su estado final.
+  if (!esPrimeraVisita()) return
 
   const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
   tl.from('.hero__logo', { y: -18, opacity: 0, duration: 0.95 }, 0)

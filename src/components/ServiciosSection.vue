@@ -83,8 +83,8 @@
             </button>
 
             <div class="svc-carousel__overlay">
-              <p class="svc-carousel__slide-title">{{ slides[current].title }}</p>
-              <p class="svc-carousel__slide-desc">{{ slides[current].description }}</p>
+              <p class="svc-carousel__slide-title">{{ slides[current]?.title }}</p>
+              <p class="svc-carousel__slide-desc">{{ slides[current]?.description }}</p>
             </div>
           </div>
         </div>
@@ -94,8 +94,9 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
+import { cursosApi } from '../lib/firebase'
 import imgFormacionSostenibilidad from '../assets/imagenesDefinitivas/programaSustentabilidad.jpeg'
 import imgUsoIA from '../assets/imagenesDefinitivas/formacionEnIA.jpeg'
 import imgTalleresGobEmpSind from '../assets/imagenesDefinitivas/talleresGobiernosEmpresasSindicatos.jpeg'
@@ -108,7 +109,9 @@ const { sectionRef } = useScrollReveal()
 
 const SLIDE_DURATION_MS = 6000
 
-const slides = [
+// Respaldo: solo se usa si la coleccion "cursos" de Firestore esta vacia
+// o si falla la conexion. El contenido real se administra desde /admin.
+const slidesFallback = [
   {
     id: 'sostenibilidad',
     title: 'Formación en sostenibilidad',
@@ -160,6 +163,16 @@ const slides = [
   },
 ]
 
+const remoteSlides = ref([])
+const loaded = ref(false)
+
+let unsubscribeCursos = null
+
+const slides = computed(() => {
+  if (!loaded.value) return slidesFallback
+  return remoteSlides.value.length ? remoteSlides.value : slidesFallback
+})
+
 const current = ref(0)
 const segProgress = ref(0)
 
@@ -176,7 +189,8 @@ function resetSlideClock(now) {
 }
 
 function goTo(index) {
-  const n = slides.length
+  const n = slides.value.length
+  if (!n) return
   current.value = ((index % n) + n) % n
   resetSlideClock(performance.now())
 }
@@ -195,7 +209,8 @@ function tick(now) {
   segProgress.value = t
 
   if (t >= 1) {
-    const n = slides.length
+    const n = slides.value.length
+    if (!n) return
     current.value = (current.value + 1) % n
     slideStartAt = now
     segProgress.value = 0
@@ -207,10 +222,31 @@ function tick(now) {
 onMounted(() => {
   resetSlideClock(performance.now())
   rafId = requestAnimationFrame(tick)
+
+  unsubscribeCursos = cursosApi.subscribe(
+    (list) => {
+      remoteSlides.value = list
+      loaded.value = true
+    },
+    (err) => {
+      console.error('No se pudieron cargar los programas:', err)
+      loaded.value = true
+    }
+  )
 })
+
+// Si Firestore devuelve menos programas que el respaldo, el indice activo puede
+// quedar apuntando fuera de rango.
+watch(
+  () => slides.value.length,
+  (n) => {
+    if (current.value >= n) current.value = 0
+  }
+)
 
 onUnmounted(() => {
   cancelAnimationFrame(rafId)
+  if (unsubscribeCursos) unsubscribeCursos()
 })
 </script>
 
